@@ -1,117 +1,137 @@
-/* --- Grundlayout --- */
+/* --- BODY --- */
 body {
     margin: 0;
     padding: 0;
     background: #000;
-    font-family: Arial, sans-serif;
     color: #fff;
+    font-family: Arial, sans-serif;
     text-align: center;
 }
 
-/* --- Logo --- */
-.logo {
+/* LOGO & MARKENNAME */
+.logo-block {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.logo-img {
     width: 80%;
-    max-width: 430px;
-    margin: 25px auto 5px;
-    display: block;
+    max-width: 360px;
+    height: auto;
 }
 
-/* --- Headline nebeneinander --- */
-.headline-group {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 5px;
-    margin-bottom: 20px;
+.brand {
     font-size: 36px;
-    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
-.headline-group span {
+/* HAUPTÜBERSCHRIFT: Legal. Diskret. Sicher. */
+.lds span {
+    display: inline-block;
     color: #00FF7F;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 0 10px;
 }
 
-/* Standard-Absatz */
-p {
-    color: #ccc;
-    font-size: 16px;
-    width: 90%;
-    margin: 10px auto;
-    line-height: 1.4;
-}
-
-/* --- Badge --- */
-.green-badge {
-    background: #003518;
-    border: 1px solid #00FF7F;
-    padding: 12px;
+/* SUBTEXT */
+.subtext {
     width: 85%;
-    margin: 25px auto;
-    border-radius: 30px;
-    color: #00FF7F;
-    font-size: 17px;
+    margin: 10px auto 20px;
+    font-size: 16px;
+    color: #CCC;
+    line-height: 1.5;
 }
 
-/* --- Hauptbutton --- */
-.button {
+/* BENEFIT-BOX */
+.benefit {
+    background: #003d1f;
+    border: 1px solid #008f4d;
+    border-radius: 40px;
+    width: 85%;
+    margin: 15px auto;
+    padding: 15px;
+    font-size: 17px;
+    color: #CCFFEE;
+    box-shadow: 0 0 18px #00FF7F;
+}
+
+/* BUTTONS */
+.main-btn {
     display: block;
     width: 85%;
+    margin: 20px auto;
+    padding: 18px 0;
+    font-size: 20px;
+    font-weight: bold;
     background: #00FF7F;
     color: #000;
-    font-weight: bold;
-    margin: 18px auto;
-    padding: 15px 0;
     border-radius: 40px;
-    box-shadow: 0 0 18px #00FF7F;
     text-decoration: none;
-    font-size: 18px;
+    box-shadow: 0 0 20px #00FF7F;
 }
 
-/* --- Outline Button --- */
-.button-outline {
+.link-btn {
     display: block;
     width: 85%;
-    padding: 15px 0;
-    color: #00FF7F;
-    border: 2px solid #00FF7F;
-    border-radius: 40px;
     margin: 10px auto 25px;
-    font-size: 18px;
+    padding: 12px 0;
+    font-size: 17px;
+    color: #00FF7F;
+    border: 1px solid #00FF7F;
+    border-radius: 40px;
     text-decoration: none;
 }
 
-/* --- Steps Section --- */
-.steps {
-    width: 92%;
-    margin: 30px auto;
-    text-align: left;
+.link-btn:hover {
+    background: #00FF7F;
+    color: #000;
 }
 
-.step {
+/* MINI-INFO */
+.tiny-info {
+    margin-top: 10px;
+    margin-bottom: 40px;
+    color: #CCC;
+}
+
+/* SECTION TITLE */
+.section-title {
+    font-size: 28px;
+    margin-top: 20px;
     margin-bottom: 20px;
+    color: #00FF7F;
+}
+
+/* STEPS */
+.steps {
+    width: 90%;
+    margin: 0 auto;
 }
 
 .step h3 {
-    color: #fff;
-    font-size: 20px;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
+    font-size: 22px;
 }
 
 .step p {
-    font-size: 15px;
-    color: #ccc;
+    margin-bottom: 25px;
+    color: #CCC;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
-/* --- Footer --- */
+/* FOOTER */
 footer {
-    padding: 20px 0;
     margin-top: 40px;
-    color: #777;
+    padding: 25px 0;
     font-size: 13px;
+    color: #777;
 }
 
 footer a {
-    color: #888;
+    color: #777;
     text-decoration: none;
 }
 
