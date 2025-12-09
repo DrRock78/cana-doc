@@ -1,146 +1,177 @@
+/* --- Reset / Basics --- */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
 body {
-    background: #000;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  background: #000;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.45;
+  text-align: center;
 }
 
-header {
-    padding: 20px 20px 0;
-}
+/* --- Hero --- */
+.hero { padding: 28px 18px 10px; }
 
 .logo {
-    width: 260px;
-    margin: 0 auto 10px;
-    display: block;
+  width: 88%;
+  max-width: 420px;
+  height: auto;
+  display: block;
+  margin: 0 auto 16px;
 }
 
 .brand {
-    font-size: 48px;
-    margin: -10px 0 10px;
+  margin: 0 0 6px;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
+/* Drei Worte */
 .tagline {
-    font-size: 42px;
-    font-weight: 900;
-    margin: 5px 0 20px;
-    line-height: 1.15;
+  margin: 10px 0 14px;
+  font-weight: 800;
+  line-height: 1.18;
+  font-size: 44px;      /* groß auf Mobile */
+}
+.tagline span { display: block; color: #00ff7f; }
+
+/* Ab ~600px die drei Worte nebeneinander */
+@media (min-width: 600px) {
+  .tagline { font-size: 48px; }
+  .tagline span { display: inline; margin: 0 10px; }
 }
 
 .subline {
-    font-size: 20px;
-    opacity: 0.85;
-    margin: 0 auto 25px;
-    max-width: 420px;
+  color: #cfcfcf;
+  max-width: 680px;
+  margin: 10px auto 16px;
+  padding: 0 8px;
+  font-size: 18px;
 }
 
 .badge {
-    background: #003f00;
-    padding: 15px 20px;
-    border-radius: 50px;
-    display: inline-block;
-    margin-bottom: 25px;
-    font-size: 20px;
-    border: 1px solid #00ff80;
+  display: inline-block;
+  background: #0b1b12;
+  border: 1px solid #113d28;
+  border-radius: 16px;
+  padding: 14px 18px;
+  box-shadow: 0 0 24px rgba(0,255,127,0.25);
+  margin: 10px auto 18px;
+  color: #ccffea;
+  font-weight: 600;
 }
 
+/* Buttons / Links */
 .btn-primary {
-    display: block;
-    background: #00ff80;
-    color: black;
-    font-size: 22px;
-    padding: 18px 20px;
-    border-radius: 50px;
-    margin: 20px auto 10px;
-    width: 85%;
-    max-width: 420px;
-    font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 0 25px #00ff80;
+  display: block;
+  width: min(640px, 92%);
+  margin: 18px auto 10px;
+  padding: 16px 20px;
+  background: #00ff7f;
+  color: #000;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 20px;
+  border: 0;
+  border-radius: 40px;
+  box-shadow: 0 0 30px rgba(0,255,127,0.45);
+  cursor: pointer;
 }
+.btn-primary:hover { filter: brightness(0.93); }
 
 .link-mail {
-    display: block;
-    margin: 10px 0 5px;
-    color: #00c0ff;
-    font-size: 17px;
+  display: block;
+  width: min(640px, 92%);
+  margin: 8px auto 6px;
+  padding: 12px 10px;
+  text-decoration: none;
+  color: #b8ffdf;
+  border: 1px solid #0f3a25;
+  border-radius: 40px;
 }
+.link-mail:hover { color: #00ff7f; }
 
 .subnote {
-    opacity: 0.8;
-    margin-bottom: 40px;
+  color: #a7a7a7;
+  margin: 8px 0 4px;
+  font-size: 14px;
 }
 
+/* --- How it works --- */
 .how {
-    padding: 20px;
-    text-align: left;
-    max-width: 500px;
-    margin: 0 auto;
+  max-width: 900px;
+  margin: 34px auto 10px;
+  padding: 0 18px;
+  text-align: left;
 }
-
-.how h2 {
-    text-align: center;
-    color: #00ff80;
-    margin-bottom: 30px;
+.how > h2 {
+  text-align: center;
+  margin: 4px 0 14px;
+  font-size: 30px;
+  color: #00ff7f;
 }
-
 .how h3 {
-    font-size: 26px;
-    margin-top: 25px;
+  margin: 18px 0 6px;
+  font-size: 22px;
+}
+.how p {
+  margin: 0 0 14px;
+  color: #d7d7d7;
+  font-size: 18px;
 }
 
+/* --- Form --- */
 .form-section {
-    margin-top: 40px;
-    padding: 20px;
+  max-width: 900px;
+  margin: 26px auto 10px;
+  padding: 0 18px 24px;
 }
-
 .form-title {
-    color: #00ff80;
-    font-size: 32px;
-    margin-bottom: 25px;
+  text-align: center;
+  margin: 6px 0 16px;
+  font-size: 28px;
+  color: #00ff7f;
 }
 
 form {
-    max-width: 480px;
-    margin: 0 auto;
-    text-align: left;
+  background: #0b0b0b;
+  border: 1px solid #1c1c1c;
+  border-radius: 14px;
+  padding: 20px;
 }
-
 label {
-    display: block;
-    margin: 15px 0 5px;
-    font-size: 18px;
+  display: block;
+  text-align: left;
+  margin: 10px 0 6px;
+  color: #dcdcdc;
+  font-weight: 600;
 }
-
 input, select, textarea {
-    width: 100%;
-    padding: 14px;
-    border-radius: 8px;
-    border: none;
-    margin-bottom: 10px;
-    font-size: 17px;
-    background: #111;
-    color: white;
+  width: 100%;
+  background: #000;
+  color: #fff;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 12px 12px;
+  font-size: 16px;
+  outline: none;
 }
-
-textarea {
-    height: 120px;
-}
-
-.submit {
-    margin-top: 15px;
-}
+textarea { min-height: 120px; resize: vertical; }
+.submit { margin-top: 16px; }
 
 .disclaimer {
-    margin-top: 15px;
-    font-size: 14px;
-    opacity: 0.75;
+  color: #9a9a9a;
+  font-size: 14px;
+  margin: 14px 0 2px;
+  text-align: left;
 }
 
+/* --- Footer --- */
 footer {
-    margin: 40px 0 20px;
-    opacity: 0.7;
-    font-size: 15px;
+  margin: 34px 0 24px;
+  color: #8d8d8d;
+  font-size: 13px;
 }
+footer a { color: #8d8d8d; text-decoration: none; }
+footer a:hover { color: #00ff7f; }
