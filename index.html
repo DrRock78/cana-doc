@@ -4,134 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cana-Doc – Legal. Diskret. Sicher.</title>
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png">
-
-    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
-
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
+
 <body>
 
-    <!-- HERO / HEADER -->
-    <header style="text-align:center; padding-top:40px;">
-        <img src="LOGO.png" alt="Cana-Doc Logo"
-             style="width: 80%; max-width: 430px; height: auto; display:block; margin:0 auto 20px auto;">
+    <!-- LOGO -->
+    <img src="LOGO.png" alt="Cana-Doc Logo" class="logo">
 
-        <h1 style="color:#00ff7f; font-size:38px; line-height:1.3; margin-bottom:10px;">
-            Legal.<br>Diskret.<br>Sicher.
-        </h1>
+    <!-- HEADLINE BLOCK -->
+    <div class="headline-group">
+        <span class="headline-item">Legal.</span>
+        <span class="headline-item">Diskret.</span>
+        <span class="headline-item">Sicher.</span>
+    </div>
 
-        <p style="color:#ccc; font-size:15px; margin-bottom:25px;">
-            Dein digitaler Zugang zu medizinischem Cannabis –<br>
-            schnell, zuverlässig und ohne unnötige Hürden.
-        </p>
+    <!-- INFO TEXT -->
+    <p>
+        Dein digitaler Zugang zu medizinischem Cannabis – schnell, zuverlässig und ohne unnötige Hürden.
+    </p>
 
-        <div style="margin-bottom:25px;">
-            <div style="background:#0a0a0a; border-radius:30px; padding:10px 20px;
-                        color:#00ff7f; display:inline-block; font-size:14px; border:1px solid #00ff7f;">
-                ✔ fair & günstig – transparente Behandlungskosten
-            </div>
-        </div>
+    <!-- BADGE -->
+    <p class="badge">✔ fair & günstig – transparente Behandlungskosten</p>
 
-        <!-- BUTTON 1 -->
-        <a href="#formular" 
-           style="display:inline-block; background:#00ff7f; color:#000; padding:15px 25px;
-                  border-radius:30px; text-decoration:none; font-size:18px; font-weight:bold;
-                  box-shadow:0 0 15px #00ff7f;">
-           Ärztliche Online-Anfrage starten
-        </a>
+    <!-- BUTTONS -->
+    <a class="button" href="#formular">Ärztliche Online-Anfrage starten</a>
+    <a class="button" style="background:black; color:#00FF7F; box-shadow:none; border:2px solid #00FF7F;" href="mailto:info@cana-doc.com">
+        Nur eine Frage? E-Mail senden
+    </a>
 
-        <!-- BUTTON 2 -->
-        <a href="mailto:kontakt@cana-doc.com"
-           style="display:block; margin-top:15px; color:#00ff7f; text-decoration:none;
-                  font-size:16px; border:1px solid #00ff7f; padding:10px 20px; border-radius:30px;">
-           Nur eine Frage? E-Mail senden
-        </a>
+    <p style="margin-top:30px; color:#ccc;">
+        Ärztliche Telemedizin DSGVO-konform – Rezept digital & sicher.
+    </p>
 
-        <p style="color:#999; margin-top:20px; font-size:14px;">
-            Ärztliche Telemedizin DSGVO-konform – Rezept digital & sicher.
-        </p>
-    </header>
+    <!-- FUNKTIONSBEREICH -->
+    <h2 style="color:#00FF7F; margin-top:40px;">Wie Cana-Doc funktioniert</h2>
 
-    <!-- WIE CANA-DOC FUNKTIONIERT -->
-    <section style="padding:40px 20px; max-width:900px; margin:0 auto;">
+    <p><strong>1. Anfrage senden</strong><br>Du stellst bequem online deine Anfrage – ohne Warteschleife, ohne Papierkram. Wir melden uns zeitnah bei dir zurück.</p>
 
-        <h2 style="color:#00ff7f; text-align:center; margin-bottom:30px;">
-            Wie Cana-Doc funktioniert
-        </h2>
+    <p><strong>2. Ärztliches Gespräch</strong><br>Ein spezialisierter Arzt prüft deine Situation und klärt transparent über Chancen, Risiken und Alternativen auf.</p>
 
-        <ol style="color:#fff; line-height:1.6; font-size:16px;">
-            <li><b>Anfrage senden</b><br>
-                Du stellst bequem online deine Anfrage – ohne Warteschleife, ohne Papierkram. Wir melden uns zeitnah bei dir zurück.
-            </li><br>
-
-            <li><b>Ärztliches Gespräch</b><br>
-                Ein spezialisierter Arzt prüft deine Situation und klärt dich transparent über Chancen, Risiken und Alternativen auf.
-            </li><br>
-
-            <li><b>Rezept & Versorgung</b><br>
-                Bei Eignung erhältst du dein Rezept für medizinisches Cannabis – sicher, legal und nachvollziehbar.
-            </li>
-        </ol>
-    </section>
+    <p><strong>3. Rezept & Versorgung</strong><br>Bei Eignung erhältst du dein Rezept für medizinisches Cannabis – sicher, legal und nachvollziehbar.</p>
 
     <!-- FORMULAR -->
-    <section id="formular" style="padding:40px 20px; max-width:900px; margin:0 auto;">
+    <form id="formular" class="form-container" action="https://formsubmit.co/info@cana-doc.com" method="POST">
+        <h2 style="color:#00FF7F; margin-bottom:15px;">Unverbindliche Voranfrage stellen</h2>
 
-        <h2 style="color:#00ff7f; text-align:center; margin-bottom:10px;">
-            Unverbindliche Voranfrage stellen
-        </h2>
+        <input type="text" name="Name" placeholder="Name *" required>
+        <input type="email" name="Email" placeholder="E-Mail *" required>
+        <input type="text" name="Telefon" placeholder="Telefon / WhatsApp (optional)">
 
-        <p style="color:#ccc; text-align:center; margin-bottom:30px;">
-            Fülle das Formular in unter 1 Minute aus. Unser Facharzt-Team meldet sich zeitnah per E-Mail mit den nächsten Schritten.
-        </p>
+        <select name="Art der Anfrage" required>
+            <option value="">Bitte auswählen …</option>
+            <option value="Neupatient">Neupatient</option>
+            <option value="Folgerezept">Folgerezept</option>
+        </select>
 
-        <form action="#" method="POST" style="color:#fff;">
+        <textarea name="Nachricht" placeholder="Kurz dein Anliegen *" required></textarea>
 
-            <label>Name *</label><br>
-            <input type="text" required style="width:100%; padding:12px; margin-bottom:15px;">
+        <label style="font-size:13px; color:#ccc;">
+            <input type="checkbox" required> Ich akzeptiere die Datenschutzbestimmungen.
+        </label>
 
-            <label>E-Mail *</label><br>
-            <input type="email" required style="width:100%; padding:12px; margin-bottom:15px;">
-
-            <label>Telefon / WhatsApp (optional)</label><br>
-            <input type="text" style="width:100%; padding:12px; margin-bottom:15px;">
-
-            <label>Art der Anfrage *</label><br>
-            <select required style="width:100%; padding:12px; margin-bottom:15px;">
-                <option>Bitte auswählen …</option>
-                <option>Neupatient</option>
-                <option>Folgerezept</option>
-                <option>Allgemeine Frage</option>
-            </select>
-
-            <label>Kurz dein Anliegen *</label><br>
-            <textarea required style="width:100%; height:120px; padding:12px; margin-bottom:15px;"></textarea>
-
-            <div style="margin-bottom:15px;">
-                <input type="checkbox" required> 
-                Ich habe die Datenschutzbestimmungen zur Kenntnis genommen.
-            </div>
-
-            <button type="submit"
-                    style="width:100%; background:#00ff7f; border:none; padding:15px;
-                           border-radius:30px; font-size:18px; font-weight:bold;">
-                Anfrage absenden
-            </button>
-
-            <p style="color:#777; margin-top:15px; font-size:13px;">
-                Hinweis: Dies ersetzt keine ärztliche Behandlung. Eine Verschreibung ist nur bei medizinischer Indikation möglich.
-            </p>
-        </form>
-    </section>
+        <input type="submit" class="button" value="Anfrage absenden">
+    </form>
 
     <!-- FOOTER -->
-    <footer style="text-align:center; padding:30px; color:#777; font-size:14px;">
+    <footer>
         © 2024 Cana-Doc – All Rights Reserved.<br>
-        <a href="impressum.html" style="color:#00ff7f;">Impressum</a> |
-        <a href="datenschutz.html" style="color:#00ff7f;">Datenschutz</a>
+        <a href="impressum.html">Impressum</a> | 
+        <a href="datenschutz.html">Datenschutz</a>
     </footer>
 
 </body>
