@@ -7,74 +7,53 @@ body {
     text-align: center;
 }
 
-/* Logo */
 .logo {
-    margin-top: 50px;
-    width: 220px;
-    max-width: 70%;
-    animation: fadeIn 1.5s ease;
+    width: 240px;
+    margin: 40px auto 10px auto;
+    display: block;
 }
 
-/* Überschrift */
 h1 {
-    font-size: 40px;
-    font-weight: bold;
-    color: #38fca0;
-    margin-top: 20px;
+    font-size: 42px;
+    font-weight: 900;
+    color: #39ff90;
+    margin-top: 10px;
     line-height: 1.2;
-    animation: fadeInUp 1.2s ease;
 }
 
-/* Untertitel */
-.subline {
-    color: #ddd;
+.subtitle {
     font-size: 20px;
-    margin-top: 15px;
+    color: #ccc;
+    margin: 25px auto 35px auto;
     padding: 0 20px;
-    animation: fadeInUp 1.4s ease;
+    max-width: 500px;
 }
 
-/* Button */
-.cta-button {
-    display: inline-block;
-    margin-top: 35px;
-    padding: 18px 30px;
-    background: #38fca0;
-    color: #000;
+.btn {
+    display: block;
+    width: 80%;
+    max-width: 320px;
+    margin: 15px auto;
+    padding: 16px;
+    border-radius: 12px;
     font-size: 20px;
     font-weight: bold;
-    border-radius: 10px;
     text-decoration: none;
-    transition: 0.3s;
-    animation: fadeInUp 1.6s ease;
 }
 
-.cta-button:hover {
-    background: #2ad88d;
-    transform: translateY(-3px);
+.btn.primary {
+    background: #39ff90;
+    color: #000;
 }
 
-/* Footer */
+.btn.whatsapp {
+    background: #25D366;
+    color: #fff;
+}
+
 footer {
-    margin-top: 80px;
-    margin-bottom: 30px;
-    color: #777;
+    margin-top: 50px;
     font-size: 14px;
-}
-
-/* Animationen */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    color: #777;
+    padding-bottom: 30px;
 }
