@@ -17,4 +17,92 @@ body {
 
 /* Hero-Text */
 .hero h1 {
-    font-size:
+    font-size: 42px;
+    font-weight: 900;
+    color: #39ff90;
+    margin-top: 20px;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 20px;
+    color: #cccccc;
+    margin: 25px auto 35px auto;
+    padding: 0 20px;
+    max-width: 520px;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.btn {
+    display: block;
+    width: 80%;
+    max-width: 340px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.btn.primary {
+    background: #39ff90;
+    color: #000;
+}
+
+.btn.whatsapp {
+    background: #25D366;
+    color: #fff;
+}
+
+/* kleiner Claim unter den Buttons */
+.claim {
+    font-size: 14px;
+    color: #aaaaaa;
+    margin-top: 5px;
+}
+
+/* Ablauf-Sektion */
+.steps {
+    margin-top: 40px;
+    padding: 0 20px 40px 20px;
+}
+
+.steps h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.step {
+    margin-bottom: 25px;
+}
+
+.step h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.step p {
+    font-size: 16px;
+    color: #dddddd;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid #222;
+    padding: 15px 0 25px 0;
+    font-size: 14px;
+    color: #777;
+}
