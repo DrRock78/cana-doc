@@ -1,108 +1,204 @@
-/* Grundlayout */
+/* Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-    margin: 0;
-    padding: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     background: #000;
-    font-family: Arial, sans-serif;
-    color: #fff;
+    color: #f5f5f5;
+}
+
+/* Page Layout */
+.page-wrap {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* HERO */
+.hero {
     text-align: center;
+    padding: 40px 16px 32px;
 }
 
-/* Logo */
 .logo {
-    width: 240px;
-    margin: 40px auto 0 auto;
-    display: block;
+    width: 210px;
+    margin: 0 auto 14px;
 }
 
-/* Hero-Text */
-.hero h1 {
-    font-size: 42px;
-    font-weight: 900;
-    color: #39ff90;
-    margin-top: 20px;
-    line-height: 1.2;
+.hero-title {
+    color: #37ff8b;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 16px;
 }
 
-.subtitle {
-    font-size: 20px;
-    color: #cccccc;
-    margin: 25px auto 35px auto;
-    padding: 0 20px;
-    max-width: 520px;
+.hero-subtitle {
+    color: #d2d2d2;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 20px;
+}
+
+/* Badge */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #003d22;
+    padding: 8px 18px;
+    border-radius: 999px;
+    color: #d8ffe9;
+    box-shadow: 0 0 18px rgba(55,255,139,0.4);
+    margin-bottom: 24px;
+}
+
+.badge-check {
+    background: #37ff8b;
+    color: #003d22;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
 }
 
 /* Buttons */
-.button-group {
+.hero-buttons {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 15px;
+    gap: 14px;
+    margin-bottom: 18px;
 }
 
 .btn {
-    display: block;
-    width: 80%;
-    max-width: 340px;
-    padding: 14px 18px;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: bold;
+    padding: 14px 22px;
+    font-weight: 600;
+    border-radius: 999px;
     text-decoration: none;
-    border: none;
-    cursor: pointer;
-    box-sizing: border-box;
+    text-align: center;
+    transition: 0.15s ease;
 }
 
-.btn.primary {
-    background: #39ff90;
-    color: #000;
+.btn-primary {
+    background: #37ff8b;
+    color: #002415;
+    box-shadow: 0 0 22px rgba(55,255,139,0.7);
 }
 
-.btn.whatsapp {
-    background: #25D366;
-    color: #fff;
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 28px rgba(55,255,139,1);
 }
 
-/* kleiner Claim unter den Buttons */
-.claim {
-    font-size: 14px;
-    color: #aaaaaa;
-    margin-top: 5px;
+.btn-secondary {
+    border: 1px solid #37ff8b;
+    color: #37ff8b;
 }
 
-/* Ablauf-Sektion */
+.btn-secondary:hover {
+    background: rgba(55,255,139,0.1);
+}
+
+.hero-note {
+    margin-top: 6px;
+    color: #bcbcbc;
+    font-size: .9rem;
+}
+
+/* Steps */
 .steps {
-    margin-top: 40px;
-    padding: 0 20px 40px 20px;
+    padding: 16px;
 }
 
 .steps h2 {
-    font-size: 26px;
+    text-align: center;
     margin-bottom: 20px;
 }
 
 .step {
-    margin-bottom: 25px;
+    margin-bottom: 18px;
 }
 
-.step h3 {
-    font-size: 20px;
-    margin-bottom: 5px;
+/* FORMULAR */
+.form-section {
+    padding: 20px 16px 40px;
 }
 
-.step p {
-    font-size: 16px;
-    color: #dddddd;
-    max-width: 600px;
-    margin: 0 auto;
+.form-card {
+    background: #060606;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid #111;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+}
+
+.form-card h2 {
+    margin-bottom: 8px;
+}
+
+.form-intro {
+    margin-bottom: 18px;
+    color: #d0d0d0;
+}
+
+.lead-form label {
+    font-size: .9rem;
+    margin-bottom: 4px;
+}
+
+.lead-form input,
+.lead-form select,
+.lead-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    border-radius: 10px;
+    background: #050505;
+    border: 1px solid #333;
+    color: #f5f5f5;
+}
+
+.lead-form input:focus,
+.lead-form textarea:focus,
+.lead-form select:focus {
+    outline: none;
+    border-color: #37ff8b;
+    box-shadow: 0 0 0 1px rgba(55,255,139,0.3);
+}
+
+/* Checkbox */
+.checkbox-label {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+    font-size: .85rem;
+    color: #cfcfcf;
+}
+
+/* Submit Button */
+.btn-submit {
+    background: #37ff8b;
+    color: #002415;
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 22px rgba(55,255,139,0.7);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 28px rgba(55,255,139,1);
 }
 
 /* Footer */
-footer {
-    border-top: 1px solid #222;
-    padding: 15px 0 25px 0;
-    font-size: 14px;
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    font-size: .85rem;
     color: #777;
 }
