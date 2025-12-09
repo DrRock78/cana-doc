@@ -1,4 +1,4 @@
-/* Grundlayout */
+/* Basislayout */
 * {
     box-sizing: border-box;
 }
@@ -17,7 +17,7 @@ body {
     padding: 0 18px 24px;
 }
 
-/* Hero-Bereich */
+/* HERO */
 .hero {
     text-align: center;
     padding-top: 30px;
@@ -28,40 +28,46 @@ body {
     width: 80%;
     max-width: 360px;
     height: auto;
-    margin: 0 auto 16px;
+    margin: 0 auto 12px;
 }
 
-/* Legal. Diskret. Sicher. – NEON GRÜN */
-.tagline {
-    margin: 4px 0 18px;
-    font-size: 32px;
-    line-height: 1.3;
+/* Drei Wörter nebeneinander – Neon-Grün */
+.topline {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 6px 0 4px;
+    font-size: 24px;
     font-weight: 800;
     color: #00FF7F; /* Neon-Grün */
 }
 
-.tagline span {
+.topline span {
     white-space: nowrap;
 }
 
-/* Subline unter den drei Worten */
+/* fair & günstig – Neon-Grün */
+.line-highlight {
+    margin: 4px 0 2px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #00FF7F;
+}
+
+/* Transparente Behandlungskosten – Weiß */
+.line-sub {
+    margin: 0 0 20px;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+/* Erklärungstext darunter */
 .subline {
     font-size: 16px;
     line-height: 1.5;
     color: #e0e0e0;
     margin: 0 0 22px;
-}
-
-/* Badge */
-.badge {
-    display: inline-block;
-    margin: 0 auto 26px;
-    padding: 12px 18px;
-    border-radius: 999px;
-    background: #00311a;
-    color: #ffffff;
-    font-size: 16px;
-    box-shadow: 0 0 32px rgba(0, 255, 127, 0.35);
 }
 
 /* Primärer Button */
@@ -90,7 +96,7 @@ body {
 /* Link „Nur eine Frage…“ */
 .link-mail {
     display: inline-block;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     font-size: 15px;
     color: #2aa3ff;
     text-decoration: underline;
@@ -100,26 +106,26 @@ body {
 .subnote {
     font-size: 14px;
     color: #dddddd;
-    margin: 0 0 34px;
+    margin: 0 0 28px;
 }
 
 /* Wie Cana-Doc funktioniert */
 .how {
     text-align: left;
-    padding: 32px 0 8px;
+    padding: 26px 0 8px;
     border-top: 1px solid #111111;
 }
 
 .how h2 {
     text-align: center;
-    font-size: 26px;
+    font-size: 24px;
     color: #00FF7F;
-    margin: 0 0 20px;
+    margin: 0 0 18px;
 }
 
 .how h3 {
-    font-size: 22px;
-    margin: 22px 0 8px;
+    font-size: 20px;
+    margin: 20px 0 6px;
 }
 
 .how p {
@@ -131,15 +137,15 @@ body {
 
 /* Formularbereich */
 .form-section {
-    padding: 30px 0 18px;
+    padding: 26px 0 18px;
     border-top: 1px solid #111111;
 }
 
 .form-title {
     text-align: center;
-    font-size: 24px;
+    font-size: 22px;
     color: #00FF7F;
-    margin: 0 0 18px;
+    margin: 0 0 16px;
 }
 
 form {
@@ -179,7 +185,7 @@ textarea {
     margin-bottom: 10px;
 }
 
-/* Disclaimer */
+/* Hinweistext */
 .disclaimer {
     font-size: 13px;
     color: #cccccc;
@@ -193,7 +199,7 @@ footer {
     font-size: 13px;
     color: #888888;
     border-top: 1px solid #111111;
-    padding: 12px 0 10px;
+    padding: 10px 0 6px;
 }
 
 footer p {
@@ -209,9 +215,9 @@ footer a:hover {
     color: #00FF7F;
 }
 
-/* Leicht größer auf etwas breiteren Screens */
+/* Leicht größer auf breiteren Screens */
 @media (min-width: 480px) {
-    .tagline {
-        font-size: 34px;
+    .topline {
+        font-size: 26px;
     }
 }
