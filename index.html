@@ -1,102 +1,88 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cana-Doc</title>
-    <link rel="stylesheet" href="style.css?v=3">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cana-Doc</title>
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
-
 <body>
 
-    <header>
-        <img src="logo.png" alt="Cana-Doc Logo" class="logo">
+  <header class="hero">
+    <!-- WICHTIG: exakter Dateiname -->
+    <img src="LOGO.png" alt="Cana-Doc Logo" class="logo" />
 
-        <h1 class="brand">Cana-Doc</h1>
+    <h1 class="brand">Cana-Doc</h1>
 
-        <h2 class="tagline">Legal.&nbsp;&nbsp;Diskret.&nbsp;&nbsp;Sicher.</h2>
+    <!-- Drei Worte – mobil untereinander, ab Tablet nebeneinander -->
+    <h2 class="tagline">
+      <span>Legal.</span>
+      <span>Diskret.</span>
+      <span>Sicher.</span>
+    </h2>
 
-        <p class="subline">
-            Dein digitaler Zugang zu medizinischem Cannabis – schnell, zuverlässig und ohne unnötige Hürden.
-        </p>
+    <p class="subline">
+      Dein digitaler Zugang zu medizinischem Cannabis – schnell, zuverlässig und ohne unnötige Hürden.
+    </p>
 
-        <div class="badge">
-            ✓ fair & günstig – transparente Behandlungskosten
-        </div>
+    <div class="badge">
+      ✓ fair &amp; günstig – transparente Behandlungskosten
+    </div>
 
-        <a href="#form" class="btn-primary">Ärztliche Online-Anfrage starten</a>
+    <a href="#form" class="btn-primary">Ärztliche Online-Anfrage starten</a>
+    <a href="mailto:info@cana-doc.com" class="link-mail">Nur eine Frage? E-Mail senden</a>
 
-        <a href="mailto:info@cana-doc.com" class="link-mail">Nur eine Frage? E-Mail senden</a>
+    <p class="subnote">Ärztliche Telemedizin DSGVO-konform – Rezept digital &amp; sicher.</p>
+  </header>
 
-        <p class="subnote">
-            Ärztliche Telemedizin DSGVO-konform – Rezept digital & sicher.
-        </p>
-    </header>
+  <section class="how">
+    <h2>Wie Cana-Doc funktioniert</h2>
 
+    <h3>1. Anfrage senden</h3>
+    <p>Du stellst bequem online deine Anfrage – ohne Warteschleife, ohne Papierkram. Wir melden uns zeitnah bei dir zurück.</p>
 
-    <section class="how">
-        <h2>Wie Cana-Doc funktioniert</h2>
+    <h3>2. Ärztliches Gespräch</h3>
+    <p>Ein spezialisierter Arzt prüft deine Situation und klärt transparent über Chancen, Risiken und Alternativen auf.</p>
 
-        <h3>1. Anfrage senden</h3>
-        <p>
-            Du stellst bequem online deine Anfrage – ohne Warteschleife, ohne Papierkram.
-            Wir melden uns zeitnah bei dir zurück.
-        </p>
+    <h3>3. Rezept &amp; Versorgung</h3>
+    <p>Bei Eignung erhältst du dein Rezept für medizinisches Cannabis – sicher, legal und nachvollziehbar.</p>
+  </section>
 
-        <h3>2. Ärztliches Gespräch</h3>
-        <p>
-            Ein spezialisierter Arzt prüft deine Situation und klärt transparent über
-            Chancen, Risiken und Alternativen auf.
-        </p>
+  <section id="form" class="form-section">
+    <h2 class="form-title">Unverbindliche Voranfrage stellen</h2>
 
-        <h3>3. Rezept & Versorgung</h3>
-        <p>
-            Bei Eignung erhältst du dein Rezept für medizinisches Cannabis –
-            sicher, legal und nachvollziehbar.
-        </p>
-    </section>
+    <form>
+      <label>Name *</label>
+      <input type="text" required />
 
+      <label>E-Mail *</label>
+      <input type="email" required />
 
-    <section id="form" class="form-section">
+      <label>Telefon / WhatsApp (optional)</label>
+      <input type="text" />
 
-        <h2 class="form-title">Unverbindliche Voranfrage stellen</h2>
+      <label>Art der Anfrage *</label>
+      <select required>
+        <option>Bitte auswählen …</option>
+        <option>Erstgespräch</option>
+        <option>Folgerezept</option>
+      </select>
 
-        <form>
+      <label>Kurz dein Anliegen *</label>
+      <textarea required></textarea>
 
-            <label>Name *</label>
-            <input type="text" required>
+      <button type="submit" class="btn-primary submit">Anfrage absenden</button>
 
-            <label>E-Mail *</label>
-            <input type="email" required>
+      <p class="disclaimer">
+        Hinweis: Dies ersetzt keine ärztliche Behandlung. Eine Verschreibung ist nur bei medizinischer Eignung möglich.
+      </p>
+    </form>
+  </section>
 
-            <label>Telefon / WhatsApp (optional)</label>
-            <input type="text">
-
-            <label>Art der Anfrage *</label>
-            <select required>
-                <option>Bitte auswählen …</option>
-                <option>Erstgespräch</option>
-                <option>Folgerezept</option>
-            </select>
-
-            <label>Kurz dein Anliegen *</label>
-            <textarea required></textarea>
-
-            <button type="submit" class="btn-primary submit">Anfrage absenden</button>
-
-            <p class="disclaimer">
-                Hinweis: Dies ersetzt keine ärztliche Behandlung.
-                Eine Verschreibung ist nur bei medizinischer Eignung möglich.
-            </p>
-
-        </form>
-    </section>
-
-
-    <footer>
-        © 2024 Cana-Doc – All Rights Reserved.  
-        <a href="#">Impressum</a> | <a href="#">Datenschutz</a>
-    </footer>
+  <footer>
+    © 2024 Cana-Doc – All Rights Reserved.
+    <a href="#">Impressum</a> | <a href="#">Datenschutz</a>
+  </footer>
 
 </body>
 </html>
