@@ -1,555 +1,142 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cana-Doc – Legal. Diskret. Sicher.</title>
-  <meta name="description" content="Cana-Doc – dein digitaler Zugang zu medizinischem Cannabis. Legal, diskret & sicher. Ärztliche Telemedizin, Rezept bei Eignung digital & nachvollziehbar.">
-  <style>
-    :root {
-      --bg: #000000;
-      --bg-soft: #080808;
-      --accent: #38fca0;
-      --accent-soft: #1fdc82;
-      --text: #ffffff;
-      --muted: #b0b0b0;
-      --border: #1b1b1b;
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      background: radial-gradient(circle at top, #101010 0, #000 60%);
-      color: var(--text);
-      text-align: center;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    main {
-      min-height: 100vh;
-    }
-
-    /* HERO / HEADER */
-
-    .hero {
-      padding: 32px 18px 40px;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .logo {
-      margin-bottom: 8px;
-    }
-
-    .logo img {
-      max-width: 260px;
-      width: 70%;
-      height: auto;
-      display: block;
-      margin: 0 auto 8px;
-      filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.9));
-    }
-
-    h1 {
-      font-size: 2.4rem;
-      line-height: 1.12;
-      margin: 24px 0 12px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-    }
-
-    h1 .accent {
-      color: var(--accent);
-      display: block;
-    }
-
-    .subtitle {
-      font-size: 1.05rem;
-      line-height: 1.5;
-      color: var(--muted);
-      max-width: 540px;
-      margin: 0 auto 18px;
-    }
-
-    .hero-badges {
-      margin-bottom: 20px;
-    }
-
-    .badge {
-      font-size: 0.92rem;
-      color: var(--muted);
-      margin: 2px 0;
-    }
-
-    .highlight-line {
-      font-size: 0.92rem;
-      color: var(--accent-soft);
-      margin-top: 6px;
-    }
-
-    .buttons {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 22px;
-      border-radius: 999px;
-      font-size: 1rem;
-      font-weight: 600;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      text-decoration: none;
-      width: 100%;
-      max-width: 360px;
-      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, background 0.15s;
-      box-shadow: 0 14px 35px rgba(56, 252, 160, 0.28);
-    }
-
-    .button-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-      color: #000;
-    }
-
-    .button-secondary {
-      background: transparent;
-      color: var(--accent-soft);
-      border: 1px solid var(--accent-soft);
-      box-shadow: none;
-    }
-
-    .button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 18px 40px rgba(56, 252, 160, 0.32);
-    }
-
-    .button-secondary:hover {
-      background: rgba(31, 220, 130, 0.06);
-      box-shadow: none;
-    }
-
-    .button-icon {
-      font-size: 1.1rem;
-    }
-
-    /* CONTENT SECTIONS */
-
-    .section {
-      padding: 30px 18px 46px;
-      max-width: 960px;
-      margin: 0 auto;
-      text-align: left;
-    }
-
-    .section h2 {
-      font-size: 1.7rem;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .section h2 span {
-      color: var(--accent);
-    }
-
-    .section-intro {
-      font-size: 0.98rem;
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      margin-bottom: 26px;
-    }
-
-    .step {
-      background: var(--bg-soft);
-      border-radius: 16px;
-      padding: 14px 14px 16px;
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.85);
-    }
-
-    .step-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-
-    .step-number {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      border: 1px solid var(--accent-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--accent-soft);
-    }
-
-    .step-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-    }
-
-    .step-text {
-      margin: 0;
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    /* FORM CARD */
-
-    .form-card {
-      background: radial-gradient(circle at top left, #111 0, #050505 60%);
-      border-radius: 18px;
-      padding: 18px 16px 22px;
-      border: 1px solid var(--border);
-      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.95);
-    }
-
-    .form-card h3 {
-      margin: 0 0 4px;
-      font-size: 1.25rem;
-      text-align: center;
-    }
-
-    .form-hint {
-      margin: 0 0 14px;
-      font-size: 0.9rem;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    form {
-      margin-top: 6px;
-    }
-
-    .field-group {
-      margin-bottom: 12px;
-    }
-
-    label {
-      display: block;
-      font-size: 0.86rem;
-      margin-bottom: 4px;
-      color: var(--muted);
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 9px 11px;
-      border-radius: 10px;
-      border: 1px solid #262626;
-      background: rgba(5, 5, 5, 0.95);
-      color: var(--text);
-      font-size: 0.95rem;
-      outline: none;
-      font-family: inherit;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--accent-soft);
-      box-shadow: 0 0 0 1px rgba(56, 252, 160, 0.35);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .checkbox-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-
-    .checkbox-row input[type="checkbox"] {
-      margin-top: 3px;
-      width: 16px;
-      height: 16px;
-    }
-
-    .form-button {
-      margin-top: 2px;
-      width: 100%;
-    }
-
-    .disclaimer {
-      margin-top: 10px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-align: left;
-    }
-
-    .disclaimer a {
-      color: var(--accent-soft);
-    }
-
-    /* FOOTER */
-
-    footer {
-      padding: 16px 18px 20px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      border-top: 1px solid #111;
-      margin-top: 10px;
-    }
-
-    footer .footer-links {
-      margin-top: 6px;
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    footer a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.78rem;
-    }
-
-    footer a:hover {
-      color: var(--accent-soft);
-      text-decoration: underline;
-    }
-
-    /* RESPONSIVE */
-
-    @media (min-width: 720px) {
-      .hero {
-        padding-top: 40px;
-      }
-
-      h1 {
-        font-size: 3rem;
-      }
-
-      .subtitle {
-        font-size: 1.1rem;
-      }
-
-      .buttons {
-        flex-direction: row;
-        justify-content: center;
-      }
-
-      .button {
-        max-width: 260px;
-      }
-
-      .section {
-        padding: 36px 24px 52px;
-      }
-
-      .steps {
-        flex-direction: row;
-      }
-
-      .step {
-        flex: 1;
-      }
-
-      .form-card {
-        padding: 22px 22px 26px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cana-Doc – Legal. Diskret. Sicher.</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<main>
-  <!-- HERO / STARTBEREICH -->
-  <section class="hero" id="top">
-    <div class="logo">
-      <img src="LOGO.png" alt="Cana-Doc Logo">
+
+    <div class="page-wrap">
+
+        <!-- HERO -->
+        <header class="hero">
+            <img src="LOGO.png" alt="Cana-Doc Logo" class="logo">
+
+            <h1 class="hero-title">Legal. Diskret.<br>Sicher.</h1>
+
+            <p class="hero-subtitle">
+                Dein digitaler Zugang zu medizinischem Cannabis – 
+                schnell, zuverlässig und ohne unnötige Hürden.
+            </p>
+
+            <div class="badge">
+                <span class="badge-check">✔</span>
+                fair & günstig – transparente Behandlungskosten
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#anfrage" class="btn btn-primary">
+                    Ärztliche Online-Anfrage starten
+                </a>
+
+                <a href="mailto:kontakt@cana-doc.com" class="btn btn-secondary">
+                    Nur eine Frage? E-Mail senden
+                </a>
+            </div>
+
+            <p class="hero-note">
+                Ärztliche Telemedizin DSGVO-konform – Rezept digital & sicher.
+            </p>
+        </header>
+
+
+        <!-- FUNKTIONSWEISE -->
+        <section class="steps">
+            <h2>Wie Cana-Doc funktioniert</h2>
+
+            <div class="step">
+                <h3>1. Anfrage senden</h3>
+                <p>Du stellst bequem online deine Anfrage – ohne Warteschleife, ohne Papierkram. Wir melden uns zeitnah bei dir.</p>
+            </div>
+
+            <div class="step">
+                <h3>2. Ärztliches Gespräch</h3>
+                <p>Ein spezialisierter Arzt prüft deine Situation und klärt dich transparent über Chancen & Risiken auf.</p>
+            </div>
+
+            <div class="step">
+                <h3>3. Rezept & Versorgung</h3>
+                <p>Bei Eignung erhältst du dein Rezept für medizinisches Cannabis – sicher, legal und nachvollziehbar.</p>
+            </div>
+        </section>
+
+
+        <!-- FORMULAR -->
+        <section id="anfrage" class="form-section">
+            <div class="form-card">
+
+                <h2>Unverbindliche Voranfrage stellen</h2>
+
+                <p class="form-intro">
+                    Fülle das Formular in unter 1 Minute aus. Unser Facharzt-Team meldet sich zeitnah per E-Mail mit den nächsten Schritten.
+                </p>
+
+                <!-- LEAD FORMULAR -->
+                <form action="#" method="POST" class="lead-form">
+
+                    <label for="name">Name *</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">E-Mail *</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="phone">Telefon / WhatsApp (optional)</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+49 …">
+
+                    <label for="type">Art der Anfrage *</label>
+                    <select id="type" name="type" required>
+                        <option value="">Bitte auswählen …</option>
+                        <option value="Erstanfrage">Erstanfrage zu medizinischem Cannabis</option>
+                        <option value="Folgerezept">Folgerezept / laufende Behandlung</option>
+                        <option value="Kosten">Fragen zu Kosten & Erstattung</option>
+                        <option value="Sonstiges">Sonstiges Anliegen</option>
+                    </select>
+
+                    <label for="message">Kurz dein Anliegen *</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+
+                    <label class="checkbox-label">
+                        <input type="checkbox" required>
+                        <span>
+                            Ich habe die Datenschutzbestimmungen zur Kenntnis genommen und stimme der Verarbeitung meiner Daten zu.
+                        </span>
+                    </label>
+
+                    <button type="submit" class="btn btn-submit">
+                        Anfrage absenden
+                    </button>
+
+                    <p class="form-hint">
+                        Hinweis: Dies ersetzt keine ärztliche Behandlung. Eine Verschreibung ist nur bei medizinischer Eignung möglich.
+                    </p>
+                </form>
+
+            </div>
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>© 2024 Cana-Doc – All Rights Reserved.</p>
+        </footer>
     </div>
 
-    <h1>
-      <span class="accent">Legal.</span>
-      Diskret.<br>Sicher.
-    </h1>
 
-    <p class="subtitle">
-      Dein digitaler Zugang zu medizinischem Cannabis – schnell, zuverlässig und ohne unnötige Hürden.
-    </p>
+    <!-- SCROLL SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const btn = document.querySelector(".btn-primary");
+            const form = document.querySelector("#anfrage");
 
-    <div class="hero-badges">
-      <p class="badge">✓ Ärztliche Telemedizin • DSGVO-konform</p>
-      <p class="badge">✓ Rezept bei Eignung digital & nachvollziehbar</p>
-      <p class="highlight-line">💸 Ab 0&nbsp;€ Eigenanteil bei Kassenrezept* möglich</p>
-    </div>
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                form.scrollIntoView({ behavior: "smooth" });
+            });
+        });
+    </script>
 
-    <div class="buttons">
-      <a href="#anfrage" class="button button-primary">
-        <span class="button-icon">⚡</span>
-        <span>Anfrage starten</span>
-      </a>
-      <a href="https://www.doctorabc.com/de" target="_blank" rel="noopener" class="button button-secondary">
-        <span class="button-icon">👨‍⚕️</span>
-        <span>Zum Online-Arzt (Beta)</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- FUNKTIONSWEISE & LEAD-FORMULAR -->
-  <section class="section" id="anfrage">
-    <h2>Wie <span>Cana-Doc</span> funktioniert</h2>
-    <p class="section-intro">
-      Schlanke Prozesse, klare Schritte – damit du schnell weißt, woran du bist.
-    </p>
-
-    <div class="steps">
-      <div class="step">
-        <div class="step-header">
-          <div class="step-number">1</div>
-          <div class="step-title">Anfrage senden</div>
-        </div>
-        <p class="step-text">
-          Du beschreibst kurz dein Anliegen und hinterlässt deine Kontaktdaten. Ohne Warteschleifen, ohne Papierkrieg.
-        </p>
-      </div>
-
-      <div class="step">
-        <div class="step-header">
-          <div class="step-number">2</div>
-          <div class="step-title">Ärztliche Prüfung</div>
-        </div>
-        <p class="step-text">
-          Ein spezialisierter Arzt prüft deine Situation, klärt Chancen & Risiken transparent und entscheidet, ob medizinisches Cannabis für dich in Frage kommt.
-        </p>
-      </div>
-
-      <div class="step">
-        <div class="step-header">
-          <div class="step-number">3</div>
-          <div class="step-title">Rezept & Versorgung</div>
-        </div>
-        <p class="step-text">
-          Bei Eignung erhältst du dein Rezept – digital dokumentiert und nachvollziehbar. Die Einlösung erfolgt über teilnehmende Apotheken.
-        </p>
-      </div>
-    </div>
-
-    <div class="form-card">
-      <h3>Unverbindliche Anfrage stellen</h3>
-      <p class="form-hint">
-        Fülle das kurze Formular aus. Wir melden uns mit den nächsten Schritten – diskret & strukturiert.
-      </p>
-
-      <!-- HINWEIS:
-           Aktuell hat das Formular noch keinen Backend-Endpunkt.
-           Sobald du z.B. Formspree, ein eigenes Backend oder ein CRM angebunden hast,
-           einfach die action-URL unten austauschen. -->
-      <form action="#" method="post">
-        <div class="field-group">
-          <label for="name">Vor- und Nachname</label>
-          <input type="text" id="name" name="name" required>
-        </div>
-
-        <div class="field-group">
-          <label for="email">E-Mail-Adresse</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-
-        <div class="field-group">
-          <label for="contact">Bevorzugter Kontaktweg</label>
-          <select id="contact" name="contact">
-            <option value="email">E-Mail</option>
-            <option value="telefon">Telefon (falls angegeben)</option>
-            <option value="beides">E-Mail & Telefon</option>
-          </select>
-        </div>
-
-        <div class="field-group">
-          <label for="reason">Grund der Anfrage</label>
-          <select id="reason" name="reason">
-            <option value="">Bitte auswählen</option>
-            <option value="schmerzen">Chronische Schmerzen</option>
-            <option value="schlaf">Schlafstörungen</option>
-            <option value="adhs">ADHS</option>
-            <option value="ptbs">PTBS / Traumafolgestörung</option>
-            <option value="angst">Angst / Anspannung</option>
-            <option value="anderes">Etwas anderes</option>
-          </select>
-        </div>
-
-        <div class="field-group">
-          <label for="message">Kurz zu deiner Situation</label>
-          <textarea id="message" name="message" placeholder="Was ist dein Hauptanliegen? Welche Therapien wurden bereits versucht?"></textarea>
-        </div>
-
-        <div class="checkbox-row">
-          <input type="checkbox" id="consent" required>
-          <label for="consent">
-            Ich bin mindestens 18&nbsp;Jahre alt und stimme der Verarbeitung meiner Angaben gemäß Datenschutzhinweis zu.
-          </label>
-        </div>
-
-        <button type="submit" class="button button-primary form-button">
-          Anfrage unverbindlich senden
-        </button>
-
-        <p class="disclaimer">
-          Hinweis: Bis zur finalen technischen Anbindung werden Anfragen über dieses Formular noch nicht automatisiert verarbeitet.
-          In dringenden Fällen kannst du uns zusätzlich direkt per E-Mail unter
-          <a href="mailto:kontakt@cana-doc.com">kontakt@cana-doc.com</a> kontaktieren.
-        </p>
-
-        <p class="disclaimer">
-          *Die Kostenübernahme durch gesetzliche oder private Krankenkassen hängt von individuellen Faktoren
-          (Indikation, Vorgeschichte, Kasse, Tarif) ab und kann nicht garantiert werden.
-        </p>
-      </form>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div>© 2024 Cana-Doc – All Rights Reserved.</div>
-  <div class="footer-links">
-    <a href="#top">Nach oben</a>
-    <span>•</span>
-    <a href="#">Impressum (in Vorbereitung)</a>
-    <span>•</span>
-    <a href="#">Datenschutz (in Vorbereitung)</a>
-  </div>
-</footer>
 </body>
 </html>
