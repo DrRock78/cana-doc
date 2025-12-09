@@ -1,59 +1,20 @@
+/* Grundlayout */
 body {
     margin: 0;
     padding: 0;
     background: #000;
     font-family: Arial, sans-serif;
-    color: white;
+    color: #fff;
     text-align: center;
 }
 
+/* Logo */
 .logo {
     width: 240px;
-    margin: 40px auto 10px auto;
+    margin: 40px auto 0 auto;
     display: block;
 }
 
-h1 {
-    font-size: 42px;
-    font-weight: 900;
-    color: #39ff90;
-    margin-top: 10px;
-    line-height: 1.2;
-}
-
-.subtitle {
-    font-size: 20px;
-    color: #ccc;
-    margin: 25px auto 35px auto;
-    padding: 0 20px;
-    max-width: 500px;
-}
-
-.btn {
-    display: block;
-    width: 80%;
-    max-width: 320px;
-    margin: 15px auto;
-    padding: 16px;
-    border-radius: 12px;
-    font-size: 20px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.btn.primary {
-    background: #39ff90;
-    color: #000;
-}
-
-.btn.whatsapp {
-    background: #25D366;
-    color: #fff;
-}
-
-footer {
-    margin-top: 50px;
-    font-size: 14px;
-    color: #777;
-    padding-bottom: 30px;
-}
+/* Hero-Text */
+.hero h1 {
+    font-size:
