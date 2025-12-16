@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cana-Doc</title>
+    <title>CanaDoc</title>
     <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
@@ -12,52 +12,117 @@
 
     <!-- HERO -->
     <header class="hero">
-        <img src="LOGO.png" alt="Cana-Doc Logo" class="logo">
+        <img src="LOGO.png" alt="CanaDoc Logo" class="logo">
 
         <div class="topline">
             <span>Legal.</span>
             <span>Diskret.</span>
-            <span>Sicher.</span>
+            <span>Verantwortungsvoll.</span>
         </div>
 
-        <p class="line-highlight">fair &amp; günstig</p>
-
-        <p class="line-sub">Transparente Behandlungskosten ✓</p>
-
-        <p class="subline">
-            Dein digitaler Zugang zu medizinischem Cannabis – schnell, zuverlässig und ohne unnötige Hürden.
+        <p class="line-highlight">
+            Digitaler Helfer für medizinische Entscheidungen
         </p>
 
-        <a href="#form" class="btn-primary">Ärztliche Online-Anfrage starten</a>
+        <p class="line-sub">
+            Orientierung &amp; Einordnung – u. a. im Kontext medizinisches Cannabis ✓
+        </p>
+
+        <p class="subline">
+            CanaDoc unterstützt Menschen dabei, medizinische Entscheidungen bewusst zu treffen.
+            Wir helfen bei der Einordnung deiner Situation und zeigen, ob ein nächster Schritt sinnvoll ist –
+            oder ob Zurückhaltung die bessere Entscheidung ist.
+        </p>
+
+        <a href="#how" class="btn-primary">
+            Entscheidung einordnen
+        </a>
 
         <a href="mailto:info@cana-doc.com" class="link-mail">
-            Nur eine Frage? E-Mail senden
+            Diskrete Frage stellen
         </a>
 
         <p class="subnote">
-            Ärztliche Telemedizin DSGVO-konform – Rezept digital &amp; sicher.
+            Hinweis: CanaDoc ersetzt keine ärztliche oder therapeutische Beratung.
+            Medizinische Entscheidungen und Behandlungen erfolgen ausschließlich durch Ärzte.
         </p>
     </header>
 
 
     <!-- WIE ES FUNKTIONIERT -->
+    <section id="how" class="how">
+        <h2>Wie CanaDoc arbeitet</h2>
+
+        <h3>1. Einordnen</h3>
+        <p>
+            Du schilderst deine Situation vertraulich und ohne unnötige Details.
+            CanaDoc hilft dir, deine Fragestellung sachlich einzuordnen.
+        </p>
+
+        <h3>2. Abwägen</h3>
+        <p>
+            Du erhältst Orientierung: Ist ein medizinischer Schritt sinnvoll?
+            Oder ist es besser, (noch) nichts zu tun? Keine Versprechen. Kein Druck.
+        </p>
+
+        <h3>3. Weiterleiten – wenn sinnvoll</h3>
+        <p>
+            Nur wenn es passt, erfolgt eine diskrete Weiterleitung – z. B. an ärztliche Telemedizin
+            oder eine geeignete Apotheke. Die medizinische Entscheidung bleibt beim Arzt.
+        </p>
+    </section>
+
+
+    <!-- HALTUNG -->
     <section class="how">
-        <h2>Wie Cana-Doc funktioniert</h2>
+        <h2>Wofür CanaDoc steht</h2>
 
-        <h3>1. Anfrage senden</h3>
-        <p>Du stellst bequem online deine Anfrage – ohne Warteschleife, ohne Papierkram. Wir melden uns zeitnah bei dir zurück.</p>
+        <h3>Diskrete Unterstützung</h3>
+        <p>
+            Medizinische Entscheidungen gehören dir – nicht deinem Umfeld.
+            CanaDoc arbeitet ruhig, vertraulich und ohne unnötige Aufmerksamkeit.
+        </p>
 
-        <h3>2. Ärztliches Gespräch</h3>
-        <p>Ein spezialisierter Arzt prüft deine Situation und klärt transparent über Chancen, Risiken und Alternativen auf.</p>
+        <h3>Verantwortung vor Aktion</h3>
+        <p>
+            Nicht jede Möglichkeit ist ein nächster Schritt.
+            CanaDoc bremst, wenn es notwendig ist.
+        </p>
 
-        <h3>3. Rezept &amp; Versorgung</h3>
-        <p>Bei Eignung erhältst du dein Rezept für medizinisches Cannabis – sicher, legal und nachvollziehbar.</p>
+        <p class="subnote">
+            Grundsatz: CanaDoc schadet nicht.
+        </p>
+    </section>
+
+
+    <!-- FÜR ÄRZTE & APOTHEKEN -->
+    <section class="how">
+        <h2>Für Ärzte &amp; Apotheken</h2>
+
+        <h3>Klare Rollen. Saubere Prozesse.</h3>
+        <p>
+            CanaDoc ist keine medizinische Plattform.
+            Wir übernehmen Orientierung und Vorauswahl –
+            die medizinische Verantwortung bleibt vollständig bei Ärzten und Apotheken.
+        </p>
+
+        <h3>Warum das sinnvoll ist</h3>
+        <p>
+            Vorbereitete Anfragen. Ruhige Nutzer.
+            Diskrete Prozesse statt erklärungsintensiver Gespräche.
+        </p>
+
+        <p>
+            <a href="mailto:info@cana-doc.com" class="btn-primary">
+                Partnerschaft anfragen
+            </a>
+        </p>
     </section>
 
 
     <!-- FORMULAR -->
     <section id="form" class="form-section">
-        <h2 class="form-title">Unverbindliche Voranfrage stellen</h2>
+        <h2 class="form-title">Situation unverbindlich einordnen</h2>
 
         <form>
             <label for="name">Name *</label>
@@ -72,17 +137,20 @@
             <label for="type">Art der Anfrage *</label>
             <select id="type" required>
                 <option>Bitte auswählen …</option>
-                <option>Erstgespräch</option>
-                <option>Folgerezept</option>
+                <option>Erstmalige Einordnung</option>
+                <option>Weiterführende Frage</option>
             </select>
 
-            <label for="msg">Kurz dein Anliegen *</label>
+            <label for="msg">Worum geht es? *</label>
             <textarea id="msg" required></textarea>
 
-            <button type="submit" class="btn-primary submit">Anfrage absenden</button>
+            <button type="submit" class="btn-primary submit">
+                Anfrage senden
+            </button>
 
             <p class="disclaimer">
-                Hinweis: Dies ersetzt keine ärztliche Behandlung. Eine Verschreibung ist nur bei medizinischer Eignung möglich.
+                Hinweis: CanaDoc stellt keine Diagnosen und verschreibt keine Medikamente.
+                Eine ärztliche Verordnung ist ausschließlich nach medizinischer Prüfung durch einen Arzt möglich.
             </p>
         </form>
     </section>
@@ -90,7 +158,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <p>© 2024 Cana-Doc – All Rights Reserved.</p>
+        <p>© 2025 CanaDoc – Legal. Diskret. Verantwortungsvoll.</p>
         <p>
             <a href="impressum.html">Impressum</a> |
             <a href="datenschutz.html">Datenschutz</a>
