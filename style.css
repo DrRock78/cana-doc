@@ -16,15 +16,64 @@ body{
   padding: 20px;
 }
 
+/* HERO */
 .hero{
   text-align: center;
   padding-top: 30px;
+  position: relative;
+  overflow: hidden;
 }
 
 .logo{
   width: 160px;
   margin: 0 auto 18px;
   display: block;
+}
+
+/* OPTIONAL VIDEO LAYER */
+.hero-video{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+
+.hero-video video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0.22;
+}
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 20%, rgba(0,0,0,.35), rgba(0,0,0,.85));
+}
+
+.neon-accent{
+  position:absolute;
+  top:15%;
+  width:2px;
+  height:70%;
+  background:linear-gradient(to bottom, transparent, #00ff88, transparent);
+  filter:blur(1px);
+  opacity:.35;
+  animation:pulse 6s ease-in-out infinite;
+}
+
+.neon-accent.left{
+  left:10%;
+}
+
+@keyframes pulse{
+  0%,100%{opacity:.15;}
+  50%{opacity:.45;}
+}
+
+/* Vordergrund über Video */
+.hero > *:not(.hero-video){
+  position:relative;
+  z-index:1;
 }
 
 .topline{
@@ -93,6 +142,7 @@ body{
   line-height: 1.4;
 }
 
+/* HOW */
 .how{
   margin-top: 50px;
 }
@@ -112,6 +162,7 @@ body{
   line-height: 1.5;
 }
 
+/* FORM */
 .form-section{
   margin-top: 60px;
 }
@@ -156,6 +207,7 @@ form textarea{
   text-align: center;
 }
 
+/* FOOTER */
 footer{
   margin: 60px 0 30px;
   text-align: center;
