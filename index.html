@@ -1,112 +1,160 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cana-Doc</title>
-    <link rel="stylesheet" href="style.css?v=7">
-</head>
-<body>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CanaDoc – dein digitaler Kompass für medizinische Anwendungen. Diskret. Unverbindlich. Ohne Verpflichtung." />
+  <title>CanaDoc</title>
 
-<div class="page">
+  <!-- Social Preview (optional, aber sauber) -->
+  <meta property="og:title" content="CanaDoc" />
+  <meta property="og:description" content="Legal. Diskret. Verantwortungsvoll. Dein digitaler Kompass für medizinische Anwendungen." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="LOGO.jpg" />
+
+  <link rel="stylesheet" href="style.css?v=9" />
+</head>
+
+<body>
+  <div class="page">
 
     <!-- HERO -->
-    <header class="hero">
-        <!-- LOGO KORRIGIERT -->
-        <img src="LOGO.jpg" alt="Cana-Doc Logo" class="logo">
+    <header class="hero" role="banner">
+      <img src="LOGO.jpg" alt="CanaDoc Logo" class="logo" loading="eager" />
 
-        <div class="topline">
-            <span>Legal.</span>
-            <span>Diskret.</span>
-            <span>Verantwortungsvoll.</span>
-        </div>
+      <!-- Soft opener (1. OK) -->
+      <p class="intro-soft">Du bist unsicher? Wir helfen dir, Klarheit zu finden.</p>
 
-        <p class="subline">
-            Dein digitaler Helfer für medizinische Anwendungen
-        </p>
+      <div class="topline" aria-label="Kernwerte">
+        <span>Legal.</span>
+        <span>Diskret.</span>
+        <span>Verantwortungsvoll.</span>
+      </div>
 
-        <p class="subline" style="margin-top:10px;">
-            CanaDoc begleitet dich und gibt dir Orientierung,<br>
-            wenn medizinische Entscheidungen digital werden.
-        </p>
+      <p class="subline">
+        Dein digitaler Helfer für medizinische Anwendungen
+      </p>
 
-        <p class="subnote" style="margin-top:12px;">
-            Diskret. Unverbindlich. Ohne Verpflichtung.
-        </p>
+      <p class="subline subline-2">
+        CanaDoc begleitet dich und gibt dir Orientierung,<br />
+        wenn medizinische Entscheidungen digital werden.
+      </p>
 
-        <a href="#form" class="btn-primary">Digitalen Kompass starten</a>
+      <p class="subnote">
+        Diskret. Unverbindlich. Ohne Verpflichtung.
+      </p>
 
-        <a href="mailto:info@cana-doc.com" class="link-mail">
-            Nur eine Frage? E-Mail senden
-        </a>
+      <!-- Button bleibt (2. Kompass bleibt) -->
+      <a href="#form" class="btn-primary" aria-label="Digitalen Kompass starten">
+        Digitalen Kompass starten
+      </a>
 
-        <p class="subnote" style="margin-top:14px;">
-            Hinweis: CanaDoc stellt keine Diagnosen und verschreibt keine Medikamente.
-            Medizinische Entscheidungen erfolgen ausschließlich durch Ärztinnen und Ärzte.
-        </p>
+      <!-- Trust line (3. notwendig statt vertraulich) -->
+      <p class="cta-note">
+        Dauer: ca. 2 Minuten · Keine Registrierung · Nur notwendige Angaben
+      </p>
+
+      <a href="mailto:info@cana-doc.com" class="link-mail">
+        Nur eine Frage? E-Mail senden
+      </a>
+
+      <p class="subnote hint">
+        Hinweis: CanaDoc stellt keine Diagnosen und verschreibt keine Medikamente.
+        Medizinische Entscheidungen erfolgen ausschließlich durch Ärztinnen und Ärzte.
+      </p>
     </header>
 
+    <!-- HOW -->
+    <section class="how" aria-label="Wie CanaDoc dir hilft">
+      <h2>Wie CanaDoc dir hilft</h2>
 
-    <!-- WIE ES FUNKTIONIERT -->
-    <section class="how">
-        <h2>Wie CanaDoc dir hilft</h2>
+      <!-- 4. Anamnese -> Erste Orientierung -->
+      <h3>1. Erste Orientierung</h3>
+      <p>
+        Du schilderst deine Situation in Ruhe. CanaDoc begleitet dich dabei – diskret, sachlich und ohne Bewertung.
+      </p>
 
-        <h3>1. Anamnese</h3>
-        <p>Du schilderst deine Situation in Ruhe. CanaDoc begleitet dich dabei – diskret, sachlich und ohne Bewertung.</p>
+      <h3>2. Orientierungshilfe</h3>
+      <p>
+        CanaDoc hilft dir, Orientierung zu gewinnen – ob ein nächster Schritt sinnvoll ist oder ob Abwarten die bessere Entscheidung sein kann.
+      </p>
 
-        <h3>2. Orientierungshilfe</h3>
-        <p>CanaDoc hilft dir, Orientierung zu gewinnen – ob ein nächster Schritt sinnvoll ist oder ob Abwarten die bessere Entscheidung sein kann.</p>
-
-        <h3>3. Diskret weiter</h3>
-        <p>Nur wenn es für dich passt, begleitet CanaDoc dich diskret weiter – z.&nbsp;B. zu ärztlicher Telemedizin oder einer geeigneten Apotheke. Die medizinische Entscheidung bleibt dort, wo sie hingehört.</p>
+      <h3>3. Diskret weiter</h3>
+      <p>
+        Nur wenn es für dich passt, begleitet CanaDoc dich diskret weiter – z.&nbsp;B. zu ärztlicher Telemedizin oder einer geeigneten Apotheke.
+        Die medizinische Entscheidung bleibt dort, wo sie hingehört.
+      </p>
     </section>
 
+    <!-- FORM -->
+    <section id="form" class="form-section" aria-label="Anfrageformular">
+      <h2 class="form-title">Situation klären lassen</h2>
+      <p class="form-sub">
+        Bitte fülle die Felder kurz aus. Wir fragen nur das ab, was für eine erste Orientierung notwendig ist.
+      </p>
 
-    <!-- FORMULAR -->
-    <section id="form" class="form-section">
-        <h2 class="form-title">Situation klären lassen</h2>
+      <form id="canaForm" novalidate>
+        <!-- Honeypot (anti-bot) -->
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
 
-        <form>
-            <label for="name">Name *</label>
-            <input id="name" type="text" required>
+        <label for="name">Name <span aria-hidden="true">*</span></label>
+        <input id="name" name="name" type="text" required minlength="2" autocomplete="name" />
+        <p class="field-error" id="err-name" role="alert"></p>
 
-            <label for="email">E-Mail *</label>
-            <input id="email" type="email" required>
+        <label for="email">E-Mail <span aria-hidden="true">*</span></label>
+        <input id="email" name="email" type="email" required autocomplete="email" inputmode="email" />
+        <p class="field-error" id="err-email" role="alert"></p>
 
-            <label for="phone">Telefon / WhatsApp (optional)</label>
-            <input id="phone" type="text">
+        <label for="phone">Telefon / WhatsApp (optional)</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+        <p class="field-help">Optional – falls du Rückfragen schneller klären möchtest.</p>
 
-            <label for="type">Art der Anfrage *</label>
-            <select id="type" required>
-                <option>Bitte auswählen …</option>
-                <option>Allgemeine Orientierung</option>
-                <option>Schlaf &amp; Erholung</option>
-                <option>Stress &amp; Anspannung</option>
-                <option>Sonstiges</option>
-            </select>
+        <label for="type">Art der Anfrage <span aria-hidden="true">*</span></label>
+        <select id="type" name="type" required>
+          <option value="" selected disabled>Bitte auswählen …</option>
+          <option value="orientation">Allgemeine Orientierung</option>
+          <option value="sleep">Schlaf &amp; Erholung</option>
+          <option value="stress">Stress &amp; Anspannung</option>
+          <option value="other">Sonstiges</option>
+        </select>
+        <p class="field-error" id="err-type" role="alert"></p>
 
-            <label for="msg">Kurz deine Situation *</label>
-            <textarea id="msg" required></textarea>
+        <label for="msg">Kurz deine Situation <span aria-hidden="true">*</span></label>
+        <textarea id="msg" name="msg" required minlength="20" placeholder="z. B. seit wann, wie stark, was bisher geholfen hat…"></textarea>
+        <p class="field-help">Bitte so kurz wie möglich – aber so konkret wie nötig.</p>
+        <p class="field-error" id="err-msg" role="alert"></p>
 
-            <button type="submit" class="btn-primary submit">Anfrage absenden</button>
+        <button type="submit" class="btn-primary submit" id="submitBtn">
+          Anfrage absenden
+        </button>
 
-            <p class="disclaimer">
-                Hinweis: Dies ersetzt keine ärztliche Behandlung. Eine Verschreibung ist nur bei medizinischer Eignung möglich.
-            </p>
-        </form>
+        <p class="disclaimer">
+          Hinweis: Dies ersetzt keine ärztliche Behandlung. Eine Verschreibung ist nur bei medizinischer Eignung möglich.
+        </p>
+
+        <p class="privacy-mini">
+          Mit dem Absenden bestätigst du, dass deine Angaben zur Bearbeitung deiner Anfrage verwendet werden.
+          Details findest du in der <a href="datenschutz.html">Datenschutzerklärung</a>.
+        </p>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </form>
     </section>
-
 
     <!-- FOOTER -->
     <footer>
-        <p>© 2025 Cana-Doc – All Rights Reserved.</p>
-        <p>
-            <a href="impressum.html">Impressum</a> |
-            <a href="datenschutz.html">Datenschutz</a>
-        </p>
+      <p>© 2025 Cana-Doc – All Rights Reserved.</p>
+      <p>
+        <a href="impressum.html">Impressum</a> |
+        <a href="datenschutz.html">Datenschutz</a>
+      </p>
     </footer>
 
-</div>
+  </div>
 
+  <script src="script.js?v=9" defer></script>
 </body>
 </html>
