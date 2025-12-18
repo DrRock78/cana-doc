@@ -1,384 +1,238 @@
-/* =====================================================
-   CANADOC – DIGITALER KOMPASS
-   Vollständiges, eigenständiges CSS
-   Version: v1 (clean, stabil, erweiterbar)
-===================================================== */
+/* ===============================
+   BASIC
+================================ */
+* { box-sizing: border-box; }
 
-/* ---------- ROOT ---------- */
-:root {
-  --bg: #000000;
-  --text: #ffffff;
-  --muted: rgba(255,255,255,.75);
-  --soft: rgba(255,255,255,.55);
+html, body { height: 100%; }
 
-  --neon: #00ff9a;
-  --neon-soft: rgba(0,255,154,.45);
-
-  --card-bg: rgba(8,8,8,.75);
-  --border: rgba(255,255,255,.12);
-
-  --radius-lg: 20px;
-  --radius-md: 14px;
-
-  --shadow-lg: 0 0 36px rgba(0,255,154,.18);
-  --shadow-md: 0 0 22px rgba(0,255,154,.22);
-}
-
-/* ---------- RESET ---------- */
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-}
-
-body {
+body{
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont,
-               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  overflow-x: hidden;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* ---------- WRAPPER ---------- */
-.k-wrap {
-  min-height: 100vh;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
+/* ===============================
+   SCREEN CENTERING
+================================ */
+.screen{
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+/* ===============================
+   "KASTEN" FAST UNSICHTBAR
+   (keine harte Karte, nur sanfte Struktur)
+================================ */
+.shell{
+  width: min(920px, 100%);
+  padding: 14px 10px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.01);   /* fast unsichtbar */
+  border: 1px solid rgba(0,255,154,0.06); /* minimal */
+  box-shadow: none;                      /* bewusst ruhig */
+}
+
+/* ===============================
+   TOP ROW: links Kompass, rechts Logo + Satz
+================================ */
+.top-row{
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  position: relative;
+  gap: 14px;
+  padding: 6px 8px 10px;
 }
 
-/* ---------- BACKGROUND ---------- */
-.k-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.kompass-title{
+  font-size: 18px;
+  font-weight: 700;
+  color: #00ff9a;
+  letter-spacing: 0.02em;
 }
 
-.k-overlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at 50% 20%,
-    rgba(0,255,154,.10),
-    rgba(0,0,0,.96) 65%
-  );
+/* Rechts: Logo + Satz */
+.top-right{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
 }
 
-.k-neon {
-  position: absolute;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    var(--neon),
-    transparent
-  );
-  opacity: .35;
+.logo{
+  width: 150px;             /* Logo-Größe: bewusst sichtbar */
+  max-width: 38vw;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 18px rgba(0,255,154,0.16));
 }
 
-.k-neon.left { left: 14px; }
-.k-neon.right { right: 14px; }
-
-.k-grid {
-  position: absolute;
-  inset: -40px;
-  background:
-    linear-gradient(rgba(0,255,154,.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,154,.05) 1px, transparent 1px);
-  background-size: 44px 44px;
-  opacity: .16;
-  mask-image: radial-gradient(circle at 50% 25%, black 35%, transparent 70%);
+.brand-line{
+  font-size: 13.5px;
+  line-height: 1.25;
+  color: rgba(255,255,255,0.86);
+  white-space: nowrap;
 }
 
-/* ---------- HEADER ---------- */
-.k-header {
-  position: absolute;
-  top: 16px;
-  left: 0;
-  right: 0;
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 0 20px;
-  z-index: 5;
+.brand-accent{
+  color: #00ff9a;
+  font-weight: 700;
 }
 
-.k-back {
-  display: inline-block;
-  font-size: 14px;
-  color: var(--muted);
-  text-decoration: none;
-  margin-bottom: 12px;
+/* ===============================
+   BODY ROW
+================================ */
+.body-row{
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 14px;
+  padding: 6px 8px 10px;
+  align-items: start;
 }
 
-.k-back:hover {
-  color: var(--neon);
+/* ===============================
+   LEFT RAIL (Icon + Beruhigungstext)
+================================ */
+.left-rail{
+  padding-top: 4px;
 }
 
-/* ---------- PROGRESS ---------- */
-.k-progress {
-  background: rgba(0,0,0,.45);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 12px;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-lg);
+.helper-box{
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 10px;
+  align-items: center;
+
+  /* fast unsichtbar, aber edel */
+  background: rgba(0,255,154,0.03);
+  border: 1px solid rgba(0,255,154,0.10);
+  border-radius: 14px;
+  padding: 10px 10px;
 }
 
-.k-progress-top {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-
-.k-progress-bar {
-  height: 10px;
-  background: rgba(255,255,255,.12);
-  border-radius: 999px;
+.helper-icon{
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(0,255,154,0.14);
+  box-shadow: 0 0 18px rgba(0,255,154,0.10);
   overflow: hidden;
 }
 
-.k-progress-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--neon), var(--neon-soft));
-  box-shadow: 0 0 18px var(--neon-soft);
-  transition: width .35s ease;
+.helper-icon img{
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
 }
 
-.k-dots {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.k-dots span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.2);
-}
-
-.k-dots span.active {
-  background: var(--neon);
-  box-shadow: 0 0 10px var(--neon);
-}
-
-/* ---------- CARD ---------- */
-.k-card {
-  width: 100%;
-  max-width: 760px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(12px);
-  padding: 22px 20px 18px;
-  position: relative;
-  z-index: 2;
-}
-
-/* ---------- TITLE ---------- */
-.k-title {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.k-logo {
-  width: 64px;
-  height: auto;
-  filter: drop-shadow(0 0 20px var(--neon-soft));
-}
-
-.k-eyebrow {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  color: var(--neon);
-  font-weight: 600;
-}
-
-.k-h1 {
-  margin: 4px 0 0;
-  font-size: 24px;
-}
-
-/* ---------- STAGE ---------- */
-.k-stage {
-  margin-top: 18px;
-  min-height: 260px;
-}
-
-.k-step {
-  animation: fadeInUp .25s ease both;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.k-question {
-  font-size: 18px;
-  margin-bottom: 12px;
-}
-
-.k-sub {
-  font-size: 14px;
-  color: var(--muted);
-  margin-bottom: 16px;
-}
-
-/* ---------- CARDS ---------- */
-.k-cards {
-  display: grid;
-  gap: 10px;
-}
-
-.k-card-btn {
-  background: rgba(0,0,0,.45);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-
-.k-card-btn:hover {
-  border-color: var(--neon-soft);
-  box-shadow: var(--shadow-md);
-}
-
-.k-card-btn.selected {
-  border-color: var(--neon);
-  box-shadow: 0 0 26px var(--neon-soft);
-}
-
-.k-card-btn .t {
-  font-weight: 600;
-}
-
-.k-card-btn .d {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 4px;
-}
-
-/* ---------- INPUT ---------- */
-.k-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: rgba(0,0,0,.45);
-  color: var(--text);
-  font-size: 15px;
-}
-
-.k-input:focus {
-  outline: none;
-  border-color: var(--neon);
-  box-shadow: 0 0 0 3px rgba(0,255,154,.15);
-}
-
-/* ---------- ACTIONS ---------- */
-.k-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.k-btn {
-  flex: 1;
-  padding: 14px;
-  border-radius: 999px;
+.helper-head{
+  font-size: 13.5px;
   font-weight: 700;
-  border: none;
-  cursor: pointer;
+  color: rgba(255,255,255,0.92);
 }
 
-.k-btn.primary {
-  background: var(--neon);
-  color: #000;
-  box-shadow: var(--shadow-md);
+.helper-sub{
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.72);
 }
 
-.k-btn.ghost {
-  background: rgba(255,255,255,.08);
-  color: var(--text);
-  border: 1px solid var(--border);
+/* ===============================
+   RIGHT PANEL (Kompass Content)
+================================ */
+.panel{
+  padding: 10px 10px 6px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.00); /* bewusst kaum sichtbar */
+  border: 1px solid rgba(255,255,255,0.06);
 }
 
-/* ---------- LEGAL ---------- */
-.k-legal {
-  font-size: 12px;
-  color: var(--soft);
-  margin-top: 12px;
+.panel-lead{
+  margin: 0 0 14px;
+  font-size: 14.5px;
   line-height: 1.45;
+  color: rgba(255,255,255,0.88);
 }
 
-/* ---------- MASCOT ---------- */
-.k-mascot {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 6;
+/* Actions */
+.panel-actions{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  max-width: 420px;
 }
 
-.k-mascot-body {
-  position: relative;
-  width: 92px;
-  height: 92px;
+.btn-primary{
+  border: none;
+  border-radius: 999px;
+  padding: 14px 16px;
+  background: #00ff9a;
+  color: #000;
+  font-weight: 800;
+  font-size: 15.5px;
+  cursor: pointer;
+  box-shadow: 0 0 22px rgba(0,255,154,0.30);
+  transition: transform .15s ease, box-shadow .15s ease;
 }
 
-.k-bubble {
-  position: absolute;
-  bottom: 100%;
-  right: 0;
-  background: rgba(0,0,0,.85);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 8px 10px;
-  font-size: 12px;
-  color: var(--muted);
-  max-width: 200px;
-  box-shadow: var(--shadow-md);
+.btn-primary:hover{
+  transform: scale(1.01);
+  box-shadow: 0 0 28px rgba(0,255,154,0.46);
 }
 
-.k-reaction {
-  position: absolute;
-  right: -6px;
-  top: -10px;
-  font-size: 18px;
-  opacity: 0;
-  transform: scale(.8);
-  transition: all .2s ease;
+.btn-secondary{
+  text-align: center;
+  border-radius: 999px;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.82);
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.03);
 }
 
-.k-reaction.show {
-  opacity: 1;
-  transform: scale(1);
+/* Wichtig: NICHT verdecken – deshalb kein fixed bottom Banner */
+.legal-hint{
+  margin: 14px 0 0;
+  font-size: 11.8px;
+  line-height: 1.35;
+  color: rgba(255,255,255,0.62);
 }
 
-/* ---------- RESPONSIVE ---------- */
-@media (max-width: 640px) {
-  .k-header {
-    position: static;
-    margin-bottom: 18px;
+/* ===============================
+   MOBILE: Layout untereinander, aber sauber
+================================ */
+@media (max-width: 720px){
+  .top-row{
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
-  .k-mascot {
-    right: 10px;
-    bottom: 10px;
-    transform: scale(.9);
+  .top-right{
+    grid-template-columns: auto 1fr;
+    justify-content: start;
+  }
+
+  .brand-line{
+    white-space: normal;
+  }
+
+  .body-row{
+    grid-template-columns: 1fr;
+  }
+
+  .logo{
+    width: 165px; /* mobil etwas präsenter */
+    max-width: 62vw;
+  }
+
+  .panel-actions{
+    max-width: 100%;
   }
 }
