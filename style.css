@@ -1,202 +1,239 @@
-*{
+/* =========================
+   GRUNDLAGEN (SANFT)
+   ========================= */
+
+* {
   box-sizing: border-box;
+}
+
+body {
   margin: 0;
-  padding: 0;
+  background: #000;
+  color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
 }
 
-body{
-  background: #000;
-  color: #fff;
-}
-
-.page{
+.page {
   max-width: 520px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 22px;
 }
 
-/* HERO */
-.hero{
+/* =========================
+   HERO
+   ========================= */
+
+.hero {
   position: relative;
   text-align: center;
-  padding-top: 30px;
-
-  /* Text & Content etwas nach rechts (gegen linken Neon-Strich) */
-  padding-left: 30px;
-  padding-right: 22px;
+  padding: 26px 0 30px;
+  overflow: hidden;
 }
 
-/* Background layer (nur Effekt, kein Video im Hintergrund) */
-.hero-bg{
+/* Hintergrund */
+.hero-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
-  border-radius: 18px;
 }
 
-.hero-overlay{
+.hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 15%, rgba(0,255,136,.10), rgba(0,0,0,.75) 55%, rgba(0,0,0,.92));
-}
-
-/* Neon Akzente (links & rechts) */
-.neon-accent{
-  position: absolute;
-  top: -40px;
-  bottom: -40px;
-  width: 140px;
-  opacity: .55;
-  filter: blur(.2px);
   background:
-    linear-gradient(90deg,
-      rgba(0,255,136,0) 0%,
-      rgba(0,255,136,.18) 35%,
-      rgba(0,255,136,.55) 50%,
-      rgba(0,255,136,.18) 65%,
-      rgba(0,255,136,0) 100%);
+    radial-gradient(120% 70% at 50% 0%, rgba(0,255,136,.08), transparent 60%),
+    linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,.45));
 }
 
-.neon-accent.left{ left: -110px; }
-.neon-accent.right{ right: -110px; }
+/* Neon Akzente links & rechts */
+.neon-accent {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0,255,136,.0) 15%,
+    rgba(0,255,136,.55) 40%,
+    rgba(0,255,136,.35) 65%,
+    rgba(0,255,136,.0) 85%,
+    transparent 100%
+  );
+  box-shadow: 0 0 14px rgba(0,255,136,.35);
+  opacity: .6;
+}
 
-.logo{
+.neon-accent.left { left: 10px; }
+.neon-accent.right { right: 10px; }
+
+/* Inhalt über dem Hintergrund */
+.hero > * {
   position: relative;
   z-index: 1;
-  width: 160px;
-  margin: 0 auto 18px;
+}
+
+/* =========================
+   LOGO
+   ========================= */
+
+.logo {
+  width: 170px;
+  margin: 0 auto 16px;
   display: block;
+  filter: drop-shadow(0 10px 22px rgba(0,0,0,.55));
 }
 
-.topline{
-  position: relative;
-  z-index: 1;
+/* =========================
+   TEXTE
+   ========================= */
+
+.topline {
   color: #00ff88;
-  font-weight: 600;
-  letter-spacing: .5px;
-  margin-bottom: 16px;
+  font-weight: 700;
+  letter-spacing: .4px;
+  margin-bottom: 14px;
 }
 
-.topline span{ margin: 0 6px; }
+.topline span {
+  margin: 0 10px;
+}
 
-.subline{
-  position: relative;
-  z-index: 1;
-  font-size: 18px;
-  line-height: 1.4;
+.subline {
+  font-size: 20px;
+  line-height: 1.35;
   margin-bottom: 10px;
 }
 
-.subline.soft{ opacity: .9; }
-
-.subnote{
-  position: relative;
-  z-index: 1;
-  font-size: 14px;
-  opacity: .7;
-  margin-bottom: 22px;
+.subline.soft {
+  font-size: 18px;
+  color: rgba(255,255,255,.85);
 }
 
-.btn-primary{
-  position: relative;
-  z-index: 1;
+.subnote {
+  font-size: 14px;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 18px;
+}
+
+/* =========================
+   BUTTON
+   ========================= */
+
+.btn-primary {
   display: inline-block;
   background: #00ff88;
   color: #000;
   padding: 16px 26px;
   border-radius: 30px;
-  font-weight: 700;
+  font-weight: 800;
   text-decoration: none;
   margin: 10px 0;
   box-shadow: 0 0 18px rgba(0,255,136,.45);
 }
 
-.hero-micro{
-  position: relative;
-  z-index: 1;
-  margin-top: 14px;
-  font-size: 16px;
-  opacity: .85;
+.btn-primary:active {
+  transform: scale(.98);
 }
 
-.hero-trust{
-  position: relative;
-  z-index: 1;
+/* =========================
+   VIDEO
+   ========================= */
+
+.hero-trust {
   margin-top: 6px;
   font-size: 14px;
-  opacity: .70;
+  color: rgba(255,255,255,.75);
 }
 
-.hero-trust.fine{
-  opacity: .60;
+.hero-trust.fine {
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgba(255,255,255,.6);
 }
 
-/* VIDEO CARD: macht das Video wieder klein & edel */
-.video-card{
-  position: relative;
-  z-index: 1;
-  margin: 14px auto 0;
-  width: min(92%, 420px);
-  background: rgba(12,12,12,.55);
-  border: 1px solid rgba(255,255,255,.08);
+.video-card {
+  margin: 14px auto 6px;
+  width: min(360px, 92%);
   border-radius: 16px;
-  padding: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.55);
+  overflow: hidden;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 18px 40px rgba(0,0,0,.55);
 }
 
-.marketing-video{
+.marketing-video {
   width: 100%;
   height: auto;
+  max-height: 240px;
+  object-fit: cover;
   display: block;
-  border-radius: 12px;
   background: #000;
 }
 
-.link-mail{
-  position: relative;
-  z-index: 1;
-  display: block;
+/* =========================
+   MICRO / LINKS
+   ========================= */
+
+.hero-micro {
   margin-top: 14px;
+  font-size: 16px;
+  color: rgba(255,255,255,.85);
+}
+
+.link-mail {
+  display: block;
+  margin-top: 12px;
   color: #6fbaff;
   text-decoration: underline;
   font-size: 14px;
 }
 
-.legal-hint{
-  position: relative;
-  z-index: 1;
-  margin-top: 18px;
+.legal-hint {
+  margin-top: 14px;
   font-size: 12px;
-  opacity: .55;
-  line-height: 1.4;
+  color: rgba(255,255,255,.55);
+  line-height: 1.45;
 }
 
-/* HOW */
-.how{ margin-top: 50px; }
-.how h2{
+/* =========================
+   HOW
+   ========================= */
+
+.how {
+  margin-top: 46px;
+}
+
+.how h2 {
   color: #00ff88;
   margin-bottom: 22px;
 }
-.how h3{
-  margin-top: 20px;
+
+.how h3 {
+  margin-top: 18px;
   margin-bottom: 6px;
 }
-.how p{
-  opacity: .85;
-  line-height: 1.5;
+
+.how p {
+  color: rgba(255,255,255,.85);
+  line-height: 1.55;
 }
 
-/* FORM */
-.form-section{ margin-top: 60px; }
-.form-title{
+/* =========================
+   FORM
+   ========================= */
+
+.form-section {
+  margin-top: 56px;
+}
+
+.form-title {
   color: #00ff88;
   margin-bottom: 18px;
 }
 
-form label{
+form label {
   display: block;
   margin-top: 14px;
   font-size: 14px;
@@ -204,42 +241,45 @@ form label{
 
 form input,
 form select,
-form textarea{
+form textarea {
   width: 100%;
   background: #111;
-  border: 1px solid #333;
-  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 12px;
   padding: 12px;
   color: #fff;
   margin-top: 6px;
 }
 
-form textarea{
+form textarea {
   min-height: 120px;
   resize: vertical;
 }
 
-.submit{
+.submit {
   width: 100%;
-  margin-top: 22px;
+  margin-top: 18px;
 }
 
-.form-hint{
+.form-hint {
   font-size: 12px;
-  opacity: .6;
+  color: rgba(255,255,255,.6);
   margin-top: 12px;
   text-align: center;
 }
 
-/* FOOTER */
-footer{
-  margin: 60px 0 30px;
+/* =========================
+   FOOTER
+   ========================= */
+
+footer {
+  margin: 56px 0 24px;
   text-align: center;
   font-size: 12px;
-  opacity: .6;
+  color: rgba(255,255,255,.6);
 }
 
-footer a{
+footer a {
   color: #aaa;
   text-decoration: none;
 }
