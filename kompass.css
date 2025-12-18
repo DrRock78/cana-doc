@@ -1,238 +1,381 @@
-/* ===============================
-   BASIC
-================================ */
-* { box-sizing: border-box; }
+:root{
+  --bg:#000;
+  --neon:#00ff9a;
+  --neonSoft: rgba(0,255,154,.18);
+  --card: rgba(0,0,0,.55);
+  --card2: rgba(0,0,0,.35);
+  --text:#fff;
+  --muted: rgba(255,255,255,.78);
+  --muted2: rgba(255,255,255,.60);
+  --radius: 22px;
+  --shadow: 0 0 26px rgba(0,255,154,.18);
+  --shadow2: 0 0 34px rgba(0,255,154,.26);
+  --line: rgba(0,255,154,.14);
+}
 
-html, body { height: 100%; }
+*{ box-sizing:border-box; }
+
+html,body{ height:100%; }
 
 body{
-  margin: 0;
-  background: #000;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Helvetica, Arial, sans-serif;
+  margin:0;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x:hidden;
 }
 
-/* ===============================
-   SCREEN CENTERING
-================================ */
-.screen{
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  padding: 18px;
+/* ruhiger, edler Hintergrund */
+.kompass-page{
+  min-height:100vh;
+  position:relative;
+}
+.kompass-page::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(0,255,154,.10), rgba(0,0,0,.92) 55%),
+    radial-gradient(circle at 85% 75%, rgba(0,255,154,.08), rgba(0,0,0,.98) 60%);
+  z-index:-2;
+}
+.kompass-page::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.85));
+  z-index:-1;
 }
 
-/* ===============================
-   "KASTEN" FAST UNSICHTBAR
-   (keine harte Karte, nur sanfte Struktur)
-================================ */
-.shell{
-  width: min(920px, 100%);
-  padding: 14px 10px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.01);   /* fast unsichtbar */
-  border: 1px solid rgba(0,255,154,0.06); /* minimal */
-  box-shadow: none;                      /* bewusst ruhig */
-}
-
-/* ===============================
-   TOP ROW: links Kompass, rechts Logo + Satz
-================================ */
-.top-row{
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 14px;
-  padding: 6px 8px 10px;
-}
-
-.kompass-title{
-  font-size: 18px;
-  font-weight: 700;
-  color: #00ff9a;
-  letter-spacing: 0.02em;
-}
-
-/* Rechts: Logo + Satz */
-.top-right{
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo{
-  width: 150px;             /* Logo-Größe: bewusst sichtbar */
-  max-width: 38vw;
-  height: auto;
-  display: block;
-  filter: drop-shadow(0 0 18px rgba(0,255,154,0.16));
-}
-
-.brand-line{
-  font-size: 13.5px;
-  line-height: 1.25;
-  color: rgba(255,255,255,0.86);
-  white-space: nowrap;
-}
-
-.brand-accent{
-  color: #00ff9a;
-  font-weight: 700;
-}
-
-/* ===============================
-   BODY ROW
-================================ */
-.body-row{
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 14px;
-  padding: 6px 8px 10px;
-  align-items: start;
-}
-
-/* ===============================
-   LEFT RAIL (Icon + Beruhigungstext)
-================================ */
-.left-rail{
-  padding-top: 4px;
-}
-
-.helper-box{
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 10px;
-  align-items: center;
-
-  /* fast unsichtbar, aber edel */
-  background: rgba(0,255,154,0.03);
-  border: 1px solid rgba(0,255,154,0.10);
-  border-radius: 14px;
-  padding: 10px 10px;
-}
-
-.helper-icon{
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  background: rgba(0,0,0,0.35);
-  border: 1px solid rgba(0,255,154,0.14);
-  box-shadow: 0 0 18px rgba(0,255,154,0.10);
-  overflow: hidden;
-}
-
-.helper-icon img{
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
-  display: block;
-}
-
-.helper-head{
-  font-size: 13.5px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.92);
-}
-
-.helper-sub{
-  margin-top: 2px;
-  font-size: 12.5px;
-  color: rgba(255,255,255,0.72);
-}
-
-/* ===============================
-   RIGHT PANEL (Kompass Content)
-================================ */
-.panel{
-  padding: 10px 10px 6px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.00); /* bewusst kaum sichtbar */
-  border: 1px solid rgba(255,255,255,0.06);
-}
-
-.panel-lead{
-  margin: 0 0 14px;
-  font-size: 14.5px;
-  line-height: 1.45;
-  color: rgba(255,255,255,0.88);
-}
-
-/* Actions */
-.panel-actions{
-  display: grid;
+/* Layout */
+.kompass-layout{
+  width:min(1100px, 100%);
+  margin:0 auto;
+  padding:18px 14px 22px;
+  display:grid;
   grid-template-columns: 1fr;
-  gap: 10px;
-  max-width: 420px;
+  gap:14px;
+}
+@media (min-width: 920px){
+  .kompass-layout{
+    grid-template-columns: 280px 1fr;
+    gap:18px;
+    padding:26px 18px 30px;
+    align-items:start;
+  }
 }
 
-.btn-primary{
-  border: none;
-  border-radius: 999px;
-  padding: 14px 16px;
-  background: #00ff9a;
-  color: #000;
+/* LINKS */
+.kompass-side{
+  padding:10px 6px;
+}
+
+.back-link{
+  color: rgba(255,255,255,.80);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:.98rem;
+  opacity:.9;
+}
+.back-link:hover{ opacity:1; }
+
+/* Progress: klein & clean */
+.progress-card{
+  margin-top:12px;
+  padding:12px 12px;
+  border-radius:16px;
+  background: rgba(0,0,0,.34);
+  border:1px solid var(--line);
+  box-shadow: 0 0 18px rgba(0,255,154,.10);
+  max-width: 360px;
+}
+.progress-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  color: rgba(255,255,255,.78);
+  font-size:.92rem;
+}
+.progress-bar{
+  height:8px;
+  border-radius:999px;
+  background: rgba(255,255,255,.10);
+  overflow:hidden;
+  margin-top:10px;
+}
+.progress-fill{
+  height:100%;
+  border-radius:999px;
+  background: var(--neon);
+  box-shadow: 0 0 18px rgba(0,255,154,.35);
+}
+.progress-dots{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  opacity:.65;
+}
+.progress-dots span{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background: rgba(255,255,255,.18);
+  border:1px solid rgba(0,255,154,.10);
+}
+.progress-dots span.active{
+  background: rgba(0,255,154,.88);
+  box-shadow: 0 0 14px rgba(0,255,154,.35);
+  opacity: 1;
+}
+
+/* Beruhigung links */
+.mascot-panel{
+  margin-top:12px;
+  padding:12px;
+  border-radius:16px;
+  background: rgba(0,0,0,.30);
+  border:1px solid var(--line);
+  box-shadow: 0 0 18px rgba(0,255,154,.10);
+  max-width: 360px;
+}
+.mascot-row{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+.mascot-icon{
+  width:36px;
+  height:36px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  color: var(--neon);
+  border:1px solid rgba(0,255,154,.30);
+  box-shadow: 0 0 18px rgba(0,255,154,.22);
+  background: rgba(0,0,0,.35);
+  font-size:18px;
+  flex: 0 0 auto;
+}
+.mascot-text{
+  color: rgba(255,255,255,.82);
+  font-size:.95rem;
+  line-height:1.35;
+}
+
+/* RECHTS: Card */
+.kompass-card{
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid rgba(0,255,154,.16);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+
+/* Header neu – kein „Klarheit statt Chaos“ mehr */
+.kompass-header{
+  padding: 18px 16px 14px;
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  position:relative;
+}
+@media (min-width: 720px){
+  .kompass-header{
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items:center;
+  }
+}
+
+.header-left{ display:flex; justify-content:flex-start; }
+.header-right{ display:flex; justify-content:flex-end; }
+.header-center{ text-align:center; }
+
+.kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  color: var(--neon);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: .92rem;
+  opacity: .95;
+}
+.kicker-icon{
+  filter: drop-shadow(0 0 10px rgba(0,255,154,.25));
+  font-size: 1.05rem;
+}
+
+/* Logo: groß, zentriert, mobil passend */
+.kompass-logo{
+  width: 112px;
+  max-width: 44vw;
+  height:auto;
+  display:block;
+  margin: 0 auto 8px;
+  filter: drop-shadow(0 0 22px rgba(0,255,154,.22));
+}
+@media (min-width: 720px){
+  .kompass-logo{
+    width: 128px;
+    max-width: 160px;
+  }
+}
+
+.iam{
+  font-size: 1.12rem;
   font-weight: 800;
-  font-size: 15.5px;
-  cursor: pointer;
-  box-shadow: 0 0 22px rgba(0,255,154,0.30);
-  transition: transform .15s ease, box-shadow .15s ease;
+  letter-spacing: .01em;
+}
+.iam-sub{
+  margin-top: 2px;
+  color: var(--muted2);
+  font-size: .98rem;
 }
 
-.btn-primary:hover{
-  transform: scale(1.01);
-  box-shadow: 0 0 28px rgba(0,255,154,0.46);
-}
-
-.btn-secondary{
-  text-align: center;
+/* kleine Pflicht-Info statt großer Kasten */
+.pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 10px 12px;
   border-radius: 999px;
-  padding: 12px 16px;
-  text-decoration: none;
-  color: rgba(255,255,255,0.82);
-  border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(255,255,255,0.03);
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(0,255,154,.22);
+  color: rgba(255,255,255,.82);
+  font-size: .92rem;
+  max-width: 240px;
+  box-shadow: 0 0 16px rgba(0,255,154,.10);
 }
 
-/* Wichtig: NICHT verdecken – deshalb kein fixed bottom Banner */
-.legal-hint{
-  margin: 14px 0 0;
-  font-size: 11.8px;
+/* Content */
+.kompass-content{
+  padding: 14px 16px 18px;
+}
+
+.step-title{
+  margin: 10px 0 8px;
+  font-size: 1.55rem;
+  line-height: 1.12;
+}
+.step-sub{
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 1.02rem;
+}
+
+.mini-note{
+  margin: 12px 0 16px;
+  padding: 12px 12px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.28);
+  border: 1px solid rgba(0,255,154,.12);
+  color: rgba(255,255,255,.78);
+}
+
+/* Eingabe */
+.input-wrap{ margin: 12px 0 16px; }
+.input-label{
+  display:block;
+  margin-bottom: 8px;
+  color: rgba(255,255,255,.85);
+  font-weight: 700;
+}
+.input{
+  width:100%;
+  border: none;
+  outline: none;
+  border-radius: 16px;
+  padding: 14px 14px;
+  background: rgba(0,0,0,.42);
+  border: 1px solid rgba(0,255,154,.18);
+  color: #fff;
+  font-size: 1.05rem;
+}
+.tip{
+  margin-top: 8px;
+  color: rgba(255,255,255,.62);
+  font-size: .95rem;
+}
+
+/* Buttons */
+.btn-row{
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  justify-content:flex-end;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.btn{
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-weight: 800;
+  font-size: 1.02rem;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+.btn.primary{
+  background: var(--neon);
+  color: #000;
+  box-shadow: 0 0 26px rgba(0,255,154,.45);
+}
+.btn.primary:hover{
+  transform: scale(1.02);
+  box-shadow: 0 0 34px rgba(0,255,154,.58);
+}
+.btn.secondary{
+  background: rgba(255,255,255,.10);
+  color: rgba(255,255,255,.92);
+  border: 1px solid rgba(255,255,255,.18);
+}
+.btn.secondary:hover{
+  transform: scale(1.02);
+  opacity: .95;
+}
+
+/* Ergebnis */
+.result-wrap{ margin-top: 16px; }
+.result-card{
+  border-radius: 18px;
+  background: rgba(0,0,0,.34);
+  border: 1px solid rgba(0,255,154,.14);
+  box-shadow: 0 0 22px rgba(0,255,154,.12);
+  padding: 14px;
+}
+.result-kicker{
+  color: var(--neon);
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: .90rem;
+}
+.result-title{
+  margin-top: 10px;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+.result-text{
+  margin-top: 8px;
+  color: rgba(255,255,255,.82);
   line-height: 1.35;
-  color: rgba(255,255,255,0.62);
 }
+.result-actions{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.end-row{ justify-content: space-between; }
 
-/* ===============================
-   MOBILE: Layout untereinander, aber sauber
-================================ */
-@media (max-width: 720px){
-  .top-row{
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .top-right{
-    grid-template-columns: auto 1fr;
-    justify-content: start;
-  }
-
-  .brand-line{
-    white-space: normal;
-  }
-
-  .body-row{
-    grid-template-columns: 1fr;
-  }
-
-  .logo{
-    width: 165px; /* mobil etwas präsenter */
-    max-width: 62vw;
-  }
-
-  .panel-actions{
-    max-width: 100%;
-  }
+/* Hinweistext: immer frei, nichts overlayt */
+.legal{
+  margin: 16px 0 0;
+  font-size: .86rem;
+  color: rgba(255,255,255,.55);
+  line-height: 1.35;
 }
