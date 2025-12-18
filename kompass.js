@@ -14,21 +14,20 @@
   const dotsWrap = $("kDots");
 
   const bubbleText = $("kBubbleText");
-  const reaction = $("kReaction"); // optional: falls nicht vorhanden, kein Problem
+  const reaction = $("kReaction");
 
   // ---------- State ----------
   const answers = {};
   let stepIndex = 0;
 
-  // ---------- Steps (Kurz: 6) ----------
-  // Hinweis: rein orientierend, keine Diagnose.
+  // ---------- Steps ----------
   const steps = [
     {
       id: "start",
       type: "intro",
-      q: "Ich bin CanaDoc.",
-      sub: "Ich begleite dich diskret – in wenigen Schritten zur Orientierung. Keine Registrierung. Nur notwendige Angaben.",
-      bubble: "Wir machen das ruhig & klar. Ich bin an deiner Seite.",
+      q: "Kompass starten",
+      sub: "60 Sekunden – dann hast du Orientierung. Keine Registrierung. Nur notwendige Angaben.",
+      bubble: "Ruhig & klar. Ich bin an deiner Seite.",
     },
     {
       id: "goal",
@@ -61,8 +60,8 @@
       id: "impact",
       type: "cards",
       q: "Wie stark beeinflusst es deinen Alltag?",
-      sub: "Das ist keine Bewertung – nur ein Kompass-Marker.",
-      bubble: "Hier geht’s um Orientierung, nicht um Urteil.",
+      sub: "Keine Bewertung – nur ein Kompass-Marker.",
+      bubble: "Orientierung, kein Urteil.",
       key: "impact",
       options: [
         { v: "low", t: "Leicht", d: "spürbar, aber handelbar" },
@@ -73,25 +72,24 @@
     {
       id: "notes",
       type: "text",
-      q: "Ein Satz, damit ich dich besser einordnen kann.",
-      sub: "Optional – wenn du magst. Keine Details, die du nicht teilen willst.",
-      bubble: "Du gibst nur so viel preis, wie du willst. Wirklich.",
+      q: "Ein Satz – nur wenn du magst.",
+      sub: "Optional. Keine Details, die du nicht teilen willst.",
+      bubble: "Du gibst nur so viel preis, wie du willst.",
       key: "notes",
-      placeholder: "z. B. „Ich wache nachts oft auf“ oder „Abends komme ich nicht runter“ …",
+      placeholder: "z. B. „Abends komme ich nicht runter“ …",
       optional: true,
     },
     {
       id: "result",
       type: "result",
       q: "Dein Kompass-Ergebnis",
-      sub: "Das ist eine Orientierung – keine Diagnose.",
-      bubble: "Stark. Du hast Klarheit geschaffen. Jetzt entscheiden wir sauber den nächsten Schritt.",
+      sub: "Orientierung – keine Diagnose.",
+      bubble: "Stark. Jetzt entscheiden wir sauber den nächsten Schritt.",
     },
   ];
 
-  // ---------- Render Dots ----------
+  // ---------- UI ----------
   function renderDots() {
-    if (!dotsWrap) return;
     dotsWrap.innerHTML = "";
     for (let i = 0; i < steps.length; i++) {
       const dot = document.createElement("span");
@@ -100,30 +98,24 @@
     }
   }
 
-  // ---------- Progress ----------
   function updateProgress() {
-    if (stepNowEl) stepNowEl.textContent = String(stepIndex + 1);
-    if (stepMaxEl) stepMaxEl.textContent = String(steps.length);
+    stepNowEl.textContent = String(stepIndex + 1);
+    stepMaxEl.textContent = String(steps.length);
 
     const pct = Math.round(((stepIndex) / (steps.length - 1)) * 100);
-    if (fill) fill.style.width = `${clamp(pct, 0, 100)}%`;
+    fill.style.width = `${clamp(pct, 0, 100)}%`;
     document.querySelector(".k-progress-bar")?.setAttribute("aria-valuenow", String(pct));
-
     renderDots();
   }
 
-  // ---------- Mascot Bubble + Reaction ----------
-  let bubbleTimer = null;
   function setBubble(text) {
-    if (!bubbleText) return;
-    bubbleText.textContent = text;
-    if (bubbleTimer) clearTimeout(bubbleTimer);
+    if (bubbleText) bubbleText.textContent = text || "Ich bin da.";
   }
 
   function thumbsUp() {
     if (!reaction) return;
     reaction.classList.add("show");
-    setTimeout(() => reaction.classList.remove("show"), 650);
+    setTimeout(() => reaction.classList.remove("show"), 550);
   }
 
   // ---------- Validation ----------
@@ -142,21 +134,20 @@
     return true;
   }
 
-  // ---------- Render Step ----------
+  // ---------- Render ----------
   function renderStep() {
     const step = steps[stepIndex];
     updateProgress();
-    setBubble(step.bubble || "Ich bin da.");
+    setBubble(step.bubble);
 
-    // Button labels
-    if (btnPrev) btnPrev.style.visibility = stepIndex === 0 ? "hidden" : "visible";
-    if (btnNext) {
-      btnNext.textContent = step.type === "result" ? "Fertig" : "Weiter";
-      btnNext.disabled = !canGoNext();
-    }
+    // Controls
+    btnPrev.style.visibility = stepIndex === 0 ? "hidden" : "visible";
+    btnNext.textContent = step.type === "intro" ? "Kompass starten" : (step.type === "result" ? "Fertig" : "Weiter");
+    btnNext.disabled = !canGoNext();
 
     // Stage
     stage.innerHTML = "";
+
     const wrap = document.createElement("div");
     wrap.className = "k-step";
 
@@ -171,25 +162,12 @@
     wrap.appendChild(q);
     wrap.appendChild(sub);
 
+    // INTRO: Kein doppelter Container mehr, keine Karten -> nur sauberer Einstieg
     if (step.type === "intro") {
-      const cards = document.createElement("div");
-      cards.className = "k-cards";
-
-      // ✅ FIX: KEIN „60 Sekunden…“ mehr hier – das steht schon oben in der Top-Bar
-      const startBtn = mkCard("Kompass starten", "Diskret. Unverbindlich. Ohne Verpflichtung.", () => {
-        thumbsUp();
-        next();
-      });
-      startBtn.classList.add("selected");
-
-      const privacyBtn = mkCard("Diskret & unverbindlich", "Du behältst jederzeit die Kontrolle.", () => {
-        setBubble("Genau. Du behältst die Kontrolle.");
-        thumbsUp();
-      });
-
-      cards.appendChild(startBtn);
-      cards.appendChild(privacyBtn);
-      wrap.appendChild(cards);
+      const note = document.createElement("div");
+      note.className = "k-hint";
+      note.textContent = "Du gehst keine Verpflichtung ein.";
+      wrap.appendChild(note);
     }
 
     if (step.type === "cards") {
@@ -201,7 +179,7 @@
           answers[step.key] = opt.v;
           [...cards.querySelectorAll(".k-card-btn")].forEach(b => b.classList.remove("selected"));
           el.classList.add("selected");
-          if (btnNext) btnNext.disabled = !canGoNext();
+          btnNext.disabled = !canGoNext();
           thumbsUp();
         });
         if (answers[step.key] === opt.v) el.classList.add("selected");
@@ -220,7 +198,7 @@
 
       input.addEventListener("input", () => {
         answers[step.key] = input.value;
-        if (btnNext) btnNext.disabled = !canGoNext();
+        btnNext.disabled = !canGoNext();
       });
 
       wrap.appendChild(input);
@@ -247,7 +225,7 @@
     return btn;
   }
 
-  // ---------- Result Logic ----------
+  // ---------- Result ----------
   function buildResultCard() {
     const goal = answers.goal || "other";
     const timeframe = answers.timeframe || "weeks";
@@ -270,27 +248,38 @@
 
     const box = document.createElement("div");
     box.className = "k-result";
+    box.style.border = "1px solid rgba(255,255,255,.12)";
+    box.style.borderRadius = "16px";
+    box.style.padding = "14px";
+    box.style.background = "rgba(0,0,0,.35)";
+    box.style.boxShadow = "0 0 22px rgba(0,255,154,.10)";
 
     box.innerHTML = `
-      <div class="k-result-head">
-        <div class="k-badge">Digitaler Kompass</div>
-        <div class="k-needle" aria-hidden="true">🧭</div>
-      </div>
-      <div class="k-result-title">${headline}</div>
-      <div class="k-result-text">${note}</div>
-
-      <div class="k-result-mini">
-        <div><span>Fokus:</span> ${labelGoal(goal)}</div>
-        <div><span>Zeitraum:</span> ${labelTime(timeframe)}</div>
-        <div><span>Alltag:</span> ${labelImpact(impact)}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,255,154,.95)">Digitaler Kompass</div>
+        <div aria-hidden="true">🧭</div>
       </div>
 
-      <div class="k-result-actions">
-        <a class="k-result-btn primary" id="goPartner" href="weiterleitung.html">${cta}</a>
-        <button class="k-result-btn ghost" id="saveCopy" type="button">Zusammenfassung kopieren</button>
+      <div style="font-size:18px;font-weight:800;margin:6px 0 8px">${headline}</div>
+      <div style="color:rgba(255,255,255,.78);font-size:14px;line-height:1.45">${note}</div>
+
+      <div style="margin-top:12px;color:rgba(255,255,255,.70);font-size:13px;display:grid;gap:6px">
+        <div><span style="color:rgba(255,255,255,.52)">Fokus:</span> ${labelGoal(goal)}</div>
+        <div><span style="color:rgba(255,255,255,.52)">Zeitraum:</span> ${labelTime(timeframe)}</div>
+        <div><span style="color:rgba(255,255,255,.52)">Alltag:</span> ${labelImpact(impact)}</div>
       </div>
 
-      <div class="k-result-legal">
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <a style="display:inline-flex;align-items:center;justify-content:center;padding:12px 14px;border-radius:999px;font-weight:800;text-decoration:none;cursor:pointer;background:#00ff9a;color:#000;border:none;box-shadow:0 0 20px rgba(0,255,154,.25)"
+           href="weiterleitung.html">${cta}</a>
+
+        <button id="saveCopy" type="button"
+          style="display:inline-flex;align-items:center;justify-content:center;padding:12px 14px;border-radius:999px;font-weight:800;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff">
+          Zusammenfassung kopieren
+        </button>
+      </div>
+
+      <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.55)">
         Hinweis: Dies ist eine Orientierung und ersetzt keine ärztliche Behandlung.
       </div>
     `;
@@ -316,7 +305,6 @@
       `Zeitraum: ${labelTime(timeframe)}`,
       `Alltag: ${labelImpact(impact)}`,
       notes ? `Notiz: ${notes}` : "",
-      "",
       "Hinweis: Orientierung, keine Diagnose."
     ].filter(Boolean).join("\n");
   }
@@ -350,12 +338,10 @@
       window.location.href = "index.html";
       return;
     }
-
     if (!canGoNext()) {
       setBubble("Ein kurzer Klick reicht – dann weiter.");
       return;
     }
-
     stepIndex++;
     thumbsUp();
     renderStep();
@@ -367,31 +353,13 @@
     renderStep();
   }
 
-  // ---------- Events ----------
-  if (btnNext) btnNext.addEventListener("click", next);
-  if (btnPrev) btnPrev.addEventListener("click", prev);
+  btnNext.addEventListener("click", next);
+  btnPrev.addEventListener("click", prev);
 
   stage.addEventListener("click", () => {
-    if (btnNext) btnNext.disabled = !canGoNext();
+    btnNext.disabled = !canGoNext();
   });
 
-  // ---------- Result Styling injected (minimal, keeps CSS clean) ----------
-  const style = document.createElement("style");
-  style.textContent = `
-    .k-result{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px;background:rgba(0,0,0,.35);box-shadow:0 0 22px rgba(0,255,154,.10)}
-    .k-result-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    .k-badge{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,255,154,.95)}
-    .k-result-title{font-size:18px;font-weight:700;margin:6px 0 8px}
-    .k-result-text{color:rgba(255,255,255,.78);font-size:14px;line-height:1.45}
-    .k-result-mini{margin-top:12px;color:rgba(255,255,255,.70);font-size:13px;display:grid;gap:6px}
-    .k-result-mini span{color:rgba(255,255,255,.52)}
-    .k-result-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-    .k-result-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 14px;border-radius:999px;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}
-    .k-result-btn.primary{background:#00ff9a;color:#000;border:none;box-shadow:0 0 20px rgba(0,255,154,.25)}
-    .k-result-legal{margin-top:10px;font-size:12px;color:rgba(255,255,255,.55)}
-  `;
-  document.head.appendChild(style);
-
-  // ---------- Init ----------
+  // Init
   renderStep();
 })();
