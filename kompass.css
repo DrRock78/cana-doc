@@ -1,408 +1,348 @@
-:root{
-  --bg1:#06110c;
-  --bg2:#000000;
-  --card:rgba(255,255,255,.05);
-  --stroke:rgba(255,255,255,.10);
-  --txt:rgba(255,255,255,.92);
-  --muted:rgba(255,255,255,.70);
-  --muted2:rgba(255,255,255,.55);
-  --neon:#00ff9a;
-  --shadow: 0 0 28px rgba(0,255,154,.14);
-  --radius:22px;
+/* =========================
+   BASE
+========================= */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color:var(--txt);
-  background:
-    radial-gradient(1200px 700px at 20% 10%, rgba(0,255,154,.18), transparent 55%),
-    radial-gradient(900px 600px at 90% 30%, rgba(0,255,154,.10), transparent 55%),
-    linear-gradient(180deg, var(--bg1), var(--bg2));
-}
-
+/* Wrap + “Safe area”, damit nichts überlappt */
 .k-wrap{
-  max-width: 980px;
+  width: 100%;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 18px 14px 28px;
-  display:flex;
-  flex-direction:column;
-  gap: 14px;
+  padding: 16px 16px 110px;
+  position: relative;
 }
 
-/* BACK */
+/* Back */
 .k-back{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  color: rgba(255,255,255,.80);
-  text-decoration:none;
-  font-weight:700;
-  letter-spacing:.01em;
-  padding: 10px 12px;
-  border-radius: 999px;
-  width: fit-content;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.08);
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: rgba(255,255,255,.78);
+  text-decoration: none;
+  font-weight: 600;
+  margin: 6px 0 14px;
 }
-.k-back:hover{ border-color: rgba(0,255,154,.20); }
+.k-back:hover{ color: #00ff9a; }
 
-/* TOP PROGRESS */
+/* =========================
+   TOP PROGRESS BAR
+========================= */
 .k-top{
-  border-radius: var(--radius);
-  background: rgba(0,0,0,.25);
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: var(--shadow);
-  overflow:hidden;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  padding: 12px 12px;
+  background: rgba(255,255,255,.03);
+  backdrop-filter: blur(10px);
 }
 .k-top-inner{
-  display:flex;
-  justify-content:space-between;
-  gap: 14px;
-  padding: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
 }
 .k-top-title{
-  font-weight: 900;
-  font-size: 16px;
-}
-.k-top-time{
-  font-weight: 900;
-  color: rgba(255,255,255,.75);
-  white-space: nowrap;
+  font-size: 13px;
+  opacity: .85;
+  margin-bottom: 8px;
 }
 .k-progress-bar{
-  margin-top: 10px;
+  width: 100%;
+  max-width: 420px;
   height: 10px;
   border-radius: 999px;
-  background: rgba(255,255,255,.10);
-  overflow:hidden;
+  background: rgba(255,255,255,.08);
+  overflow: hidden;
 }
 .k-progress-fill{
-  width: 0%;
   height: 100%;
-  background: var(--neon);
-  box-shadow: 0 0 18px rgba(0,255,154,.35);
+  width: 0%;
   border-radius: 999px;
+  background: #00ff9a;
+  box-shadow: 0 0 18px rgba(0,255,154,.35);
 }
+.k-top-left{ flex: 1; }
+.k-top-right{
+  min-width: 120px;
+  text-align: right;
+  font-weight: 700;
+  color: rgba(0,255,154,.95);
+}
+.k-top-time{ font-size: 13px; }
+
 .k-dots{
-  display:flex;
-  gap: 10px;
+  display: flex;
+  gap: 6px;
   margin-top: 10px;
 }
 .k-dots span{
-  width: 10px;
-  height: 10px;
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
   background: rgba(255,255,255,.18);
 }
 .k-dots span.active{
-  background: var(--neon);
-  box-shadow: 0 0 16px rgba(0,255,154,.35);
+  background: #00ff9a;
+  box-shadow: 0 0 12px rgba(0,255,154,.35);
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 .k-hero{
-  border-radius: var(--radius);
-  background: rgba(0,0,0,.22);
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: var(--shadow);
-  overflow:hidden;
+  margin-top: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.10);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(0,255,154,.10), rgba(0,0,0,.92) 60%),
+    rgba(255,255,255,.02);
+  padding: 14px;
 }
-
 .k-hero-grid{
-  display:grid;
-  grid-template-columns: 1fr 1.2fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 14px;
-  padding: 16px;
+  align-items: start;
 }
 
-@media (max-width: 820px){
-  .k-hero-grid{ grid-template-columns: 1fr; }
-}
-
-/* left */
+/* Left label */
 .k-chip{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 12px;
   border-radius: 999px;
-  background: rgba(0,255,154,.08);
-  border: 1px solid rgba(0,255,154,.22);
-  width: fit-content;
-}
-.k-chip-text{
-  font-weight: 1000;
-  letter-spacing: .10em;
+  border: 1px solid rgba(0,255,154,.35);
   color: rgba(0,255,154,.95);
-  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  font-size: 12px;
+  background: rgba(0,255,154,.06);
 }
-.k-chip-icon{ filter: drop-shadow(0 0 10px rgba(0,255,154,.35)); }
+.k-chip-icon{ font-size: 14px; }
 
+/* Bubble LEFT (nicht mehr unten rechts – blockiert nichts) */
 .k-bubble{
-  margin-top: 14px;
-  display:flex;
-  align-items:flex-start;
-  gap: 12px;
-  padding: 14px;
-  border-radius: 18px;
-  background: rgba(255,255,255,.04);
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 16px;
   border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.35);
 }
 .k-bubble-icon{
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background: rgba(0,255,154,.10);
-  border: 1px solid rgba(0,255,154,.25);
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #00ff9a;
+  background: rgba(0,255,154,.08);
+  border: 1px solid rgba(0,255,154,.20);
 }
 .k-bubble-text{
-  font-size: 15px;
-  line-height: 1.35;
-  color: rgba(255,255,255,.86);
-  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(255,255,255,.80);
 }
 
-/* right */
+/* Right brand */
 .k-brand{
-  display:flex;
-  align-items:center;
-  gap: 14px;
-  padding: 14px;
-  border-radius: 18px;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.08);
-}
-.k-logo{
-  width: 88px;
-  height: 88px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 16px rgba(0,255,154,.18));
-}
-.k-brand-title{
-  font-size: 22px;
-  font-weight: 1000;
-}
-.k-brand-sub{
-  margin-top: 4px;
-  font-size: 14px;
-  color: rgba(255,255,255,.70);
-  font-weight: 800;
-}
-
-.k-commitment{
-  margin-top: 12px;
-  padding: 12px 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.10);
-  width: fit-content;
-  font-weight: 900;
-  color: rgba(255,255,255,.82);
-}
-
-/* STAGE */
-.k-stage{
-  border-radius: var(--radius);
-  background: rgba(0,0,0,.20);
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: var(--shadow);
-  padding: 16px;
-}
-
-.k-step{
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   gap: 10px;
 }
+.k-logo{
+  width: 68px;
+  height: auto;
+  filter: drop-shadow(0 0 18px rgba(0,255,154,.20));
+}
+.k-brand-text{
+  text-align: left;
+}
+.k-brand-title{
+  font-weight: 900;
+  font-size: 14px;
+}
+.k-brand-sub{
+  font-size: 12px;
+  opacity: .75;
+}
 
+/* Commitment small pill (kleiner) */
+.k-commitment{
+  margin-top: 10px;
+  margin-left: auto;
+  width: fit-content;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,.80);
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+}
+
+/* =========================
+   STAGE
+========================= */
+.k-stage{
+  margin-top: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.02);
+  padding: 16px;
+  overflow: hidden;
+}
+
+/* Question */
 .k-question{
-  font-size: 20px;
-  font-weight: 1000;
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0 0 6px;
 }
 .k-sub{
-  font-size: 14px;
+  font-size: 13px;
+  color: rgba(255,255,255,.75);
   line-height: 1.45;
-  color: rgba(255,255,255,.74);
+  margin-bottom: 14px;
 }
 
-/* Cards from JS (k-card-btn) */
+/* Cards */
 .k-cards{
-  display:grid;
-  gap: 12px;
-  grid-template-columns: 1fr;
-  margin-top: 10px;
+  display: grid;
+  gap: 10px;
 }
-@media (min-width: 720px){
-  .k-cards{ grid-template-columns: 1fr 1fr; }
-}
-
 .k-card-btn{
-  width:100%;
-  text-align:left;
-  border-radius: 18px;
+  text-align: left;
+  width: 100%;
+  border-radius: 16px;
   padding: 14px;
-  background: rgba(255,255,255,.04);
+  background: rgba(0,0,0,.55);         /* FIX: kein “grün ins schwarz” */
   border: 1px solid rgba(255,255,255,.10);
-  color: rgba(255,255,255,.92);
-  box-shadow: 0 0 18px rgba(0,255,154,.08);
-  cursor:pointer;
-  transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+  color: #fff;
+  cursor: pointer;
+  transition: transform .12s ease, border-color .12s ease;
 }
 .k-card-btn:hover{
   transform: translateY(-1px);
-  border-color: rgba(0,255,154,.22);
-  box-shadow: 0 0 22px rgba(0,255,154,.12);
+  border-color: rgba(0,255,154,.35);
 }
-.k-card-btn .t{
-  font-size: 15px;
-  font-weight: 1000;
-  margin-bottom: 6px;
-}
-.k-card-btn .d{
-  font-size: 13px;
-  line-height: 1.35;
-  color: rgba(255,255,255,.70);
-}
+.k-card-btn .t{ font-weight: 900; margin-bottom: 4px; }
+.k-card-btn .d{ font-size: 13px; opacity: .75; line-height: 1.35; }
+
+/* Selected: nur Border + Glow, NICHT grüne Füllung */
 .k-card-btn.selected{
-  border-color: rgba(0,255,154,.45);
-  box-shadow: 0 0 26px rgba(0,255,154,.18);
+  border-color: rgba(0,255,154,.75);
+  box-shadow: 0 0 18px rgba(0,255,154,.16);
 }
 
-/* Textarea */
+/* Text input */
 .k-input{
-  width:100%;
+  width: 100%;
   min-height: 120px;
   border-radius: 16px;
-  padding: 12px;
   border: 1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.35);
-  color:#fff;
-  font-size: 15px;
-  outline:none;
+  background: rgba(0,0,0,.55);
+  color: #fff;
+  padding: 12px;
+  font-size: 14px;
+  outline: none;
 }
 .k-input:focus{
-  border-color: rgba(0,255,154,.35);
-  box-shadow: 0 0 0 4px rgba(0,255,154,.10);
+  border-color: rgba(0,255,154,.55);
+  box-shadow: 0 0 18px rgba(0,255,154,.12);
 }
 .k-hint{
+  margin-top: 10px;
   font-size: 12px;
-  color: rgba(255,255,255,.60);
+  opacity: .65;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+.k-controls{
+  position: sticky;
+  bottom: 12px;
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  z-index: 5;
+}
+.k-controls button{
+  flex: 1;
+  padding: 14px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+.k-controls button:disabled{
+  opacity: .35;
+  cursor: not-allowed;
+}
+.k-controls button.primary{
+  background: #00ff9a;
+  color: #000;
+  border: none;
+  box-shadow: 0 0 20px rgba(0,255,154,.25);
+}
+
+/* =========================
+   REACTION ICON
+========================= */
+.k-reaction{
+  position: fixed;
+  right: 14px;
+  bottom: 86px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(0,255,154,.10);
+  border: 1px solid rgba(0,255,154,.28);
+  color: rgba(0,255,154,.95);
+  opacity: 0;
+  transform: translateY(8px) scale(.96);
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 6;
+}
+.k-reaction.show{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* =========================
+   LEGAL (nie blockiert)
+========================= */
+.k-legal{
+  margin-top: 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
   line-height: 1.35;
 }
 
-/* Controls */
-.k-controls{
-  display:flex;
-  gap: 12px;
-  justify-content:center;
-  align-items:center;
-  flex-wrap:wrap;
-}
-#kPrev, #kNext{
-  appearance:none;
-  border:none;
-  cursor:pointer;
-  border-radius: 999px;
-  padding: 14px 18px;
-  font-weight: 1000;
-  font-size: 15px;
-}
-#kNext{
-  background: var(--neon);
-  color:#000;
-  box-shadow: 0 0 24px rgba(0,255,154,.25);
-}
-#kNext:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-  box-shadow:none;
-}
-#kPrev{
-  background: rgba(255,255,255,.06);
-  color:#fff;
-  border: 1px solid rgba(255,255,255,.12);
-}
-
-/* Result (aus JS) */
-.k-result{
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:16px;
-  padding:14px;
-  background:rgba(0,0,0,.35);
-  box-shadow:0 0 22px rgba(0,255,154,.10)
-}
-.k-result-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:10px
-}
-.k-badge{
-  font-size:12px;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:rgba(0,255,154,.95)
-}
-.k-result-title{
-  font-size:18px;
-  font-weight:1000;
-  margin:6px 0 8px
-}
-.k-result-text{
-  color:rgba(255,255,255,.78);
-  font-size:14px;
-  line-height:1.45
-}
-.k-result-mini{
-  margin-top:12px;
-  color:rgba(255,255,255,.70);
-  font-size:13px;
-  display:grid;
-  gap:6px
-}
-.k-result-mini span{ color:rgba(255,255,255,.52) }
-.k-result-actions{
-  display:flex;
-  gap:10px;
-  margin-top:14px;
-  flex-wrap:wrap
-}
-.k-result-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:12px 14px;
-  border-radius:999px;
-  font-weight:1000;
-  text-decoration:none;
-  cursor:pointer;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  color:#fff
-}
-.k-result-btn.primary{
-  background:var(--neon);
-  color:#000;
-  border:none;
-  box-shadow:0 0 20px rgba(0,255,154,.25)
-}
-.k-result-legal{
-  margin-top:10px;
-  font-size:12px;
-  color:rgba(255,255,255,.55)
-}
-
-/* Legal bottom */
-.k-legal{
-  font-size: 12px;
-  line-height: 1.4;
-  color: rgba(255,255,255,.55);
-  text-align:center;
-  padding: 10px 6px;
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 640px){
+  .k-hero-grid{ grid-template-columns: 1fr; }
+  .k-brand{ justify-content: flex-start; }
+  .k-top-inner{ flex-direction: column; align-items: stretch; }
+  .k-top-right{ text-align: left; }
+  .k-wrap{ padding-bottom: 120px; }
 }
