@@ -3,70 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cana-Doc – Digitaler Kompass</title>
-  <link rel="stylesheet" href="kompass.css?v=1" />
+  <title>Digitaler Kompass – CanaDoc</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="kompass.css?v=12" />
 </head>
 
 <body>
-  <main class="screen">
+  <main class="kompass-page">
 
-    <!-- FAST UNSICHTBARE "KARTE" / CONTAINER -->
-    <section class="shell" role="region" aria-label="CanaDoc Kompass">
+    <div class="kompass-layout">
 
-      <!-- TOP-ROW: links Titel, rechts Logo + Satz -->
-      <div class="top-row">
-        <div class="top-left">
-          <div class="kompass-title">Digitaler Kompass</div>
-        </div>
+      <!-- LINKS: Startseite + Progress + Beruhigung (NICHT mehr unten rechts) -->
+      <aside class="kompass-side">
 
-        <div class="top-right">
-          <img src="LOGO3.png" alt="Cana-Doc Logo" class="logo" />
-          <div class="brand-line">
-            Ich bin <strong>CanaDoc</strong> und begleite dich. <span class="brand-accent">Diskret.</span>
+        <a class="back-link" href="index.html">← Zur Startseite</a>
+
+        <div class="progress-card" aria-label="Fortschritt">
+          <div class="progress-top">
+            <span id="progressStepText">Schritt 1/6</span>
+            <span id="progressTimeText">~ 60 Sekunden</span>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 16.7%;"></div>
+          </div>
+
+          <div class="progress-dots" id="progressDots" aria-hidden="true">
+            <span class="active"></span>
+            <span></span><span></span><span></span><span></span><span></span>
           </div>
         </div>
-      </div>
 
-      <!-- BODY-ROW: links Icon + Beruhigungstext, rechts Kompass-Content -->
-      <div class="body-row">
-
-        <!-- LINKS: statt Fortschritt/Timer etc. -->
-        <aside class="left-rail" aria-label="Begleitung">
-          <div class="helper-box">
-            <div class="helper-icon" aria-hidden="true">
-              <!-- Dateiname anpassen falls nötig -->
-              <img src="canadog.png" alt="" />
-            </div>
-
-            <div class="helper-text">
-              <div class="helper-head">Du bist nicht allein.</div>
-              <div class="helper-sub">
-                Diskret · Unverbindlich · Ohne Verpflichtung
-              </div>
+        <!-- Beruhigung: jetzt links, blockiert keinen Hinweistext mehr -->
+        <div class="mascot-panel">
+          <div class="mascot-row">
+            <div class="mascot-icon" aria-hidden="true">⚡</div>
+            <div class="mascot-text" id="mascotText">
+              Wir machen das ruhig &amp; klar. Ich bin an deiner Seite.
             </div>
           </div>
-        </aside>
+        </div>
 
-        <!-- RECHTS: eigentliche Kompass-Fläche -->
-        <section class="panel" aria-label="Kompass">
-          <p class="panel-lead">
-            Beantworte ein paar kurze Fragen – CanaDoc gibt dir Orientierung, ob ein nächster Schritt sinnvoll ist.
+      </aside>
+
+      <!-- RECHTS: Hauptkarte -->
+      <section class="kompass-card">
+
+        <!-- HEADER (so wie du willst) -->
+        <header class="kompass-header">
+
+          <!-- Links: Digitaler Kompass -->
+          <div class="header-left">
+            <div class="kicker">
+              <span class="kicker-icon" aria-hidden="true">🧭</span>
+              <span>DIGITALER KOMPASS</span>
+            </div>
+          </div>
+
+          <!-- Mitte: Logo groß + ich bin CanaDoc -->
+          <div class="header-center">
+            <img src="LOGO3.png" alt="CanaDoc Logo" class="kompass-logo" />
+            <div class="iam">Ich bin CanaDoc.</div>
+            <div class="iam-sub">Ich begleite dich diskret.</div>
+          </div>
+
+          <!-- Rechts: kleine Verpflichtung-Info -->
+          <div class="header-right">
+            <div class="pill" id="noObligationPill">Keine Verpflichtung</div>
+          </div>
+
+        </header>
+
+        <!-- CONTENT: Step-Text / Eingaben / Buttons -->
+        <div class="kompass-content">
+
+          <!-- Haupttext (wird von script.js überschrieben, falls du es so gebaut hast) -->
+          <h1 class="step-title" id="stepTitle">60 Sekunden, dann hast du Orientierung.</h1>
+          <p class="step-sub" id="stepSub">
+            Keine Registrierung. Nur notwendige Angaben.
           </p>
 
-          <div class="panel-actions">
-            <button type="button" class="btn-primary">Starten</button>
-            <a href="index.html" class="btn-secondary">Zurück</a>
+          <!-- Optional: zweite kleine Info-Box (kleiner, nicht dominant) -->
+          <div class="mini-note" id="miniNote">
+            Du gibst nur so viel preis, wie du willst.
           </div>
 
-          <p class="legal-hint">
+          <!-- Eingabebereich (falls du freie Texteingabe hast) -->
+          <div class="input-wrap" id="inputWrap" style="display:none;">
+            <label class="input-label" for="freeText">Ein Satz reicht.</label>
+            <textarea id="freeText" class="input" rows="3" placeholder="Optional – wenn du magst."></textarea>
+            <div class="tip">Tipp: Keine sensiblen Details, wenn du das nicht möchtest.</div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="btn-row">
+            <button class="btn secondary" id="prevBtn" type="button" style="display:none;">Zurück</button>
+            <button class="btn primary" id="nextBtn" type="button">Weiter</button>
+          </div>
+
+          <!-- Ergebnis-Area (falls du am Ende eine Card zeigst) -->
+          <div class="result-wrap" id="resultWrap" style="display:none;">
+            <div class="result-card">
+              <div class="result-kicker">DIGITALER KOMPASS</div>
+              <div class="result-title" id="resultTitle">Orientierung:</div>
+              <div class="result-text" id="resultText">—</div>
+
+              <div class="result-actions">
+                <button class="btn primary" id="ctaBtn" type="button">Abklärung starten</button>
+                <button class="btn secondary" id="copyBtn" type="button">Zusammenfassung kopieren</button>
+              </div>
+            </div>
+
+            <div class="btn-row end-row">
+              <button class="btn secondary" id="backBtn" type="button">Zurück</button>
+              <button class="btn primary" id="doneBtn" type="button">Fertig</button>
+            </div>
+          </div>
+
+          <!-- Hinweistext: bleibt IMMER frei (nichts liegt drüber) -->
+          <p class="legal" id="legalHint">
             Hinweis: CanaDoc stellt keine Diagnosen und verschreibt keine Medikamente.
             Medizinische Entscheidungen erfolgen ausschließlich durch Ärztinnen und Ärzte.
           </p>
-        </section>
 
-      </div>
-    </section>
+        </div>
+      </section>
 
+    </div>
   </main>
+
+  <!-- Script -->
+  <script src="script.js?v=12"></script>
 </body>
 </html>
