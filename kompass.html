@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CanaDoc – Digitaler Kompass</title>
+
+  <!-- Wir verwenden NICHT dein style.css, damit wir nichts kaputt machen -->
+  <link rel="stylesheet" href="kompass.css?v=1" />
+</head>
+
+<body>
+  <main class="k-wrap">
+    <!-- Hintergrund -->
+    <div class="k-bg" aria-hidden="true">
+      <div class="k-overlay"></div>
+      <div class="k-neon left"></div>
+      <div class="k-neon right"></div>
+      <div class="k-grid"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="k-header">
+      <a class="k-back" href="index.html" aria-label="Zurück zur Startseite">
+        ← Zur Startseite
+      </a>
+
+      <div class="k-progress">
+        <div class="k-progress-top">
+          <div class="k-step-label">
+            Schritt <span id="kStepNow">1</span>/<span id="kStepMax">6</span>
+          </div>
+          <div class="k-time">~ 60 Sekunden</div>
+        </div>
+
+        <div class="k-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="k-progress-fill" id="kProgressFill"></div>
+        </div>
+
+        <div class="k-dots" id="kDots" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <!-- Card / Stage -->
+    <section class="k-card" aria-live="polite">
+      <div class="k-title">
+        <img src="LOGO3.png" alt="CanaDoc" class="k-logo" />
+        <div class="k-title-text">
+          <div class="k-eyebrow">Digitaler Kompass</div>
+          <h1 class="k-h1">Klarheit statt Chaos.</h1>
+        </div>
+      </div>
+
+      <!-- Stage -->
+      <div class="k-stage" id="kStage">
+        <!-- JS rendert hier die Steps -->
+      </div>
+
+      <!-- Footer actions -->
+      <div class="k-actions">
+        <button class="k-btn ghost" id="kPrev" type="button">Zurück</button>
+        <button class="k-btn primary" id="kNext" type="button">Weiter</button>
+      </div>
+
+      <p class="k-legal">
+        Hinweis: CanaDoc stellt keine Diagnosen und verschreibt keine Medikamente.
+        Medizinische Entscheidungen erfolgen ausschließlich durch Ärztinnen und Ärzte.
+      </p>
+    </section>
+
+    <!-- CanaDoc Mascot (floating) -->
+    <div class="k-mascot" aria-hidden="true">
+      <div class="k-mascot-body" id="kMascot">
+        <!-- simple “CanaDoc” character as SVG -->
+        <svg class="k-mascot-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <!-- body -->
+          <circle cx="60" cy="60" r="46" stroke="rgba(0,255,154,0.9)" stroke-width="2" filter="url(#glow)"/>
+          <circle cx="60" cy="60" r="42" fill="rgba(0,0,0,0.65)" stroke="rgba(0,255,154,0.25)"/>
+          <!-- face -->
+          <circle cx="45" cy="56" r="5" fill="rgba(255,255,255,0.92)"/>
+          <circle cx="75" cy="56" r="5" fill="rgba(255,255,255,0.92)"/>
+          <circle cx="45" cy="56" r="2" fill="rgba(0,255,154,0.9)"/>
+          <circle cx="75" cy="56" r="2" fill="rgba(0,255,154,0.9)"/>
+          <path d="M44 76c6 8 26 8 32 0" stroke="rgba(255,255,255,0.85)" stroke-width="3" stroke-linecap="round"/>
+          <!-- little “bolt” -->
+          <path d="M62 20l-8 18h10l-8 18" stroke="rgba(0,255,154,0.85)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <div class="k-bubble" id="kBubble">
+          <div class="k-bubble-text" id="kBubbleText">Ich begleite dich – diskret und ohne Druck.</div>
+        </div>
+
+        <div class="k-reaction" id="kReaction" title="Daumen hoch" aria-hidden="true">👍</div>
+      </div>
+    </div>
+  </main>
+
+  <script src="kompass.js?v=1"></script>
+</body>
+</html>
