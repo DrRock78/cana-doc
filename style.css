@@ -1,22 +1,25 @@
 /* =========================
-   GRUNDLAGEN (SANFT)
+   GRUNDLAGEN (SANFT & STABIL)
    ========================= */
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Inter, Helvetica, Arial, sans-serif;
 }
 
 body {
-  margin: 0;
   background: #000;
   color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
 }
 
 .page {
   max-width: 520px;
   margin: 0 auto;
-  padding: 20px 22px;
+  padding: 22px;
+  position: relative;
 }
 
 /* =========================
@@ -26,11 +29,12 @@ body {
 .hero {
   position: relative;
   text-align: center;
-  padding: 26px 0 30px;
+  padding: 28px 10px 10px;
   overflow: hidden;
 }
 
-/* Hintergrund */
+/* --- Hintergrund + Neon --- */
+
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -41,12 +45,14 @@ body {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(120% 70% at 50% 0%, rgba(0,255,136,.08), transparent 60%),
-    linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,.45));
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 255, 136, 0.08),
+    transparent 65%
+  );
 }
 
-/* Neon Akzente links & rechts */
+/* Neon-Linien links & rechts */
 .neon-accent {
   position: absolute;
   top: 0;
@@ -54,67 +60,66 @@ body {
   width: 2px;
   background: linear-gradient(
     to bottom,
-    transparent 0%,
-    rgba(0,255,136,.0) 15%,
-    rgba(0,255,136,.55) 40%,
-    rgba(0,255,136,.35) 65%,
-    rgba(0,255,136,.0) 85%,
-    transparent 100%
+    transparent,
+    rgba(0,255,136,0.9),
+    transparent
   );
-  box-shadow: 0 0 14px rgba(0,255,136,.35);
-  opacity: .6;
+  filter: blur(1px);
+  opacity: 0.85;
 }
 
-.neon-accent.left { left: 10px; }
-.neon-accent.right { right: 10px; }
-
-/* Inhalt über dem Hintergrund */
-.hero > * {
-  position: relative;
-  z-index: 1;
-}
+.neon-accent.left  { left: 6px; }
+.neon-accent.right { right: 6px; }
 
 /* =========================
    LOGO
    ========================= */
 
 .logo {
-  width: 170px;
-  margin: 0 auto 16px;
+  width: 155px;
   display: block;
-  filter: drop-shadow(0 10px 22px rgba(0,0,0,.55));
+  margin: 0 auto 18px;
+  position: relative;
+  z-index: 1;
 }
 
 /* =========================
-   TEXTE
+   TEXTBEREICH
    ========================= */
 
 .topline {
   color: #00ff88;
-  font-weight: 700;
-  letter-spacing: .4px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
   margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
 }
 
 .topline span {
-  margin: 0 10px;
+  margin: 0 6px;
 }
 
 .subline {
-  font-size: 20px;
-  line-height: 1.35;
+  font-size: 18px;
+  line-height: 1.45;
   margin-bottom: 10px;
+  padding-left: 6px; /* optisch etwas nach rechts */
+  padding-right: 6px;
+  position: relative;
+  z-index: 1;
 }
 
 .subline.soft {
-  font-size: 18px;
-  color: rgba(255,255,255,.85);
+  opacity: 0.9;
 }
 
 .subnote {
   font-size: 14px;
-  color: rgba(255,255,255,.65);
-  margin-bottom: 18px;
+  opacity: 0.7;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 1;
 }
 
 /* =========================
@@ -125,84 +130,83 @@ body {
   display: inline-block;
   background: #00ff88;
   color: #000;
-  padding: 16px 26px;
-  border-radius: 30px;
-  font-weight: 800;
+  padding: 16px 28px;
+  border-radius: 32px;
+  font-weight: 700;
   text-decoration: none;
   margin: 10px 0;
-  box-shadow: 0 0 18px rgba(0,255,136,.45);
-}
-
-.btn-primary:active {
-  transform: scale(.98);
+  box-shadow: 0 0 18px rgba(0,255,136,0.45);
+  position: relative;
+  z-index: 1;
 }
 
 /* =========================
-   VIDEO
+   VIDEO (KLEIN & SAUBER)
    ========================= */
 
-.hero-trust {
-  margin-top: 6px;
-  font-size: 14px;
-  color: rgba(255,255,255,.75);
-}
-
-.hero-trust.fine {
-  margin-top: 10px;
-  font-size: 13px;
-  color: rgba(255,255,255,.6);
-}
-
 .video-card {
-  margin: 14px auto 6px;
-  width: min(360px, 92%);
-  border-radius: 16px;
-  overflow: hidden;
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 18px 40px rgba(0,0,0,.55);
+  margin: 16px auto 18px;
+  max-width: 280px;   /* bewusst klein */
+  position: relative;
+  z-index: 1;
 }
 
 .marketing-video {
   width: 100%;
-  height: auto;
-  max-height: 240px;
-  object-fit: cover;
-  display: block;
+  border-radius: 14px;
   background: #000;
 }
 
 /* =========================
-   MICRO / LINKS
+   MICRO & TRUST
    ========================= */
 
 .hero-micro {
   margin-top: 14px;
   font-size: 16px;
-  color: rgba(255,255,255,.85);
+  opacity: 0.85;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-trust {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.7;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-trust.fine {
+  font-size: 13px;
+  opacity: 0.65;
 }
 
 .link-mail {
   display: block;
-  margin-top: 12px;
+  margin-top: 14px;
   color: #6fbaff;
   text-decoration: underline;
   font-size: 14px;
+  position: relative;
+  z-index: 1;
 }
 
 .legal-hint {
-  margin-top: 14px;
+  margin-top: 18px;
   font-size: 12px;
-  color: rgba(255,255,255,.55);
-  line-height: 1.45;
+  opacity: 0.55;
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
 }
 
 /* =========================
-   HOW
+   HOW SECTION
    ========================= */
 
 .how {
-  margin-top: 46px;
+  margin-top: 54px;
 }
 
 .how h2 {
@@ -211,13 +215,13 @@ body {
 }
 
 .how h3 {
-  margin-top: 18px;
+  margin-top: 20px;
   margin-bottom: 6px;
 }
 
 .how p {
-  color: rgba(255,255,255,.85);
-  line-height: 1.55;
+  opacity: 0.85;
+  line-height: 1.5;
 }
 
 /* =========================
@@ -225,7 +229,7 @@ body {
    ========================= */
 
 .form-section {
-  margin-top: 56px;
+  margin-top: 60px;
 }
 
 .form-title {
@@ -244,7 +248,7 @@ form select,
 form textarea {
   width: 100%;
   background: #111;
-  border: 1px solid rgba(255,255,255,.16);
+  border: 1px solid #333;
   border-radius: 12px;
   padding: 12px;
   color: #fff;
@@ -258,12 +262,12 @@ form textarea {
 
 .submit {
   width: 100%;
-  margin-top: 18px;
+  margin-top: 22px;
 }
 
 .form-hint {
   font-size: 12px;
-  color: rgba(255,255,255,.6);
+  opacity: 0.6;
   margin-top: 12px;
   text-align: center;
 }
@@ -273,10 +277,10 @@ form textarea {
    ========================= */
 
 footer {
-  margin: 56px 0 24px;
+  margin: 60px 0 30px;
   text-align: center;
   font-size: 12px;
-  color: rgba(255,255,255,.6);
+  opacity: 0.6;
 }
 
 footer a {
