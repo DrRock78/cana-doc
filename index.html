@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cana-Doc</title>
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="style.css?v=10">
 </head>
 
 <body>
@@ -12,15 +12,6 @@
 
   <!-- HERO -->
   <header class="hero">
-
-    <!-- Background Layer: Video + Overlay + Neon-Akzent (links) -->
-    <div class="hero-video" aria-hidden="true">
-      <video autoplay muted loop playsinline preload="metadata">
-        <source src="hero.mp4" type="video/mp4">
-      </video>
-      <div class="hero-overlay"></div>
-      <div class="neon-accent left"></div>
-    </div>
 
     <img src="LOGO.jpg" alt="Cana-Doc Logo" class="logo">
 
@@ -46,6 +37,16 @@
     <a href="#form" class="btn-primary">
       Digitalen Kompass starten
     </a>
+
+    <!-- Marketing-Video direkt unter dem Button -->
+    <div class="promo-video">
+      <div class="promo-title">In 25 Sekunden erklärt</div>
+      <div class="video-wrap">
+        <video controls playsinline preload="metadata">
+          <source src="hero.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
 
     <p class="hero-micro">
       Du bist unsicher? Wir helfen dir, Klarheit zu finden.
@@ -94,11 +95,9 @@
 
   <!-- FORM -->
   <section id="form" class="form-section">
-
     <h2 class="form-title">Situation klären lassen</h2>
 
     <form>
-
       <label>Name *</label>
       <input type="text" required>
 
@@ -112,8 +111,8 @@
       <select required>
         <option value="">Bitte auswählen …</option>
         <option>Allgemeine Orientierung</option>
-        <option>Schlaf & Erholung</option>
-        <option>Stress & Anspannung</option>
+        <option>Schlaf &amp; Erholung</option>
+        <option>Stress &amp; Anspannung</option>
         <option>Sonstiges</option>
       </select>
 
@@ -128,7 +127,6 @@
         Hinweis: Dies ersetzt keine ärztliche Behandlung.
         Eine Verschreibung ist nur bei medizinischer Eignung möglich.
       </p>
-
     </form>
   </section>
 
