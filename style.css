@@ -16,7 +16,6 @@ body{
   padding: 20px;
 }
 
-/* HERO */
 .hero{
   text-align: center;
   padding-top: 30px;
@@ -24,56 +23,50 @@ body{
   overflow: hidden;
 }
 
+/* Matrix-Akzente links (Design, kein Video) */
+.hero::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 18% 35%,
+    rgba(0,255,136,0.12),
+    rgba(0,0,0,0) 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero::after{
+  content: "";
+  position: absolute;
+  top: 14%;
+  left: 8%;
+  width: 2px;
+  height: 72%;
+  background: linear-gradient(to bottom,
+    transparent,
+    rgba(0,255,136,0.95),
+    transparent);
+  filter: blur(0.6px);
+  opacity: 0.55;
+  animation: matrixPulse 5.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes matrixPulse{
+  0%,100%{ opacity: 0.25; }
+  50%{ opacity: 0.70; }
+}
+
+.hero > *{
+  position: relative;
+  z-index: 1;
+}
+
 .logo{
   width: 160px;
   margin: 0 auto 18px;
   display: block;
-}
-
-/* OPTIONAL VIDEO LAYER */
-.hero-video{
-  position:absolute;
-  inset:0;
-  z-index:0;
-}
-
-.hero-video video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  opacity:0.22;
-}
-
-.hero-overlay{
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle at 50% 20%, rgba(0,0,0,.35), rgba(0,0,0,.85));
-}
-
-.neon-accent{
-  position:absolute;
-  top:15%;
-  width:2px;
-  height:70%;
-  background:linear-gradient(to bottom, transparent, #00ff88, transparent);
-  filter:blur(1px);
-  opacity:.35;
-  animation:pulse 6s ease-in-out infinite;
-}
-
-.neon-accent.left{
-  left:10%;
-}
-
-@keyframes pulse{
-  0%,100%{opacity:.15;}
-  50%{opacity:.45;}
-}
-
-/* Vordergrund über Video */
-.hero > *:not(.hero-video){
-  position:relative;
-  z-index:1;
 }
 
 .topline{
@@ -115,6 +108,32 @@ body{
   box-shadow: 0 0 18px rgba(0,255,136,.45);
 }
 
+/* Marketing-Video unter Button */
+.promo-video{
+  margin: 12px auto 8px;
+  max-width: 520px;
+}
+
+.promo-title{
+  text-align: left;
+  font-size: 14px;
+  opacity: .80;
+  margin: 8px 2px 10px;
+}
+
+.video-wrap{
+  border: 1px solid #222;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #050505;
+}
+
+.video-wrap video{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .hero-micro{
   margin-top: 14px;
   font-size: 16px;
@@ -142,7 +161,6 @@ body{
   line-height: 1.4;
 }
 
-/* HOW */
 .how{
   margin-top: 50px;
 }
@@ -162,7 +180,6 @@ body{
   line-height: 1.5;
 }
 
-/* FORM */
 .form-section{
   margin-top: 60px;
 }
@@ -207,7 +224,6 @@ form textarea{
   text-align: center;
 }
 
-/* FOOTER */
 footer{
   margin: 60px 0 30px;
   text-align: center;
