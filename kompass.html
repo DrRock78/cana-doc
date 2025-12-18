@@ -3,26 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark" />
   <title>Digitaler Kompass – CanaDoc</title>
 
-  <!-- Google Fonts (du hattest preconnect, aber keine echte Font-Resource) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="kompass.css?v=100" />
+  <link rel="stylesheet" href="kompass.css?v=101" />
 </head>
-
 <body>
-  <main class="k-wrap">
 
+  <main class="k-wrap">
     <!-- BACK -->
     <a class="k-back" href="index.html" aria-label="Zur Startseite">
       <span aria-hidden="true">←</span> Zur Startseite
     </a>
 
-    <!-- TOP BAR (Progress + Time) -->
+    <!-- TOP BAR -->
     <section class="k-top" aria-label="Fortschritt">
       <div class="k-top-inner">
         <div class="k-top-left">
@@ -30,11 +23,7 @@
             Schritt <span id="kStepNow">1</span>/<span id="kStepMax">6</span>
           </div>
 
-          <div class="k-progress-bar"
-               role="progressbar"
-               aria-valuemin="0"
-               aria-valuemax="100"
-               aria-valuenow="0">
+          <div class="k-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <div class="k-progress-fill" id="kProgressFill"></div>
           </div>
 
@@ -47,7 +36,7 @@
       </div>
     </section>
 
-    <!-- HERO / INTRO HEADER -->
+    <!-- HERO -->
     <section class="k-hero" aria-label="CanaDoc Einführung">
       <div class="k-hero-grid">
 
@@ -58,7 +47,7 @@
             <span class="k-chip-text">DIGITALER KOMPASS</span>
           </div>
 
-          <!-- Bubble -->
+          <!-- Bubble links -->
           <div class="k-bubble" id="kBubble">
             <div class="k-bubble-icon" aria-hidden="true">⚡</div>
             <div class="k-bubble-text" id="kBubbleText">
@@ -70,41 +59,38 @@
         <!-- RIGHT -->
         <div class="k-hero-right">
           <div class="k-brand">
-            <img class="k-logo" src="./LOGO3.png" alt="CanaDoc Logo" />
+            <img class="k-logo" src="LOGO3.png" alt="CanaDoc Logo" />
             <div class="k-brand-text">
               <div class="k-brand-title">Ich bin CanaDoc.</div>
               <div class="k-brand-sub">Ich begleite dich diskret.</div>
             </div>
           </div>
 
-          <div class="k-commitment" id="kCommitment">
-            Keine Verpflichtung
-          </div>
+          <div class="k-commitment" id="kCommitment">Keine Verpflichtung</div>
         </div>
 
       </div>
     </section>
 
     <!-- STAGE -->
-    <section class="k-stage" id="kStage" aria-label="Kompass Fragen">
-      <!-- injected by JS -->
-    </section>
+    <section class="k-stage" id="kStage" aria-label="Kompass Fragen"></section>
 
     <!-- CONTROLS -->
     <section class="k-controls" aria-label="Navigation">
       <button id="kPrev" type="button">Zurück</button>
-      <button id="kNext" type="button">Weiter</button>
+      <button id="kNext" type="button" class="primary">Weiter</button>
     </section>
+
+    <!-- MASCOT REACTION (war vorher “weg”) -->
+    <div class="k-reaction" id="kReaction" aria-hidden="true">👍</div>
 
     <!-- LEGAL -->
     <section class="k-legal" aria-label="Hinweis">
       Hinweis: CanaDoc stellt keine Diagnosen und verschreibt keine Medikamente.
       Medizinische Entscheidungen erfolgen ausschließlich durch Ärztinnen und Ärzte.
     </section>
-
   </main>
 
-  <!-- defer = stabileres Rendering (besonders Chromebook / langsame Geräte / Font-Ladezeit) -->
-  <script src="kompass.js?v=100" defer></script>
+  <script src="kompass.js?v=101"></script>
 </body>
 </html>
