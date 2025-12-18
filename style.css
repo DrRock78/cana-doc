@@ -1,263 +1,238 @@
 /* ===============================
-   GRUNDLAGEN (SANFT & STABIL)
+   BASIC
 ================================ */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-body {
+html, body { height: 100%; }
+
+body{
   margin: 0;
   background: #000;
-  color: #ffffff;
+  color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                Roboto, Helvetica, Arial, sans-serif;
 }
 
-.page {
-  width: 100%;
-  overflow-x: hidden;
+/* ===============================
+   SCREEN CENTERING
+================================ */
+.screen{
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 18px;
 }
 
 /* ===============================
-   HERO BEREICH
+   "KASTEN" FAST UNSICHTBAR
+   (keine harte Karte, nur sanfte Struktur)
 ================================ */
-.hero {
-  position: relative;
-  text-align: center;
-  padding: 64px 20px 72px;
-}
-
-/* --- Background Layer --- */
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 255, 140, 0.08),
-    rgba(0, 0, 0, 0.95) 65%
-  );
-}
-
-/* --- Neon Akzente links & rechts --- */
-.neon-accent {
-  position: absolute;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    #00ff9a,
-    transparent
-  );
-  opacity: 0.35;
-}
-
-.neon-accent.left { left: 14px; }
-.neon-accent.right { right: 14px; }
-
-/* ===============================
-   LOGO (MOBIL & DESKTOP OPTIMIERT)
-================================ */
-.logo {
-  position: relative;
-  z-index: 2;
-  width: 210px;              /* MOBILE: deutlich größer */
-  max-width: 80%;
-  margin: 0 auto 36px;
-  display: block;
-  filter: drop-shadow(0 0 26px rgba(0, 255, 150, 0.28));
-}
-
-/* ===============================
-   TYPOGRAFIE
-================================ */
-.topline {
-  position: relative;
-  z-index: 2;
-  color: #00ff9a;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  margin-bottom: 16px;
-}
-
-.topline span {
-  margin: 0 6px;
-}
-
-.subline {
-  position: relative;
-  z-index: 2;
-  font-size: 1.05rem;
-  margin: 10px auto;
-  max-width: 520px;
-  padding-left: 10px;
-}
-
-.subline.soft {
-  opacity: 0.9;
-}
-
-.subnote {
-  position: relative;
-  z-index: 2;
-  font-size: 0.95rem;
-  opacity: 0.8;
-  margin-top: 12px;
-}
-
-/* ===============================
-   BUTTON
-================================ */
-.btn-primary {
-  display: inline-block;
-  margin: 30px auto 12px;
-  padding: 16px 34px;
-  background: #00ff9a;
-  color: #000;
-  font-weight: 700;
-  border-radius: 999px;
-  text-decoration: none;
-  box-shadow: 0 0 26px rgba(0, 255, 154, 0.45);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.btn-primary:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 36px rgba(0, 255, 154, 0.6);
-}
-
-/* ===============================
-   VIDEO (BLEIBT PERFEKT)
-================================ */
-.video-card {
-  position: relative;
-  z-index: 2;
-  margin: 24px auto 28px;
-  max-width: 320px;
+.shell{
+  width: min(920px, 100%);
+  padding: 14px 10px;
   border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 0 30px rgba(0, 255, 150, 0.18);
+  background: rgba(255,255,255,0.01);   /* fast unsichtbar */
+  border: 1px solid rgba(0,255,154,0.06); /* minimal */
+  box-shadow: none;                      /* bewusst ruhig */
 }
 
-.marketing-video {
-  width: 100%;
+/* ===============================
+   TOP ROW: links Kompass, rechts Logo + Satz
+================================ */
+.top-row{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 8px 10px;
+}
+
+.kompass-title{
+  font-size: 18px;
+  font-weight: 700;
+  color: #00ff9a;
+  letter-spacing: 0.02em;
+}
+
+/* Rechts: Logo + Satz */
+.top-right{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo{
+  width: 150px;             /* Logo-Größe: bewusst sichtbar */
+  max-width: 38vw;
   height: auto;
   display: block;
-  background: #000;
+  filter: drop-shadow(0 0 18px rgba(0,255,154,0.16));
 }
 
-/* ===============================
-   MICRO TEXT
-================================ */
-.hero-micro {
-  position: relative;
-  z-index: 2;
-  font-size: 0.95rem;
-  opacity: 0.9;
-  margin-top: 10px;
+.brand-line{
+  font-size: 13.5px;
+  line-height: 1.25;
+  color: rgba(255,255,255,0.86);
+  white-space: nowrap;
 }
 
-.hero-trust {
-  position: relative;
-  z-index: 2;
-  font-size: 0.9rem;
-  opacity: 0.75;
-  margin-top: 6px;
-}
-
-.hero-trust.fine {
-  font-size: 0.85rem;
-}
-
-.link-mail {
-  display: inline-block;
-  margin-top: 10px;
-  color: #66ffcc;
-}
-
-.legal-hint {
-  font-size: 0.75rem;
-  opacity: 0.6;
-  margin-top: 20px;
-}
-
-/* ===============================
-   HOW SECTION
-================================ */
-.how {
-  padding: 56px 22px;
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-.how h2 {
+.brand-accent{
   color: #00ff9a;
-}
-
-.how h3 {
-  margin-top: 24px;
+  font-weight: 700;
 }
 
 /* ===============================
-   FORM
+   BODY ROW
 ================================ */
-.form-section {
-  padding: 56px 22px;
-  max-width: 520px;
-  margin: 0 auto;
+.body-row{
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 14px;
+  padding: 6px 8px 10px;
+  align-items: start;
 }
 
-.form-title {
-  color: #00ff9a;
+/* ===============================
+   LEFT RAIL (Icon + Beruhigungstext)
+================================ */
+.left-rail{
+  padding-top: 4px;
 }
 
-form label {
+.helper-box{
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 10px;
+  align-items: center;
+
+  /* fast unsichtbar, aber edel */
+  background: rgba(0,255,154,0.03);
+  border: 1px solid rgba(0,255,154,0.10);
+  border-radius: 14px;
+  padding: 10px 10px;
+}
+
+.helper-icon{
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(0,255,154,0.14);
+  box-shadow: 0 0 18px rgba(0,255,154,0.10);
+  overflow: hidden;
+}
+
+.helper-icon img{
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
   display: block;
-  margin-top: 16px;
 }
 
-form input,
-form textarea,
-form select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 8px;
+.helper-head{
+  font-size: 13.5px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+}
+
+.helper-sub{
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.72);
+}
+
+/* ===============================
+   RIGHT PANEL (Kompass Content)
+================================ */
+.panel{
+  padding: 10px 10px 6px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.00); /* bewusst kaum sichtbar */
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.panel-lead{
+  margin: 0 0 14px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.88);
+}
+
+/* Actions */
+.panel-actions{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  max-width: 420px;
+}
+
+.btn-primary{
   border: none;
+  border-radius: 999px;
+  padding: 14px 16px;
+  background: #00ff9a;
+  color: #000;
+  font-weight: 800;
+  font-size: 15.5px;
+  cursor: pointer;
+  box-shadow: 0 0 22px rgba(0,255,154,0.30);
+  transition: transform .15s ease, box-shadow .15s ease;
 }
 
-.submit {
-  margin-top: 24px;
+.btn-primary:hover{
+  transform: scale(1.01);
+  box-shadow: 0 0 28px rgba(0,255,154,0.46);
 }
 
-/* ===============================
-   FOOTER
-================================ */
-footer {
-  padding: 32px 16px;
+.btn-secondary{
   text-align: center;
-  font-size: 0.8rem;
-  opacity: 0.6;
+  border-radius: 999px;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.82);
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.03);
+}
+
+/* Wichtig: NICHT verdecken – deshalb kein fixed bottom Banner */
+.legal-hint{
+  margin: 14px 0 0;
+  font-size: 11.8px;
+  line-height: 1.35;
+  color: rgba(255,255,255,0.62);
 }
 
 /* ===============================
-   DESKTOP FEINSCHLIFF
+   MOBILE: Layout untereinander, aber sauber
 ================================ */
-@media (min-width: 900px) {
-  .logo {
-    width: 260px;           /* DESKTOP: souverän & präsent */
-    margin-bottom: 42px;
+@media (max-width: 720px){
+  .top-row{
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
-  .hero {
-    padding-top: 80px;
+  .top-right{
+    grid-template-columns: auto 1fr;
+    justify-content: start;
+  }
+
+  .brand-line{
+    white-space: normal;
+  }
+
+  .body-row{
+    grid-template-columns: 1fr;
+  }
+
+  .logo{
+    width: 165px; /* mobil etwas präsenter */
+    max-width: 62vw;
+  }
+
+  .panel-actions{
+    max-width: 100%;
   }
 }
