@@ -13,7 +13,13 @@
   <!-- HERO -->
   <header class="hero">
 
-    <img src="LOGO.jpg" alt="Cana-Doc Logo" class="logo">
+    <!-- Background Layer -->
+    <div class="hero-bg" aria-hidden="true">
+      <div class="neon-accent left"></div>
+    </div>
+
+    <!-- LOGO -->
+    <img src="LOGO3.png" alt="Cana-Doc Logo" class="logo">
 
     <div class="topline">
       <span>Legal.</span>
@@ -38,21 +44,23 @@
       Digitalen Kompass starten
     </a>
 
-    <!-- Marketing-Video direkt unter dem Button -->
-    <div class="promo-video">
-      <div class="promo-title">In 25 Sekunden erklärt</div>
-      <div class="video-wrap">
-        <video controls playsinline preload="metadata">
-          <source src="hero.mp4" type="video/mp4">
-        </video>
-      </div>
+    <p class="hero-trust">
+      In 25 Sekunden erklärt
+    </p>
+
+    <!-- VIDEO (Marketing, bewusst UNTER dem Button) -->
+    <div class="hero-video-inline">
+      <video controls preload="metadata">
+        <source src="hero.mp4" type="video/mp4">
+        Dein Browser unterstützt keine Videos.
+      </video>
     </div>
 
     <p class="hero-micro">
       Du bist unsicher? Wir helfen dir, Klarheit zu finden.
     </p>
 
-    <p class="hero-trust">
+    <p class="hero-trust small">
       Dauer: ca. 2 Minuten · Keine Registrierung · Nur notwendige Angaben
     </p>
 
@@ -67,31 +75,19 @@
 
   </header>
 
-
   <!-- HOW -->
   <section class="how">
     <h2>Wie CanaDoc dir hilft</h2>
 
     <h3>1. Anamnese</h3>
-    <p>
-      Du schilderst deine Situation in Ruhe. CanaDoc begleitet dich dabei –
-      diskret, sachlich und ohne Bewertung.
-    </p>
+    <p>Du schilderst deine Situation in Ruhe. CanaDoc begleitet dich dabei – diskret, sachlich und ohne Bewertung.</p>
 
     <h3>2. Orientierungshilfe</h3>
-    <p>
-      CanaDoc hilft dir, Orientierung zu gewinnen – ob ein nächster Schritt
-      sinnvoll ist oder ob Abwarten die bessere Entscheidung sein kann.
-    </p>
+    <p>CanaDoc hilft dir, Orientierung zu gewinnen – ob ein nächster Schritt sinnvoll ist oder Abwarten die bessere Entscheidung ist.</p>
 
     <h3>3. Diskret weiter</h3>
-    <p>
-      Nur wenn es für dich passt, begleitet CanaDoc dich diskret weiter –
-      z.&nbsp;B. zu ärztlicher Telemedizin oder einer geeigneten Apotheke.
-      Die medizinische Entscheidung bleibt dort, wo sie hingehört.
-    </p>
+    <p>Nur wenn es für dich passt, begleitet CanaDoc dich weiter – z. B. zu ärztlicher Telemedizin oder einer geeigneten Apotheke.</p>
   </section>
-
 
   <!-- FORM -->
   <section id="form" class="form-section">
@@ -111,8 +107,8 @@
       <select required>
         <option value="">Bitte auswählen …</option>
         <option>Allgemeine Orientierung</option>
-        <option>Schlaf &amp; Erholung</option>
-        <option>Stress &amp; Anspannung</option>
+        <option>Schlaf & Erholung</option>
+        <option>Stress & Anspannung</option>
         <option>Sonstiges</option>
       </select>
 
@@ -125,13 +121,10 @@
 
       <p class="form-hint">
         Hinweis: Dies ersetzt keine ärztliche Behandlung.
-        Eine Verschreibung ist nur bei medizinischer Eignung möglich.
       </p>
     </form>
   </section>
 
-
-  <!-- FOOTER -->
   <footer>
     <p>© 2025 Cana-Doc – All Rights Reserved.</p>
     <p>
