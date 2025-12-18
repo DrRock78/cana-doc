@@ -1,9 +1,7 @@
 (() => {
-  // ---------- Helpers ----------
   const $ = (id) => document.getElementById(id);
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 
-  // ---------- DOM ----------
   const stage = $("kStage");
   const btnPrev = $("kPrev");
   const btnNext = $("kNext");
@@ -14,20 +12,16 @@
   const dotsWrap = $("kDots");
 
   const bubbleText = $("kBubbleText");
-  const reaction = $("kReaction");
 
-  // ---------- State ----------
   const answers = {};
   let stepIndex = 0;
 
-  // ---------- Steps (Kurz: 6) ----------
-  // Hinweis: rein orientierend, keine Diagnose.
   const steps = [
     {
       id: "start",
       type: "intro",
-      q: "Ich bin CanaDoc.",
-      sub: "Ich begleite dich diskret – in wenigen Schritten zur Orientierung. Keine Registrierung. Nur notwendige Angaben.",
+      q: "Los geht’s.",
+      sub: "60 Sekunden, dann hast du Orientierung. Keine Registrierung. Nur notwendige Angaben.",
       bubble: "Wir machen das ruhig & klar. Ich bin an deiner Seite.",
     },
     {
@@ -61,7 +55,7 @@
       id: "impact",
       type: "cards",
       q: "Wie stark beeinflusst es deinen Alltag?",
-      sub: "Das ist keine Bewertung – nur ein Kompass-Marker.",
+      sub: "Keine Bewertung – nur ein Kompass-Marker.",
       bubble: "Hier geht’s um Orientierung, nicht um Urteil.",
       key: "impact",
       options: [
@@ -73,8 +67,8 @@
     {
       id: "notes",
       type: "text",
-      q: "Ein Satz, damit ich dich besser einordnen kann.",
-      sub: "Optional – wenn du magst. Keine Details, die du nicht teilen willst.",
+      q: "Ein Satz – optional.",
+      sub: "Wenn du magst. Keine Details, die du nicht teilen willst.",
       bubble: "Du gibst nur so viel preis, wie du willst. Wirklich.",
       key: "notes",
       placeholder: "z. B. „Ich wache nachts oft auf“ oder „Abends komme ich nicht runter“ …",
@@ -84,12 +78,11 @@
       id: "result",
       type: "result",
       q: "Dein Kompass-Ergebnis",
-      sub: "Das ist eine Orientierung – keine Diagnose.",
+      sub: "Orientierung – keine Diagnose.",
       bubble: "Stark. Du hast Klarheit geschaffen. Jetzt entscheiden wir sauber den nächsten Schritt.",
     },
   ];
 
-  // ---------- Render Dots ----------
   function renderDots() {
     dotsWrap.innerHTML = "";
     for (let i = 0; i < steps.length; i++) {
@@ -99,7 +92,6 @@
     }
   }
 
-  // ---------- Progress ----------
   function updateProgress() {
     stepNowEl.textContent = String(stepIndex + 1);
     stepMaxEl.textContent = String(steps.length);
@@ -111,20 +103,10 @@
     renderDots();
   }
 
-  // ---------- Mascot Bubble + Reaction ----------
-  let bubbleTimer = null;
   function setBubble(text) {
-    bubbleText.textContent = text;
-    if (bubbleTimer) clearTimeout(bubbleTimer);
-    // kleine „Sprech“-Animation via class toggle, falls du später CSS ergänzen willst
+    bubbleText.textContent = text || "";
   }
 
-  function thumbsUp() {
-    reaction.classList.add("show");
-    setTimeout(() => reaction.classList.remove("show"), 650);
-  }
-
-  // ---------- Validation ----------
   function canGoNext() {
     const step = steps[stepIndex];
     if (step.type === "intro" || step.type === "result") return true;
@@ -140,19 +122,26 @@
     return true;
   }
 
-  // ---------- Render Step ----------
+  function mkCard(title, desc, onClick) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "k-card-btn";
+    btn.innerHTML = `<div class="t">${title}</div><div class="d">${desc}</div>`;
+    btn.addEventListener("click", onClick);
+    return btn;
+  }
+
   function renderStep() {
     const step = steps[stepIndex];
     updateProgress();
-    setBubble(step.bubble || "Ich bin da.");
+    setBubble(step.bubble);
 
-    // Button labels
     btnPrev.style.visibility = stepIndex === 0 ? "hidden" : "visible";
     btnNext.textContent = step.type === "result" ? "Fertig" : "Weiter";
     btnNext.disabled = !canGoNext();
 
-    // Stage
     stage.innerHTML = "";
+
     const wrap = document.createElement("div");
     wrap.className = "k-step";
 
@@ -171,19 +160,10 @@
       const cards = document.createElement("div");
       cards.className = "k-cards";
 
-      const startBtn = mkCard("Los geht’s", "60 Sekunden, dann hast du Orientierung.", () => {
-        thumbsUp();
-        next();
-      });
-      startBtn.classList.add("selected");
+      const start = mkCard("Starten", "60 Sekunden, dann hast du Orientierung.", () => next());
+      start.classList.add("selected");
 
-      const privacyBtn = mkCard("Diskret & unverbindlich", "Du gehst hier keine Verpflichtung ein.", () => {
-        setBubble("Genau. Du behältst die Kontrolle.");
-        thumbsUp();
-      });
-
-      cards.appendChild(startBtn);
-      cards.appendChild(privacyBtn);
+      cards.appendChild(start);
       wrap.appendChild(cards);
     }
 
@@ -194,11 +174,9 @@
       step.options.forEach(opt => {
         const el = mkCard(opt.t, opt.d, () => {
           answers[step.key] = opt.v;
-          // selected state update
           [...cards.querySelectorAll(".k-card-btn")].forEach(b => b.classList.remove("selected"));
           el.classList.add("selected");
           btnNext.disabled = !canGoNext();
-          thumbsUp();
         });
         if (answers[step.key] === opt.v) el.classList.add("selected");
         cards.appendChild(el);
@@ -234,27 +212,15 @@
     stage.appendChild(wrap);
   }
 
-  function mkCard(title, desc, onClick) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "k-card-btn";
-    btn.innerHTML = `<div class="t">${title}</div><div class="d">${desc}</div>`;
-    btn.addEventListener("click", onClick);
-    return btn;
-  }
-
-  // ---------- Result Logic ----------
   function buildResultCard() {
     const goal = answers.goal || "other";
     const timeframe = answers.timeframe || "weeks";
     const impact = answers.impact || "mid";
 
-    // einfache, harmlose Orientierung (keine medizinische Aussage)
     let headline = "Orientierung: nächster Schritt kann sinnvoll sein.";
     let note = "Wenn du möchtest, kannst du das Thema ärztlich abklären lassen – diskret und nachvollziehbar.";
     let cta = "Diskret weiter";
 
-    // leichte Anpassung der Tonalität
     if (impact === "low" && timeframe === "days") {
       headline = "Orientierung: beobachte es kurz – und handle bewusst.";
       note = "Wenn es bleibt oder sich verschlechtert, ist ärztliche Abklärung sinnvoll.";
@@ -268,7 +234,6 @@
 
     const box = document.createElement("div");
     box.className = "k-result";
-
     box.innerHTML = `
       <div class="k-result-head">
         <div class="k-badge">Digitaler Kompass</div>
@@ -284,7 +249,7 @@
       </div>
 
       <div class="k-result-actions">
-        <a class="k-result-btn primary" id="goPartner" href="weiterleitung.html">${cta}</a>
+        <a class="k-result-btn primary" href="weiterleitung.html">${cta}</a>
         <button class="k-result-btn ghost" id="saveCopy" type="button">Zusammenfassung kopieren</button>
       </div>
 
@@ -293,13 +258,11 @@
       </div>
     `;
 
-    // Copy summary
     box.querySelector("#saveCopy").addEventListener("click", async () => {
       const text = buildSummaryText(goal, timeframe, impact, answers.notes || "");
       try {
         await navigator.clipboard.writeText(text);
         setBubble("Kopiert. Sauber.");
-        thumbsUp();
       } catch {
         setBubble("Kopieren ging nicht – aber alles bleibt hier sichtbar.");
       }
@@ -343,22 +306,18 @@
     }[v] || "mittel");
   }
 
-  // ---------- Navigation ----------
   function next() {
-    // if last step -> finish
     if (stepIndex >= steps.length - 1) {
       window.location.href = "index.html";
       return;
     }
 
-    // guard
     if (!canGoNext()) {
       setBubble("Ein kurzer Klick reicht – dann weiter.");
       return;
     }
 
     stepIndex++;
-    thumbsUp();
     renderStep();
   }
 
@@ -368,33 +327,12 @@
     renderStep();
   }
 
-  // ---------- Events ----------
   btnNext.addEventListener("click", next);
   btnPrev.addEventListener("click", prev);
 
-  // Enable next when selecting on cards
   stage.addEventListener("click", () => {
     btnNext.disabled = !canGoNext();
   });
 
-  // ---------- Result Styling injected (minimal, keeps CSS clean) ----------
-  // Du kannst das später in kompass.css ziehen – läuft aber sofort.
-  const style = document.createElement("style");
-  style.textContent = `
-    .k-result{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px;background:rgba(0,0,0,.35);box-shadow:0 0 22px rgba(0,255,154,.10)}
-    .k-result-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    .k-badge{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,255,154,.95)}
-    .k-result-title{font-size:18px;font-weight:700;margin:6px 0 8px}
-    .k-result-text{color:rgba(255,255,255,.78);font-size:14px;line-height:1.45}
-    .k-result-mini{margin-top:12px;color:rgba(255,255,255,.70);font-size:13px;display:grid;gap:6px}
-    .k-result-mini span{color:rgba(255,255,255,.52)}
-    .k-result-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-    .k-result-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 14px;border-radius:999px;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}
-    .k-result-btn.primary{background:#00ff9a;color:#000;border:none;box-shadow:0 0 20px rgba(0,255,154,.25)}
-    .k-result-legal{margin-top:10px;font-size:12px;color:rgba(255,255,255,.55)}
-  `;
-  document.head.appendChild(style);
-
-  // ---------- Init ----------
   renderStep();
 })();
