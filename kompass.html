@@ -1,139 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Digitaler Kompass – CanaDoc</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="kompass.css?v=12" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link rel="stylesheet" href="kompass.css?v=100" />
 </head>
-
 <body>
-  <main class="kompass-page">
 
-    <div class="kompass-layout">
+  <main class="k-wrap">
+    <!-- BACK -->
+    <a class="k-back" href="index.html" aria-label="Zur Startseite">
+      <span aria-hidden="true">←</span> Zur Startseite
+    </a>
 
-      <!-- LINKS: Startseite + Progress + Beruhigung (NICHT mehr unten rechts) -->
-      <aside class="kompass-side">
-
-        <a class="back-link" href="index.html">← Zur Startseite</a>
-
-        <div class="progress-card" aria-label="Fortschritt">
-          <div class="progress-top">
-            <span id="progressStepText">Schritt 1/6</span>
-            <span id="progressTimeText">~ 60 Sekunden</span>
+    <!-- TOP BAR (Progress + Time) -->
+    <section class="k-top" aria-label="Fortschritt">
+      <div class="k-top-inner">
+        <div class="k-top-left">
+          <div class="k-top-title">
+            Schritt <span id="kStepNow">1</span>/<span id="kStepMax">6</span>
           </div>
 
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill" style="width: 16.7%;"></div>
+          <div class="k-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="k-progress-fill" id="kProgressFill"></div>
           </div>
 
-          <div class="progress-dots" id="progressDots" aria-hidden="true">
-            <span class="active"></span>
-            <span></span><span></span><span></span><span></span><span></span>
+          <div class="k-dots" id="kDots" aria-hidden="true"></div>
+        </div>
+
+        <div class="k-top-right">
+          <div class="k-top-time">~ 60 Sekunden</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HERO / INTRO HEADER (dein Wunsch: links Label, rechts Logo + Text, rechts kleine Box) -->
+    <section class="k-hero" aria-label="CanaDoc Einführung">
+      <div class="k-hero-grid">
+
+        <!-- LEFT: Digitaler Kompass Label + Platz für Kompass-Icon -->
+        <div class="k-hero-left">
+          <div class="k-chip">
+            <span class="k-chip-icon" aria-hidden="true">🧭</span>
+            <span class="k-chip-text">DIGITALER KOMPASS</span>
+          </div>
+
+          <!-- Bubble (links, blockiert nichts mehr) -->
+          <div class="k-bubble" id="kBubble">
+            <div class="k-bubble-icon" aria-hidden="true">⚡</div>
+            <div class="k-bubble-text" id="kBubbleText">Wir machen das ruhig &amp; klar. Ich bin an deiner Seite.</div>
           </div>
         </div>
 
-        <!-- Beruhigung: jetzt links, blockiert keinen Hinweistext mehr -->
-        <div class="mascot-panel">
-          <div class="mascot-row">
-            <div class="mascot-icon" aria-hidden="true">⚡</div>
-            <div class="mascot-text" id="mascotText">
-              Wir machen das ruhig &amp; klar. Ich bin an deiner Seite.
+        <!-- RIGHT: Logo + Ich bin CanaDoc -->
+        <div class="k-hero-right">
+          <div class="k-brand">
+            <img class="k-logo" src="LOGO3.png" alt="CanaDoc Logo" />
+            <div class="k-brand-text">
+              <div class="k-brand-title">Ich bin CanaDoc.</div>
+              <div class="k-brand-sub">Ich begleite dich diskret.</div>
             </div>
+          </div>
+
+          <!-- Small pill box: Keine Verpflichtung -->
+          <div class="k-commitment" id="kCommitment">
+            Keine Verpflichtung
           </div>
         </div>
 
-      </aside>
+      </div>
+    </section>
 
-      <!-- RECHTS: Hauptkarte -->
-      <section class="kompass-card">
+    <!-- STAGE (JS rendert hier die Steps) -->
+    <section class="k-stage" id="kStage" aria-label="Kompass Fragen">
+      <!-- injected by JS -->
+    </section>
 
-        <!-- HEADER (so wie du willst) -->
-        <header class="kompass-header">
+    <!-- CONTROLS -->
+    <section class="k-controls" aria-label="Navigation">
+      <button id="kPrev" type="button">Zurück</button>
+      <button id="kNext" type="button">Weiter</button>
+    </section>
 
-          <!-- Links: Digitaler Kompass -->
-          <div class="header-left">
-            <div class="kicker">
-              <span class="kicker-icon" aria-hidden="true">🧭</span>
-              <span>DIGITALER KOMPASS</span>
-            </div>
-          </div>
-
-          <!-- Mitte: Logo groß + ich bin CanaDoc -->
-          <div class="header-center">
-            <img src="LOGO3.png" alt="CanaDoc Logo" class="kompass-logo" />
-            <div class="iam">Ich bin CanaDoc.</div>
-            <div class="iam-sub">Ich begleite dich diskret.</div>
-          </div>
-
-          <!-- Rechts: kleine Verpflichtung-Info -->
-          <div class="header-right">
-            <div class="pill" id="noObligationPill">Keine Verpflichtung</div>
-          </div>
-
-        </header>
-
-        <!-- CONTENT: Step-Text / Eingaben / Buttons -->
-        <div class="kompass-content">
-
-          <!-- Haupttext (wird von script.js überschrieben, falls du es so gebaut hast) -->
-          <h1 class="step-title" id="stepTitle">60 Sekunden, dann hast du Orientierung.</h1>
-          <p class="step-sub" id="stepSub">
-            Keine Registrierung. Nur notwendige Angaben.
-          </p>
-
-          <!-- Optional: zweite kleine Info-Box (kleiner, nicht dominant) -->
-          <div class="mini-note" id="miniNote">
-            Du gibst nur so viel preis, wie du willst.
-          </div>
-
-          <!-- Eingabebereich (falls du freie Texteingabe hast) -->
-          <div class="input-wrap" id="inputWrap" style="display:none;">
-            <label class="input-label" for="freeText">Ein Satz reicht.</label>
-            <textarea id="freeText" class="input" rows="3" placeholder="Optional – wenn du magst."></textarea>
-            <div class="tip">Tipp: Keine sensiblen Details, wenn du das nicht möchtest.</div>
-          </div>
-
-          <!-- Buttons -->
-          <div class="btn-row">
-            <button class="btn secondary" id="prevBtn" type="button" style="display:none;">Zurück</button>
-            <button class="btn primary" id="nextBtn" type="button">Weiter</button>
-          </div>
-
-          <!-- Ergebnis-Area (falls du am Ende eine Card zeigst) -->
-          <div class="result-wrap" id="resultWrap" style="display:none;">
-            <div class="result-card">
-              <div class="result-kicker">DIGITALER KOMPASS</div>
-              <div class="result-title" id="resultTitle">Orientierung:</div>
-              <div class="result-text" id="resultText">—</div>
-
-              <div class="result-actions">
-                <button class="btn primary" id="ctaBtn" type="button">Abklärung starten</button>
-                <button class="btn secondary" id="copyBtn" type="button">Zusammenfassung kopieren</button>
-              </div>
-            </div>
-
-            <div class="btn-row end-row">
-              <button class="btn secondary" id="backBtn" type="button">Zurück</button>
-              <button class="btn primary" id="doneBtn" type="button">Fertig</button>
-            </div>
-          </div>
-
-          <!-- Hinweistext: bleibt IMMER frei (nichts liegt drüber) -->
-          <p class="legal" id="legalHint">
-            Hinweis: CanaDoc stellt keine Diagnosen und verschreibt keine Medikamente.
-            Medizinische Entscheidungen erfolgen ausschließlich durch Ärztinnen und Ärzte.
-          </p>
-
-        </div>
-      </section>
-
-    </div>
+    <!-- LEGAL (immer sichtbar, nie überdeckt) -->
+    <section class="k-legal" aria-label="Hinweis">
+      Hinweis: CanaDoc stellt keine Diagnosen und verschreibt keine Medikamente.
+      Medizinische Entscheidungen erfolgen ausschließlich durch Ärztinnen und Ärzte.
+    </section>
   </main>
 
-  <!-- Script -->
-  <script src="script.js?v=12"></script>
+  <script src="kompass.js?v=100"></script>
 </body>
 </html>
