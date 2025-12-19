@@ -4,8 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Digitaler Kompass – CanaDoc</title>
-
-  <link rel="stylesheet" href="kompass.css?v=202" />
+  <link rel="stylesheet" href="kompass.css?v=200" />
 </head>
 <body>
 
@@ -32,7 +31,10 @@
 
         <div class="k-top-right">
           <div class="k-top-time">~ 60 Sekunden</div>
-          <div class="k-status ok" id="kStatusPill" aria-live="polite">Alles ruhig.</div>
+          <div class="k-status-pill" id="kStatusPill">
+            <span class="k-status-dot" id="kStatusDot" aria-hidden="true"></span>
+            <span class="k-status-text" id="kStatusText">Alles ruhig.</span>
+          </div>
         </div>
       </div>
     </section>
@@ -78,11 +80,8 @@
     <!-- CONTROLS -->
     <section class="k-controls" aria-label="Navigation">
       <button id="kPrev" type="button">Zurück</button>
-      <button id="kNext" type="button" class="primary">Kompass starten</button>
+      <button id="kNext" type="button" class="primary">Weiter</button>
     </section>
-
-    <!-- Mascot Reaction -->
-    <div class="k-reaction" id="kReaction" aria-hidden="true">●</div>
 
     <!-- LEGAL -->
     <section class="k-legal" aria-label="Hinweis">
@@ -91,6 +90,6 @@
     </section>
   </main>
 
-  <script src="kompass.js?v=202"></script>
+  <script src="kompass.js?v=200"></script>
 </body>
 </html>
