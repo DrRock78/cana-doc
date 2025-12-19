@@ -1,488 +1,429 @@
 (() => {
   "use strict";
 
-  // ====== EINZIGE STELLE FÜR DEINEN SPÄTEREN DOKTORABC-LINK ======
-  // Sobald du den echten Link hast: NUR diese eine Zeile ändern.
-  const DOCTOR_URL = "#"; // z.B. "https://doktorabc.de/..." (wenn du ihn hast)
+  // ---------- Helpers ----------
+  const $ = (id) => document.getElementById(id);
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 
-  // ====== DOM ======
-  const elStage = document.getElementById("kStage");
-  const elPrev  = document.getElementById("kPrev");
-  const elNext  = document.getElementById("kNext");
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  const elStepNow = document.getElementById("kStepNow");
-  const elStepMax = document.getElementById("kStepMax");
-  const elFill    = document.getElementById("kProgressFill");
-  const elDots    = document.getElementById("kDots");
+  // ---------- DOM ----------
+  const stage = $("kStage");
+  const btnPrev = $("kPrev");
+  const btnNext = $("kNext");
 
-  const elStatusDot  = document.getElementById("kStatusDot");
-  const elStatusText = document.getElementById("kStatusText");
+  const stepNowEl = $("kStepNow");
+  const stepMaxEl = $("kStepMax");
+  const fill = $("kProgressFill");
+  const dotsWrap = $("kDots");
 
-  const TOTAL_STEPS = 6;
+  const bubbleText = $("kBubbleText");
+  const reaction = $("kReaction");
 
-  // ====== STATE ======
-  const state = {
-    step: 0,
-    focus: null,        // "Schlaf & Erholung" | "Stress & Anspannung" | "Körperliche Beschwerden" | "Allgemeine Orientierung"
-    when: null,         // "Tage" | "Wochen" | "Monate+"
-    impact: null,       // "leicht" | "mittel" | "stark"
-    note: "",           // Freitext
-    risk: "ok",         // "ok" | "warn" | "danger"
+  // ---------- State ----------
+  const answers = {
+    goal: "",
+    timeframe: "",
+    impact: "",
+    notes: "",
   };
 
+  let stepIndex = 0;
+  let isTransitioning = false;
+
+  // ---------- Steps (6) ----------
+  // Hinweis: reine Orientierung, keine Diagnose.
   const steps = [
-    { id: "focus",  required: true },
-    { id: "when",   required: true },
-    { id: "impact", required: true },
-    { id: "note",   required: false },
-    { id: "review", required: false },
-    { id: "result", required: false }
+    {
+      id: "intro",
+      type: "intro",
+      q: "Kompass starten",
+      sub: "In ~60 Sekunden bekommst du Orientierung. Keine Registrierung. Nur notwendige Angaben.",
+      bubble: "Alles gut. Ich führe dich ruhig durch – Schritt für Schritt.",
+    },
+    {
+      id: "goal",
+      type: "cards",
+      q: "Worum geht es dir heute am ehesten?",
+      sub: "Wähle das, was am besten passt. Du kannst später ergänzen.",
+      bubble: "Sag mir kurz die Richtung – dann wird’s klar.",
+      key: "goal",
+      options: [
+        { v: "sleep", t: "Schlaf & Erholung", d: "Ein- oder Durchschlafen, Abendruhe" },
+        { v: "stress", t: "Stress & Anspannung", d: "Unruhe, Druck, Gedankenkarussell" },
+        { v: "pain", t: "Körperliche Beschwerden", d: "z. B. Verspannung, Schmerz, Belastung" },
+        { v: "other", t: "Allgemeine Orientierung", d: "Ich bin unsicher und will Klarheit" },
+      ],
+    },
+    {
+      id: "timeframe",
+      type: "cards",
+      q: "Seit wann beschäftigt dich das Thema?",
+      sub: "Ein Gefühl für den Zeitraum hilft bei der Orientierung.",
+      bubble: "Nur grob. Perfekt muss es nicht sein.",
+      key: "timeframe",
+      options: [
+        { v: "days", t: "Ein paar Tage", d: "neu / frisch aufgetreten" },
+        { v: "weeks", t: "Einige Wochen", d: "zieht sich schon etwas" },
+        { v: "months", t: "Monate oder länger", d: "dauerhaft / wiederkehrend" },
+      ],
+    },
+    {
+      id: "impact",
+      type: "cards",
+      q: "Wie stark beeinflusst es deinen Alltag?",
+      sub: "Nur zur Orientierung – keine Bewertung.",
+      bubble: "Ich bewerte nicht. Ich ordne nur ein.",
+      key: "impact",
+      options: [
+        { v: "low", t: "Leicht", d: "spürbar, aber handelbar" },
+        { v: "mid", t: "Mittel", d: "kostet Energie / nervt" },
+        { v: "high", t: "Stark", d: "belastet deutlich (Tag/Job/Familie)" },
+      ],
+    },
+    {
+      id: "notes",
+      type: "text",
+      q: "Wenn du magst: ein Satz dazu.",
+      sub: "Optional. Keine sensiblen Details, wenn du das nicht möchtest.",
+      bubble: "Ein Satz reicht. Du behältst die Kontrolle.",
+      key: "notes",
+      placeholder: "z. B. „Abends komme ich nicht runter“ oder „Ich wache nachts oft auf“ …",
+      optional: true,
+    },
+    {
+      id: "result",
+      type: "result",
+      q: "Deine Orientierung",
+      sub: "Das ist eine Einordnung – keine Diagnose.",
+      bubble: "Gut. Jetzt ist der nächste Schritt klar.",
+    },
   ];
 
-  // ====== INIT ======
-  elStepMax.textContent = String(TOTAL_STEPS);
-  renderDots();
-  updateNav();
-  renderStep();
-
-  elPrev.addEventListener("click", () => {
-    if (state.step > 0) {
-      state.step--;
-      renderStep();
-      updateNav();
-      scrollTop();
+  // ---------- Progress ----------
+  function renderDots() {
+    dotsWrap.innerHTML = "";
+    for (let i = 0; i < steps.length; i++) {
+      const dot = document.createElement("span");
+      if (i === stepIndex) dot.classList.add("active");
+      dotsWrap.appendChild(dot);
     }
-  });
-
-  elNext.addEventListener("click", () => {
-    if (!canGoNext()) return;
-    if (state.step < TOTAL_STEPS - 1) {
-      state.step++;
-      renderStep();
-      updateNav();
-      scrollTop();
-    }
-  });
-
-  // ====== RENDER ======
-  function renderStep() {
-    const s = steps[state.step];
-    setProgress(state.step);
-
-    if (!s) return;
-
-    if (s.id === "focus")  return renderFocus();
-    if (s.id === "when")   return renderWhen();
-    if (s.id === "impact") return renderImpact();
-    if (s.id === "note")   return renderNote();
-    if (s.id === "review") return renderReview();
-    if (s.id === "result") return renderResult();
   }
 
-  function baseCard(title, subtitle) {
-    return `
-      <div class="k-card">
-        <div class="k-h1">${escapeHtml(title)}</div>
-        <div class="k-h2">${escapeHtml(subtitle)}</div>
-      </div>
-    `;
+  function updateProgress() {
+    stepNowEl.textContent = String(stepIndex + 1);
+    stepMaxEl.textContent = String(steps.length);
+
+    const pct = Math.round((stepIndex / (steps.length - 1)) * 100);
+    fill.style.width = `${clamp(pct, 0, 100)}%`;
+    document.querySelector(".k-progress-bar")?.setAttribute("aria-valuenow", String(pct));
+    renderDots();
   }
 
-  function renderFocus() {
-    elStage.innerHTML = `
-      <div class="k-card">
-        <div class="k-h1">Womit möchtest du heute starten?</div>
-        <div class="k-h2">Wähle das, was am besten passt.</div>
-
-        <div class="k-options">
-          ${opt("Schlaf & Erholung", "Ein- oder durchschlafen, Abendruhe")}
-          ${opt("Stress & Anspannung", "Unruhe, Druck, Gedankenkarussell")}
-          ${opt("Körperliche Beschwerden", "z. B. Verspannung oder Schmerz")}
-          ${opt("Allgemeine Orientierung", "Ich bin unsicher und will Klarheit")}
-        </div>
-      </div>
-    `;
-
-    bindOptionClicks((val) => {
-      state.focus = val;
-      bumpRiskFromStructured(); // mild based on selections
-      updateStatusFromRisk();
-      updateNav();
-    });
+  // ---------- Mascot Bubble + Reaction ----------
+  function setBubble(text) {
+    if (!bubbleText) return;
+    bubbleText.textContent = text || "";
   }
 
-  function renderWhen() {
-    elStage.innerHTML = `
-      <div class="k-card">
-        <div class="k-h1">Seit wann beschäftigt dich das?</div>
-        <div class="k-h2">Ganz grob – es geht nur um Orientierung.</div>
-
-        <div class="k-options">
-          ${opt("Nur ein paar Tage", "Seit kurzem", "Tage")}
-          ${opt("Einige Wochen", "Seit mehreren Wochen", "Wochen")}
-          ${opt("Monate oder länger", "Schon länger", "Monate+")}
-        </div>
-      </div>
-    `;
-
-    bindOptionClicks((val) => {
-      state.when = val;
-      bumpRiskFromStructured();
-      updateStatusFromRisk();
-      updateNav();
-    });
+  function thumbsUp() {
+    if (!reaction) return;
+    reaction.classList.add("show");
+    setTimeout(() => reaction.classList.remove("show"), 650);
   }
 
-  function renderImpact() {
-    elStage.innerHTML = `
-      <div class="k-card">
-        <div class="k-h1">Wie stark beeinflusst es deinen Alltag?</div>
-        <div class="k-h2">Dein Gefühl zählt – nicht Perfektion.</div>
-
-        <div class="k-options">
-          ${opt("Leicht", "Ich komme klar, aber es nervt", "leicht")}
-          ${opt("Mittel", "Es kostet mich Energie", "mittel")}
-          ${opt("Stark", "Es zieht mich spürbar runter", "stark")}
-        </div>
-      </div>
-    `;
-
-    bindOptionClicks((val) => {
-      state.impact = val;
-      bumpRiskFromStructured();
-      updateStatusFromRisk();
-      updateNav();
-    });
-  }
-
-  function renderNote() {
-    elStage.innerHTML = `
-      <div class="k-card">
-        <div class="k-h1">Möchtest du einen Satz ergänzen?</div>
-        <div class="k-h2">Optional. Ein Satz reicht.</div>
-
-        <input class="k-input" id="kNote" type="text" maxlength="140"
-          placeholder="z. B. „Ich fühle mich überfordert“ oder „Ich möchte mich informieren“"
-          value="${escapeAttr(state.note || "")}"
-        />
-      </div>
-    `;
-
-    const input = document.getElementById("kNote");
-    input.addEventListener("input", () => {
-      state.note = input.value || "";
-      state.risk = assessRisk(state.note);
-      updateStatusFromRisk();
-      updateNav();
-    });
-
-    // initial evaluate
-    state.risk = assessRisk(state.note);
-    updateStatusFromRisk();
-  }
-
-  function renderReview() {
-    const focus = state.focus || "–";
-    const when  = labelWhen(state.when);
-    const imp   = labelImpact(state.impact);
-
-    elStage.innerHTML = `
-      <div class="k-card">
-        <div class="k-h1">Kurzcheck</div>
-        <div class="k-h2">Stimmt das so für dich?</div>
-
-        <div class="k-text">
-          <div><strong>Fokus:</strong> ${escapeHtml(focus)}</div>
-          <div><strong>Zeitraum:</strong> ${escapeHtml(when)}</div>
-          <div><strong>Alltag:</strong> ${escapeHtml(imp)}</div>
-        </div>
-
-        ${state.note?.trim() ? `
-          <div class="k-quote">
-            <div class="k-quote-label">DEIN SATZ</div>
-            <div class="k-quote-body">„${escapeHtml(state.note.trim())}“</div>
-          </div>
-        ` : ""}
-      </div>
-    `;
-  }
-
-  function renderResult() {
-    // Final risk based on freetext + structured
-    if (state.risk !== "danger") bumpRiskFromStructured();
-
-    updateStatusFromRisk();
-
-    const focus = state.focus || "Allgemein";
-    const when  = labelWhen(state.when);
-    const imp   = labelImpact(state.impact);
-    const note  = (state.note || "").trim();
-
-    // Copy in CanaDoc style
-    const headline = buildHeadline(focus);
-    const body = buildBody(focus);
-
-    // ====== DANGER CARD (mit Weiterleitung) ======
-    if (state.risk === "danger") {
-      elStage.innerHTML = `
-        <div class="k-card k-danger">
-          <div class="k-danger-top">
-            <div class="k-danger-tag">WICHTIG</div>
-            <div class="k-danger-dot" aria-hidden="true"></div>
-          </div>
-
-          <div class="k-danger-title">Wenn du daran denkst, dir etwas anzutun: bitte hol dir jetzt Hilfe.</div>
-          <div class="k-text">
-            Ich kann das nicht sicher begleiten – aber ich kann dir helfen, jetzt den nächsten sicheren Schritt zu gehen.
-            <br><br>
-            <strong>Akut / Gefahr:</strong> 112 (Notruf) oder geh in die nächste Notaufnahme.
-            <br>
-            <strong>TelefonSeelsorge:</strong> 116 123 (24/7, kostenlos)
-          </div>
-
-          ${note ? `
-            <div class="k-quote">
-              <div class="k-quote-label">DEIN SATZ</div>
-              <div class="k-quote-body">„${escapeHtml(note)}“</div>
-            </div>
-          ` : ""}
-
-          <div class="k-danger-actions">
-            <a href="tel:112" class="primary">Notruf 112</a>
-            <a href="tel:116123">116 123</a>
-          </div>
-
-          <button class="k-primary-action" id="kDoctorBtn">Zum Arztgespräch</button>
-
-          <div class="k-subhint">
-            Hinweis: Wenn unmittelbare Gefahr besteht, wähle bitte 112.
-          </div>
-        </div>
-      `;
-
-      const btn = document.getElementById("kDoctorBtn");
-      btn.addEventListener("click", () => {
-        // Auch bei „danger“: Weiterleitung möglich – Entscheidung liegt beim Arzt.
-        if (DOCTOR_URL && DOCTOR_URL !== "#") window.location.href = DOCTOR_URL;
-      });
-
-      return;
-    }
-
-    // ====== NORMAL RESULT (NUR 1 BUTTON) ======
-    elStage.innerHTML = `
-      <div class="k-card">
-        <div class="k-result-title">Deine Kompass-Orientierung</div>
-        <div class="k-text">Das ist eine Orientierung – keine Diagnose. Die medizinische Entscheidung trifft ein Arzt.</div>
-
-        <div style="height:12px"></div>
-
-        <div class="k-badge">
-          <span aria-hidden="true">🧭</span>
-          <span>DIGITALER KOMPASS</span>
-        </div>
-
-        <div class="k-h1">${escapeHtml(headline)}</div>
-        <div class="k-text">${escapeHtml(body)}</div>
-
-        ${note ? `
-          <div class="k-quote">
-            <div class="k-quote-label">DEIN SATZ</div>
-            <div class="k-quote-body">„${escapeHtml(note)}“</div>
-          </div>
-        ` : ""}
-
-        <div class="k-text" style="margin-top:12px">
-          <strong>Fokus:</strong> ${escapeHtml(focus)}<br>
-          <strong>Zeitraum:</strong> ${escapeHtml(when)}<br>
-          <strong>Alltag:</strong> ${escapeHtml(imp)}
-        </div>
-
-        <button class="k-primary-action" id="kDoctorBtn">Zum Arztgespräch</button>
-
-        <div class="k-subhint">
-          Wenn du dich gerade nicht sicher fühlst: Sprich jetzt mit einem Menschen.
-          TelefonSeelsorge 116 123 · Notruf 112
-        </div>
-      </div>
-    `;
-
-    document.getElementById("kDoctorBtn").addEventListener("click", () => {
-      if (DOCTOR_URL && DOCTOR_URL !== "#") window.location.href = DOCTOR_URL;
-    });
-  }
-
-  // ====== OPTIONS HELPER ======
-  function opt(title, desc, value) {
-    const v = value ?? title;
-    const selected = isSelected(title, v);
-    return `
-      <button class="k-opt ${selected ? "selected" : ""}" type="button" data-value="${escapeAttr(v)}" data-title="${escapeAttr(title)}">
-        <strong>${escapeHtml(title)}</strong>
-        <span>${escapeHtml(desc)}</span>
-      </button>
-    `;
-  }
-
-  function bindOptionClicks(onPick) {
-    const btns = [...elStage.querySelectorAll(".k-opt")];
-    btns.forEach(b => b.addEventListener("click", () => {
-      btns.forEach(x => x.classList.remove("selected"));
-      b.classList.add("selected");
-      onPick(b.dataset.value || b.dataset.title || "");
-    }));
-  }
-
-  function isSelected(title, v){
-    const s = steps[state.step]?.id;
-    if (s === "focus") return state.focus === title;
-    if (s === "when") return state.when === v;
-    if (s === "impact") return state.impact === v;
-    return false;
-  }
-
-  // ====== NAV / VALIDATION ======
+  // ---------- Validation ----------
   function canGoNext() {
-    const s = steps[state.step];
-    if (!s) return true;
+    const step = steps[stepIndex];
+    if (step.type === "intro" || step.type === "result") return true;
 
-    if (s.id === "focus")  return !!state.focus;
-    if (s.id === "when")   return !!state.when;
-    if (s.id === "impact") return !!state.impact;
+    const key = step.key;
+    const val = answers[key];
 
+    if (step.type === "text") {
+      if (step.optional) return true;
+      return Boolean(val && String(val).trim().length > 0);
+    }
+    if (step.type === "cards") return Boolean(val);
     return true;
   }
 
-  function updateNav() {
-    elPrev.disabled = state.step === 0;
+  // ---------- UI helpers ----------
+  function mkCard(title, desc, onClick) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "k-card-btn";
+    btn.innerHTML = `<div class="t">${escapeHtml(title)}</div><div class="d">${escapeHtml(desc)}</div>`;
+    btn.addEventListener("click", onClick);
+    return btn;
+  }
 
-    // last step: Next becomes disabled (we keep it simple)
-    if (state.step === TOTAL_STEPS - 1) {
-      elNext.disabled = true;
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  // ---------- Render Step ----------
+  function renderStep() {
+    const step = steps[stepIndex];
+    updateProgress();
+    setBubble(step.bubble || "Ich bin da.");
+
+    // Buttons
+    btnPrev.style.visibility = stepIndex === 0 ? "hidden" : "visible";
+    btnNext.textContent = step.type === "result" ? "Fertig" : "Weiter";
+    btnNext.disabled = isTransitioning || !canGoNext();
+
+    // Stage
+    stage.innerHTML = "";
+    const wrap = document.createElement("div");
+    wrap.className = "k-step";
+
+    const q = document.createElement("div");
+    q.className = "k-question";
+    q.textContent = step.q;
+
+    const sub = document.createElement("div");
+    sub.className = "k-sub";
+    sub.textContent = step.sub;
+
+    wrap.appendChild(q);
+    wrap.appendChild(sub);
+
+    // INTRO: kein extra Container mehr (dein Wunsch)
+    if (step.type === "intro") {
+      const hint = document.createElement("div");
+      hint.className = "k-hint";
+      hint.textContent = "Hinweis: Orientierung – keine Diagnose.";
+      wrap.appendChild(hint);
+    }
+
+    // CARDS
+    if (step.type === "cards") {
+      const cards = document.createElement("div");
+      cards.className = "k-cards";
+
+      step.options.forEach((opt) => {
+        const el = mkCard(opt.t, opt.d, () => {
+          answers[step.key] = opt.v;
+
+          [...cards.querySelectorAll(".k-card-btn")].forEach((b) => b.classList.remove("selected"));
+          el.classList.add("selected");
+
+          btnNext.disabled = isTransitioning || !canGoNext();
+          setBubble(step.bubble || "Okay.");
+          thumbsUp();
+        });
+
+        if (answers[step.key] === opt.v) el.classList.add("selected");
+        cards.appendChild(el);
+      });
+
+      wrap.appendChild(cards);
+    }
+
+    // TEXT
+    if (step.type === "text") {
+      const input = document.createElement("textarea");
+      input.className = "k-input";
+      input.placeholder = step.placeholder || "";
+      input.value = answers[step.key] || "";
+      input.rows = 4;
+
+      input.addEventListener("input", () => {
+        answers[step.key] = input.value;
+        btnNext.disabled = isTransitioning || !canGoNext();
+      });
+
+      wrap.appendChild(input);
+
+      const hint = document.createElement("div");
+      hint.className = "k-hint";
+      hint.textContent = "Tipp: Ein Satz reicht. Wenn du dich nicht sicher fühlst, sprich bitte sofort mit einem Menschen.";
+      wrap.appendChild(hint);
+    }
+
+    // RESULT
+    if (step.type === "result") {
+      wrap.appendChild(buildResultCard());
+    }
+
+    stage.appendChild(wrap);
+  }
+
+  // ---------- Safety / intent detection ----------
+  function detectSignals(textRaw) {
+    const text = (textRaw || "").toLowerCase();
+
+    // High-risk self-harm / suicide
+    const selfHarm =
+      /selbstmord|suizid|umbringen|mich töten|mein leben nehmen|brücke|springen|will nicht mehr|nicht mehr leben/.test(text);
+
+    // explicit cannabis / prescription intent (neutral handling)
+    const cannabis =
+      /cannabis|thc|gras|weed|joint|blüte|rezept|auf rezept|medizinisch(es)? cannabis|telemedizin(er)?/.test(text);
+
+    return { selfHarm, cannabis };
+  }
+
+  // ---------- Result Logic ----------
+  function buildResultCard() {
+    const goal = answers.goal || "other";
+    const timeframe = answers.timeframe || "weeks";
+    const impact = answers.impact || "mid";
+    const notes = answers.notes || "";
+
+    const sig = detectSignals(notes);
+
+    // Default orientation message
+    let headline = "Orientierung abgeschlossen.";
+    let note =
+      "Du kannst jetzt entscheiden, ob du den nächsten Schritt gehen möchtest. Für medizinische Entscheidungen ist ein Arzt zuständig.";
+    let badge = "Digitaler Kompass";
+    let tone = "ok"; // ok | warn
+
+    // More specific tone (still non-diagnostic)
+    if (impact === "high" || timeframe === "months") {
+      note =
+        "Wenn es dich stark oder lange belastet, ist ein ärztliches Gespräch der sauberste nächste Schritt. Ich begleite dich nur bis zur Orientierung.";
+    } else if (impact === "low" && timeframe === "days") {
+      note =
+        "Wenn es neu und leicht ist: beobachte es bewusst. Wenn es bleibt oder stärker wird, ist ein ärztliches Gespräch sinnvoll.";
+    }
+
+    // Cannabis intent: allow telemedicine option without promising outcome
+    if (sig.cannabis) {
+      note =
+        "Wenn du dich über medizinische Optionen informieren möchtest: Ein Arzt klärt Eignung, Risiken, Alternativen und die rechtlich saubere Dokumentation. Ich begleite dich bis zur Orientierung – die Entscheidung trifft der Arzt.";
+    }
+
+    // Self-harm: strong support message + emergency options + still allow doctor consult (secondary)
+    if (sig.selfHarm) {
+      tone = "warn";
+      badge = "Wichtiger Hinweis";
+      headline = "Bitte hol dir jetzt Unterstützung.";
+      note =
+        "Wenn du dich gerade nicht sicher fühlst: Es ist wichtig, jetzt mit einem Menschen zu sprechen. Du musst da nicht alleine durch.";
+    }
+
+    const box = document.createElement("div");
+    box.className = `k-result ${tone === "warn" ? "k-result-warn" : ""}`;
+
+    // Only ONE CTA (dein Wunsch) – zum Arztgespräch (DoctorABC).
+    // Bei Self-Harm zeigen wir zusätzlich eine Hilfekarte (Text + Nummern), aber CTA bleibt Arztgespräch.
+    box.innerHTML = `
+      <div class="k-result-head">
+        <div class="k-badge">${escapeHtml(badge)}</div>
+        <div class="k-needle" aria-hidden="true">🧭</div>
+      </div>
+
+      <div class="k-result-title">${escapeHtml(headline)}</div>
+      <div class="k-result-text">${escapeHtml(note)}</div>
+
+      ${
+        sig.selfHarm
+          ? `
+      <div class="k-helpcard" role="note" aria-label="Soforthilfe">
+        <div class="k-help-title">Sofort sprechen:</div>
+        <div class="k-help-lines">
+          <div><strong>TelefonSeelsorge:</strong> 116 123 (kostenfrei, 24/7)</div>
+          <div><strong>Notruf:</strong> 112</div>
+        </div>
+        <div class="k-help-mini">Wenn akute Gefahr besteht, bitte 112 wählen.</div>
+      </div>
+      `
+          : ""
+      }
+
+      <div class="k-result-actions">
+        <a class="k-result-btn primary" id="goDoctor" href="weiterleitung.html">Zum Arztgespräch</a>
+      </div>
+
+      <div class="k-result-legal">
+        Hinweis: Dies ist eine Orientierung und ersetzt keine ärztliche Behandlung.
+      </div>
+    `;
+
+    return box;
+  }
+
+  // ---------- Navigation (with 0.3s presence delay) ----------
+  async function next() {
+    if (isTransitioning) return;
+
+    // guard
+    if (!canGoNext()) {
+      setBubble("Ein kurzer Klick reicht – dann weiter.");
       return;
     }
 
-    // for all other steps:
-    elNext.disabled = !canGoNext();
-    elNext.textContent = (state.step === TOTAL_STEPS - 2) ? "Fertig" : "Weiter";
-  }
+    isTransitioning = true;
+    btnNext.disabled = true;
 
-  // ====== PROGRESS ======
-  function renderDots(){
-    elDots.innerHTML = "";
-    for(let i=0;i<TOTAL_STEPS;i++){
-      const d = document.createElement("div");
-      d.className = "k-dot" + (i === 0 ? " active" : "");
-      elDots.appendChild(d);
-    }
-  }
+    // 0.3s “presence”
+    thumbsUp();
+    await sleep(300);
 
-  function setProgress(stepIndex){
-    const pct = Math.round((stepIndex/(TOTAL_STEPS-1))*100);
-    elFill.style.width = `${pct}%`;
-    elStepNow.textContent = String(stepIndex+1);
-
-    const dots = [...elDots.querySelectorAll(".k-dot")];
-    dots.forEach((d,i)=> d.classList.toggle("active", i<=stepIndex));
-  }
-
-  // ====== RISK / AMPEL ======
-  function assessRisk(text){
-    const t = (text || "").toLowerCase();
-
-    // High-risk words (German) – blunt on purpose.
-    const danger = [
-      "selbstmord", "suizid", "umbringen", "mich töten", "mich toeten",
-      "nicht mehr leben", "will nicht mehr leben", "ich bringe mich um",
-      "ich werde mich umbringen", "ich tue mir was an", "ich tu mir was an"
-    ];
-
-    if (danger.some(w => t.includes(w))) return "danger";
-
-    // warning keywords
-    const warn = ["panik", "attacke", "angst", "extrem", "überfordert", "ueberfordert"];
-    if (warn.some(w => t.includes(w))) return "warn";
-
-    return state.risk || "ok";
-  }
-
-  function bumpRiskFromStructured(){
-    // If already danger, keep it.
-    if (state.risk === "danger") return;
-
-    // stronger + long duration => warn
-    if ((state.impact === "stark") && (state.when === "Monate+")) {
-      state.risk = "warn";
+    // last step -> finish
+    if (stepIndex >= steps.length - 1) {
+      window.location.href = "index.html";
       return;
     }
-    // mild default
-    if (!state.risk) state.risk = "ok";
+
+    stepIndex++;
+    isTransitioning = false;
+    renderStep();
   }
 
-  function updateStatusFromRisk(){
-    const r = state.risk || "ok";
-    if (r === "danger") {
-      elStatusDot.style.background = "var(--danger)";
-      elStatusDot.style.boxShadow = "0 0 18px rgba(255,59,59,.35)";
-      elStatusText.textContent = "Wichtig.";
-      return;
-    }
-    if (r === "warn") {
-      elStatusDot.style.background = "var(--warn)";
-      elStatusDot.style.boxShadow = "0 0 18px rgba(255,204,0,.28)";
-      elStatusText.textContent = "Achte auf dich.";
-      return;
-    }
-    elStatusDot.style.background = "var(--ok)";
-    elStatusDot.style.boxShadow = "0 0 14px rgba(17,246,165,.25)";
-    elStatusText.textContent = "Alles ruhig.";
+  async function prev() {
+    if (isTransitioning) return;
+    if (stepIndex <= 0) return;
+
+    isTransitioning = true;
+    btnPrev.disabled = true;
+
+    await sleep(150);
+
+    stepIndex--;
+    isTransitioning = false;
+    renderStep();
   }
 
-  // ====== COPY ======
-  function buildHeadline(focus){
-    if (focus === "Stress & Anspannung") return "Stress: wir bringen Ruhe in die Lage.";
-    if (focus === "Schlaf & Erholung") return "Schlaf: wir sortieren das sauber.";
-    if (focus === "Körperliche Beschwerden") return "Körper: wir bleiben klar und strukturiert.";
-    return "Orientierung: wir klären den nächsten Schritt.";
-  }
+  // ---------- Events ----------
+  btnNext.addEventListener("click", next);
+  btnPrev.addEventListener("click", prev);
 
-  function buildBody(focus){
-    if (focus === "Stress & Anspannung") {
-      return "Wenn Druck und Gedankenkarussell dominieren, hilft ein ärztliches Gespräch oft dabei, Optionen und nächste Schritte klar zu sortieren – ohne Chaos, ohne Drama.";
-    }
-    if (focus === "Schlaf & Erholung") {
-      return "Wenn Schlaf dauerhaft kippt, ist es sinnvoll, das ärztlich einzuordnen. So bekommst du Klarheit, was sinnvoll ist – und was du dir sparen kannst.";
-    }
-    if (focus === "Körperliche Beschwerden") {
-      return "Wenn Beschwerden bleiben oder stärker werden, ist eine ärztliche Abklärung der sauberste nächste Schritt. Du bestimmst Tempo und Tiefe.";
-    }
-    return "Wenn du unsicher bist, bringt ein ärztliches Gespräch oft die schnellste Klarheit. CanaDoc begleitet nur bis zur Orientierung – die Entscheidung trifft ein Arzt.";
-  }
+  stage.addEventListener("click", () => {
+    btnNext.disabled = isTransitioning || !canGoNext();
+  });
 
-  // ====== LABELS ======
-  function labelWhen(v){
-    if (v === "Tage") return "seit ein paar Tagen";
-    if (v === "Wochen") return "seit Wochen";
-    if (v === "Monate+") return "Monate oder länger";
-    return "–";
-  }
-  function labelImpact(v){
-    if (v === "leicht") return "leicht";
-    if (v === "mittel") return "mittel";
-    if (v === "stark") return "stark";
-    return "–";
-  }
+  // ---------- Minimal styling injection for result + helpcard ----------
+  // (damit es sofort sauber aussieht – ohne CSS anfassen zu müssen)
+  const style = document.createElement("style");
+  style.textContent = `
+    .k-result{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px;background:rgba(0,0,0,.35);box-shadow:0 0 22px rgba(0,255,154,.10)}
+    .k-result-warn{border-color:rgba(255,60,60,.35);box-shadow:0 0 24px rgba(255,60,60,.12)}
+    .k-result-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .k-badge{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,255,154,.95)}
+    .k-result-warn .k-badge{color:rgba(255,120,120,.95)}
+    .k-result-title{font-size:18px;font-weight:800;margin:6px 0 8px}
+    .k-result-text{color:rgba(255,255,255,.78);font-size:14px;line-height:1.45}
+    .k-result-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+    .k-result-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:999px;font-weight:800;text-decoration:none;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}
+    .k-result-btn.primary{background:#00ff9a;color:#000;border:none;box-shadow:0 0 20px rgba(0,255,154,.25)}
+    .k-result-legal{margin-top:10px;font-size:12px;color:rgba(255,255,255,.55)}
+    .k-helpcard{margin-top:12px;border-radius:14px;padding:12px;border:1px solid rgba(255,120,120,.25);background:rgba(255,80,80,.06)}
+    .k-help-title{font-weight:900;margin-bottom:6px}
+    .k-help-lines{font-size:13px;line-height:1.5;color:rgba(255,255,255,.85)}
+    .k-help-mini{margin-top:6px;font-size:12px;color:rgba(255,255,255,.70)}
+    .k-hint{margin-top:10px;font-size:12px;color:rgba(255,255,255,.65)}
+  `;
+  document.head.appendChild(style);
 
-  // ====== UTILS ======
-  function scrollTop(){ window.scrollTo({ top: 0, behavior: "smooth" }); }
-
-  function escapeHtml(str){
-    return String(str ?? "")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-  function escapeAttr(str){ return escapeHtml(str).replaceAll("\n"," "); }
+  // ---------- Init ----------
+  renderStep();
 })();
