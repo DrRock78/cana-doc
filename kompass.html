@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Digitaler Kompass – CanaDoc</title>
 
-  <link rel="stylesheet" href="kompass.css?v=200" />
+  <link rel="stylesheet" href="kompass.css?v=202" />
 </head>
 <body>
 
@@ -18,7 +18,6 @@
     <!-- TOP BAR -->
     <section class="k-top" aria-label="Fortschritt">
       <div class="k-top-inner">
-
         <div class="k-top-left">
           <div class="k-top-title">
             Schritt <span id="kStepNow">1</span>/<span id="kStepMax">6</span>
@@ -33,14 +32,8 @@
 
         <div class="k-top-right">
           <div class="k-top-time">~ 60 Sekunden</div>
-
-          <!-- D4: Ampel sichtbar -->
-          <div class="k-ampel-wrap" aria-label="Status">
-            <span class="k-ampel-dot is-green" id="kAmpelDot" aria-hidden="true"></span>
-            <span class="k-ampel-text" id="kAmpelText">Alles ruhig.</span>
-          </div>
+          <div class="k-status ok" id="kStatusPill" aria-live="polite">Alles ruhig.</div>
         </div>
-
       </div>
     </section>
 
@@ -55,11 +48,10 @@
             <span class="k-chip-text">DIGITALER KOMPASS</span>
           </div>
 
-          <!-- Bubble links -->
           <div class="k-bubble" id="kBubble">
             <div class="k-bubble-icon" aria-hidden="true">⚡</div>
             <div class="k-bubble-text" id="kBubbleText">
-              Wir machen das ruhig &amp; klar. Ich bin an deiner Seite.
+              Wir gehen Schritt für Schritt. Du behältst die Kontrolle.
             </div>
           </div>
         </div>
@@ -85,12 +77,12 @@
 
     <!-- CONTROLS -->
     <section class="k-controls" aria-label="Navigation">
-      <button id="kPrev" type="button" class="ghost">Zurück</button>
-      <button id="kNext" type="button" class="primary">Weiter</button>
+      <button id="kPrev" type="button">Zurück</button>
+      <button id="kNext" type="button" class="primary">Kompass starten</button>
     </section>
 
-    <!-- D4: Mascot Reaction -->
-    <div class="k-reaction" id="kReaction" aria-hidden="true">👍</div>
+    <!-- Mascot Reaction -->
+    <div class="k-reaction" id="kReaction" aria-hidden="true">●</div>
 
     <!-- LEGAL -->
     <section class="k-legal" aria-label="Hinweis">
@@ -99,6 +91,6 @@
     </section>
   </main>
 
-  <script src="kompass.js?v=200"></script>
+  <script src="kompass.js?v=202"></script>
 </body>
 </html>
