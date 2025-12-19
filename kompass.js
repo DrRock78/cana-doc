@@ -1,22 +1,55 @@
 (() => {
-  // ---------- Helpers ----------
+  /* ============================
+     Helpers
+  ============================ */
   const $ = (id) => document.getElementById(id);
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+  const nowISO = () => new Date().toISOString();
 
-  function escapeHtml(str = "") {
-    return String(str)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+  /* ============================
+     D5: Privacy-first Tracking (NO free text)
+     - logs only: step changes, button clicks, selected options, ampel status
+     - stores locally (localStorage), capped
+  ============================ */
+  const TRACK_KEY = "canadoc_kompass_log_v1";
+  const sessionId = (() => {
+    const k = "canadoc_kompass_session_v1";
+    const existing = sessionStorage.getItem(k);
+    if (existing) return existing;
+    const id = Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
+    sessionStorage.setItem(k, id);
+    return id;
+  })();
+
+  function track(event, data = {}) {
+    // Whitelist only safe fields (no notes/freetext)
+    const safe = {
+      ts: nowISO(),
+      sessionId,
+      event,
+      stepId: data.stepId ?? null,
+      stepIndex: typeof data.stepIndex === "number" ? data.stepIndex : null,
+      ampel: data.ampel ?? null,
+      goal: data.goal ?? null,
+      timeframe: data.timeframe ?? null,
+      impact: data.impact ?? null,
+      action: data.action ?? null,
+    };
+
+    try {
+      const arr = JSON.parse(localStorage.getItem(TRACK_KEY) || "[]");
+      arr.push(safe);
+      // Cap size
+      const capped = arr.slice(-200);
+      localStorage.setItem(TRACK_KEY, JSON.stringify(capped));
+    } catch {
+      /* ignore */
+    }
   }
 
-  function norm(s = "") {
-    return String(s).toLowerCase().trim();
-  }
-
-  // ---------- DOM ----------
+  /* ============================
+     DOM
+  ============================ */
   const stage = $("kStage");
   const btnPrev = $("kPrev");
   const btnNext = $("kNext");
@@ -29,30 +62,44 @@
   const bubbleText = $("kBubbleText");
   const reaction = $("kReaction");
 
-  // ---------- State ----------
-  const answers = {};
+  // D4 Ampel
+  const ampelDot = $("kAmpelDot");
+  const ampelText = $("kAmpelText");
+
+  /* ============================
+     State
+  ============================ */
+  const answers = {
+    goal: null,
+    timeframe: null,
+    impact: null,
+    notes: "",
+  };
+
   let stepIndex = 0;
 
-  // ---------- Steps (6) ----------
+  /* ============================
+     Steps (keine Diagnose, reine Orientierung)
+  ============================ */
   const steps = [
     {
       id: "start",
       type: "intro",
-      q: "Los geht’s.",
-      sub: "60 Sekunden, dann hast du Orientierung. Keine Registrierung. Nur notwendige Angaben.",
-      bubble: "Wir machen das ruhig & klar. Ich bin an deiner Seite.",
+      q: "Kompass starten",
+      sub: "60 Sekunden – dann hast du Orientierung. Diskret. Ohne Registrierung.",
+      bubble: "Wir gehen Schritt für Schritt. Du behältst die Kontrolle.",
     },
     {
       id: "goal",
       type: "cards",
       q: "Worum geht es dir heute am ehesten?",
-      sub: "Wähle das, was am besten passt. Du kannst später ergänzen.",
-      bubble: "Sag mir kurz die Richtung – dann führe ich dich sauber durch.",
+      sub: "Wähle das, was am besten passt.",
+      bubble: "Sag mir kurz die Richtung – ich halte es klar und ruhig.",
       key: "goal",
       options: [
-        { v: "sleep", t: "Schlaf & Erholung", d: "Ein- oder Durchschlafen, Erholung, Abendruhe" },
+        { v: "sleep", t: "Schlaf & Erholung", d: "Ein- oder Durchschlafen, Abendruhe" },
         { v: "stress", t: "Stress & Anspannung", d: "Unruhe, Druck, Gedankenkarussell" },
-        { v: "pain", t: "Körperliche Beschwerden", d: "z. B. Verspannung, Schmerz, Belastung" },
+        { v: "pain", t: "Körperliche Beschwerden", d: "z. B. Verspannung, Schmerz" },
         { v: "other", t: "Allgemeine Orientierung", d: "Ich bin unsicher und will Klarheit" },
       ],
     },
@@ -60,8 +107,8 @@
       id: "timeframe",
       type: "cards",
       q: "Seit wann beschäftigt dich das Thema?",
-      sub: "Ein Gefühl für den Zeitraum hilft bei der Orientierung.",
-      bubble: "Nicht perfekt sein – nur ehrlich. Das reicht völlig.",
+      sub: "Der Zeitraum hilft, die Lage besser einzuordnen.",
+      bubble: "Nur grob reicht. Wir brauchen keine Perfektion.",
       key: "timeframe",
       options: [
         { v: "days", t: "Ein paar Tage", d: "neu / frisch aufgetreten" },
@@ -73,35 +120,37 @@
       id: "impact",
       type: "cards",
       q: "Wie stark beeinflusst es deinen Alltag?",
-      sub: "Das ist keine Bewertung – nur ein Kompass-Marker.",
-      bubble: "Hier geht’s um Orientierung, nicht um Urteil.",
+      sub: "Kein Urteil – nur ein Marker.",
+      bubble: "Du wirst hier nicht bewertet. Nur orientiert.",
       key: "impact",
       options: [
         { v: "low", t: "Leicht", d: "spürbar, aber handelbar" },
-        { v: "mid", t: "Mittel", d: "nervt, kostet Energie" },
-        { v: "high", t: "Stark", d: "belastet deutlich (Job/Familie/Tag)" },
+        { v: "mid", t: "Mittel", d: "kostet Energie" },
+        { v: "high", t: "Stark", d: "belastet deutlich" },
       ],
     },
     {
       id: "notes",
       type: "text",
-      q: "Ein Satz – damit ich dich besser einordnen kann.",
-      sub: "Optional. Keine sensiblen Details, wenn du das nicht möchtest.",
-      bubble: "Du gibst nur so viel preis, wie du willst. Wirklich.",
+      q: "Wenn du magst: ein Satz Kontext.",
+      sub: "Optional. Teile nur, was für dich passt.",
+      bubble: "Nur so viel, wie du willst. Ein Satz reicht.",
       key: "notes",
-      placeholder: "z. B. „Ich wache nachts oft auf“ oder „Abends komme ich nicht runter“ …",
+      placeholder: "z. B. „Abends komme ich nicht runter“ oder „Ich wache nachts oft auf“ …",
       optional: true,
     },
     {
       id: "result",
       type: "result",
       q: "Deine Kompass-Orientierung",
-      sub: "Das ist eine Orientierung – keine Diagnose.",
-      bubble: "Stark. Du hast Klarheit geschaffen. Jetzt entscheiden wir sauber den nächsten Schritt.",
+      sub: "Orientierung – keine Diagnose. Die medizinische Entscheidung trifft ein Arzt.",
+      bubble: "Danke. Jetzt machen wir den nächsten Schritt sauber.",
     },
   ];
 
-  // ---------- Dots ----------
+  /* ============================
+     Progress UI
+  ============================ */
   function renderDots() {
     dotsWrap.innerHTML = "";
     for (let i = 0; i < steps.length; i++) {
@@ -111,30 +160,33 @@
     }
   }
 
-  // ---------- Progress ----------
   function updateProgress() {
     stepNowEl.textContent = String(stepIndex + 1);
     stepMaxEl.textContent = String(steps.length);
 
     const pct = Math.round((stepIndex / (steps.length - 1)) * 100);
     fill.style.width = `${clamp(pct, 0, 100)}%`;
-    document.querySelector(".k-progress-bar")?.setAttribute("aria-valuenow", String(pct));
     renderDots();
+
+    track("progress", {
+      stepId: steps[stepIndex].id,
+      stepIndex,
+      ampel: currentAmpel(),
+      goal: answers.goal,
+      timeframe: answers.timeframe,
+      impact: answers.impact,
+    });
   }
 
-  // ---------- Mascot Bubble + Reaction ----------
   function setBubble(text) {
-    if (!bubbleText) return;
-    bubbleText.textContent = text || "";
+    bubbleText.textContent = text;
   }
 
   function thumbsUp() {
-    if (!reaction) return;
     reaction.classList.add("show");
     setTimeout(() => reaction.classList.remove("show"), 650);
   }
 
-  // ---------- Validation ----------
   function canGoNext() {
     const step = steps[stepIndex];
     if (step.type === "intro" || step.type === "result") return true;
@@ -142,69 +194,266 @@
     const key = step.key;
     const val = answers[key];
 
-    if (step.type === "text") {
-      if (step.optional) return true;
-      return Boolean(val && String(val).trim().length > 0);
-    }
+    if (step.type === "text") return true; // optional by design
     if (step.type === "cards") return Boolean(val);
+
     return true;
   }
 
-  // ---------- Intent & Safety Detection ----------
-  function detectFlags(notesRaw = "") {
-    const t = norm(notesRaw);
+  /* ============================
+     D4: Ampel Logic
+     - red: self-harm phrases
+     - yellow: high impact OR high emotional distress
+     - green: otherwise
+  ============================ */
+  function analyzeFreeText(text = "") {
+    const t = String(text || "").toLowerCase();
 
-    // Selbstgefährdung / Suizid
-    const selfHarm = /(selbstmord|suizid|umbringen|mich töten|ich töte mich|ich bringe mich um|nicht mehr leben|von einer brücke|spring(en)?|leben beenden)/i.test(t);
+    // RED: direct self-harm / suicide phrases
+    const redPatterns = [
+      /selbstmord|suizid|mich umbringen|mich töten|will sterben/,
+      /ich .* (bringe mich um|töte mich)/,
+      /wenn .* dann .* (sterbe|selbstmord|umbringen)/,
+    ];
 
-    // Illegale Beschaffung / Bahnhof / Dealer etc.
-    const illegalDrug = /(bahnhof|dealer|deal|straß(en)?|auf der straße|schwarzmarkt|illegal|afrikaner.*cannabis|kaufen.*cannabis.*bahnhof)/i.test(t);
+    // YELLOW: heavy distress (not suicidal)
+    const yellowPatterns = [
+      /verzweifelt|halte es kaum aus|weiß nicht weiter|panik|zusammenbruch|am ende/,
+      /ich kann nicht mehr|es überfordert mich|zu viel/,
+    ];
 
-    // Cannabis / Rezept / Telemedizin
-    const cannabis = /(cannabis|thc|gras|weed|slurricane|medizinisch(es)? cannabis|cannabis auf rezept|rezept.*cannabis)/i.test(t);
-    const telemed = /(telemedizin|telemediziner|online arzt|arzt online|videoarzt|doktorabc|doctorabc|dr\.?\s?abc)/i.test(t);
-
-    // Medikamenten-/Rezept-Frage allgemein
-    const prescription = /(rezept|verschreibung|verordnung|medikament|medikamente)/i.test(t);
-
-    return { selfHarm, illegalDrug, cannabis, telemed, prescription };
+    if (redPatterns.some(r => r.test(t))) return "red";
+    if (yellowPatterns.some(r => r.test(t))) return "yellow";
+    return "green";
   }
 
-  function storePayload(extra = {}) {
-    try {
-      const payload = {
-        goal: answers.goal || "",
-        timeframe: answers.timeframe || "",
-        impact: answers.impact || "",
-        notes: answers.notes || "",
-        createdAt: new Date().toISOString(),
-        ...extra,
-      };
-      sessionStorage.setItem("canadoc_compass", JSON.stringify(payload));
-    } catch {}
+  function currentAmpel() {
+    const textAmp = analyzeFreeText(answers.notes || "");
+    if (textAmp === "red") return "red";
+
+    // If impact is high -> yellow (unless red)
+    if (answers.impact === "high") return "yellow";
+
+    // If months+ and mid/high -> yellow-ish
+    if (answers.timeframe === "months" && (answers.impact === "mid" || answers.impact === "high")) return "yellow";
+
+    return "green";
   }
 
-  // ---------- Render Step ----------
-  function renderStep() {
-    const step = steps[stepIndex];
-    updateProgress();
-    setBubble(step.bubble || "Ich bin da.");
+  function applyAmpelUI() {
+    const a = currentAmpel();
 
-    // Buttons
-    btnPrev.style.visibility = stepIndex === 0 ? "hidden" : "visible";
+    // dot classes
+    ampelDot.classList.remove("is-green", "is-yellow", "is-red");
+    ampelDot.classList.add(a === "red" ? "is-red" : a === "yellow" ? "is-yellow" : "is-green");
 
-    if (step.type === "intro") {
-      btnNext.textContent = "Kompass starten";
-    } else if (step.type === "result") {
-      btnNext.textContent = "Fertig";
-    } else {
-      btnNext.textContent = "Weiter";
+    // text (CanaDoc tone)
+    if (a === "red") ampelText.textContent = "Wichtig: Sprich jetzt mit einem Menschen.";
+    else if (a === "yellow") ampelText.textContent = "Wir nehmen das ernst. Schritt für Schritt.";
+    else ampelText.textContent = "Alles ruhig.";
+
+    track("ampel", {
+      stepId: steps[stepIndex].id,
+      stepIndex,
+      ampel: a,
+      goal: answers.goal,
+      timeframe: answers.timeframe,
+      impact: answers.impact,
+    });
+  }
+
+  /* ============================
+     D3: Copy & Result Logic
+     - Always offers doctor conversation / telemedicine path
+     - No diagnosis
+     - If user asks “Cannabis Rezept” etc in freetext: handle respectfully, route to doctor
+     - Illegal acquisition mention -> calm deterrence + still doctor route
+  ============================ */
+  function includesCannabisInterest(text = "") {
+    const t = String(text || "").toLowerCase();
+    return /cannabis|thc|gras|weed|rezept/i.test(t);
+  }
+
+  function includesIllegalPurchase(text = "") {
+    const t = String(text || "").toLowerCase();
+    return /bahnhof|dealer|straße kaufen|illegal|schwarzmarkt/i.test(t);
+  }
+
+  function buildResult() {
+    const a = currentAmpel();
+    const notes = String(answers.notes || "");
+    const wantsCannabis = includesCannabisInterest(notes);
+    const mentionsIllegal = includesIllegalPurchase(notes);
+
+    // Core result copy (D3 tone)
+    let title = "Orientierung abgeschlossen.";
+    let body =
+      "Wenn du willst, kannst du jetzt den nächsten Schritt gehen und ein ärztliches Gespräch nutzen. " +
+      "CanaDoc begleitet nur bis zur Orientierung – die Entscheidung trifft ein Arzt.";
+    let ctaPrimary = "Zum Arztgespräch";
+    let ctaSecondary = "Telemedizin nutzen";
+
+    // Tune by goal (soft personalization)
+    if (answers.goal === "sleep") {
+      title = "Schlaf: wir ordnen das ein.";
+      body =
+        "Wenn Schlaf dich gerade aus dem Takt bringt, ist ein ärztliches Gespräch oft der sauberste Weg, " +
+        "um Ursachen, Risiken und Optionen zu klären – diskret und strukturiert.";
+    }
+    if (answers.goal === "stress") {
+      title = "Stress: wir bringen Ruhe in die Lage.";
+      body =
+        "Wenn Druck und Gedankenkarussell dominieren, kann ein ärztliches Gespräch helfen, " +
+        "Optionen und nächste Schritte fundiert zu sortieren – ohne Chaos, ohne Drama.";
+    }
+    if (answers.goal === "pain") {
+      title = "Beschwerden: wir klären den nächsten Schritt.";
+      body =
+        "Bei Beschwerden ist ärztliche Einordnung sinnvoll – damit Risiken, Alternativen und das weitere Vorgehen sauber geklärt werden.";
     }
 
+    // Cannabis interest: never promise, always doctor decides
+    if (wantsCannabis) {
+      title = "Medizinische Optionen: ärztlich klären.";
+      body =
+        "Wenn du dich zu medizinischen Optionen informieren möchtest: Das entscheidet ein Arzt nach Eignung und Situation. " +
+        "Du kannst jetzt diskret ein ärztliches Gespräch nutzen und es dort offen ansprechen.";
+    }
+
+    // Illegal mention: discourage + route to doctor
+    if (mentionsIllegal) {
+      title = "Wichtig: bleib auf dem legalen Weg.";
+      body =
+        "Ich kann keine illegalen Wege unterstützen. Wenn du medizinische Fragen oder einen Wunsch hast, " +
+        "sprich bitte mit einem Arzt – dort wird legal und fachlich geprüft, was sinnvoll ist.";
+    }
+
+    // Red amp: crisis copy + emergency resources + still provide doctor route
+    const crisisBlock = (a === "red") ? `
+      <div class="k-result-legal small">
+        Wenn du dich gerade nicht sicher fühlst: Es ist wichtig, jetzt mit einem Menschen zu sprechen.<br>
+        TelefonSeelsorge <b>116 123</b> · Notfall <b>112</b>
+      </div>
+    ` : "";
+
+    const box = document.createElement("div");
+    box.className = "k-result";
+    box.innerHTML = `
+      <div class="k-result-title">${escapeHTML(title)}</div>
+      <div class="k-result-text">${escapeHTML(body)}</div>
+
+      <div class="k-result-actions">
+        <a class="k-result-btn primary" id="ctaDoctor" href="weiterleitung.html">${escapeHTML(ctaPrimary)}</a>
+        <a class="k-result-btn ghost" id="ctaTele" href="weiterleitung.html">${escapeHTML(ctaSecondary)}</a>
+        <button class="k-result-btn ghost" id="copySummary" type="button">Zusammenfassung kopieren</button>
+        <button class="k-result-btn ghost" id="exportLog" type="button">Protokoll exportieren</button>
+      </div>
+
+      ${crisisBlock}
+
+      <div class="k-result-legal">
+        Hinweis: Orientierung, keine Diagnose. Die medizinische Entscheidung trifft ein Arzt.
+      </div>
+    `;
+
+    // Copy summary (safe)
+    box.querySelector("#copySummary").addEventListener("click", async () => {
+      const text = buildSummaryText();
+      track("action", { action: "copy_summary", ampel: a, goal: answers.goal, timeframe: answers.timeframe, impact: answers.impact });
+      try {
+        await navigator.clipboard.writeText(text);
+        setBubble("Kopiert. Sauber.");
+        thumbsUp();
+      } catch {
+        setBubble("Kopieren ging nicht – aber du siehst alles hier.");
+      }
+    });
+
+    // Export log (D5) – download JSON
+    box.querySelector("#exportLog").addEventListener("click", () => {
+      track("action", { action: "export_log", ampel: a, goal: answers.goal, timeframe: answers.timeframe, impact: answers.impact });
+      const log = localStorage.getItem(TRACK_KEY) || "[]";
+      const blob = new Blob([log], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const aEl = document.createElement("a");
+      aEl.href = url;
+      aEl.download = "canadoc-kompass-protokoll.json";
+      document.body.appendChild(aEl);
+      aEl.click();
+      aEl.remove();
+      URL.revokeObjectURL(url);
+      setBubble("Protokoll exportiert.");
+      thumbsUp();
+    });
+
+    // Track CTAs
+    box.querySelector("#ctaDoctor").addEventListener("click", () => {
+      track("action", { action: "cta_doctor", ampel: a, goal: answers.goal, timeframe: answers.timeframe, impact: answers.impact });
+    });
+    box.querySelector("#ctaTele").addEventListener("click", () => {
+      track("action", { action: "cta_telemedicine", ampel: a, goal: answers.goal, timeframe: answers.timeframe, impact: answers.impact });
+    });
+
+    return box;
+  }
+
+  function buildSummaryText() {
+    const lines = [
+      "CanaDoc – Kompass-Zusammenfassung",
+      `Fokus: ${labelGoal(answers.goal)}`,
+      `Zeitraum: ${labelTime(answers.timeframe)}`,
+      `Alltag: ${labelImpact(answers.impact)}`,
+      "",
+      "Hinweis: Orientierung, keine Diagnose. Die medizinische Entscheidung trifft ein Arzt.",
+    ];
+    return lines.join("\n");
+  }
+
+  function labelGoal(v){
+    return ({
+      sleep: "Schlaf & Erholung",
+      stress: "Stress & Anspannung",
+      pain: "Körperliche Beschwerden",
+      other: "Allgemeine Orientierung"
+    }[v] || "Allgemeine Orientierung");
+  }
+  function labelTime(v){
+    return ({
+      days: "seit Tagen",
+      weeks: "seit Wochen",
+      months: "seit Monaten+"
+    }[v] || "seit Wochen");
+  }
+  function labelImpact(v){
+    return ({
+      low: "leicht",
+      mid: "mittel",
+      high: "stark"
+    }[v] || "mittel");
+  }
+
+  function escapeHTML(s){
+    return String(s).replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  /* ============================
+     Render Step
+  ============================ */
+  function renderStep() {
+    const step = steps[stepIndex];
+
+    updateProgress();
+    setBubble(step.bubble || "Ich bin da.");
+    applyAmpelUI();
+
+    btnPrev.style.visibility = stepIndex === 0 ? "hidden" : "visible";
+    btnNext.textContent = step.type === "result" ? "Fertig" : "Weiter";
     btnNext.disabled = !canGoNext();
 
-    // Stage
     stage.innerHTML = "";
+
     const wrap = document.createElement("div");
     wrap.className = "k-step";
 
@@ -219,351 +468,134 @@
     wrap.appendChild(q);
     wrap.appendChild(sub);
 
-    // Intro: NUR EIN Element -> keine Dopplung
     if (step.type === "intro") {
-      const cards = document.createElement("div");
-      cards.className = "k-cards";
-
-      const startBtn = mkCard(
-        "Kompass starten",
-        "60 Sekunden – dann hast du Orientierung.",
-        () => {
-          thumbsUp();
-          next();
-        }
-      );
-      startBtn.classList.add("selected");
-
-      cards.appendChild(startBtn);
-      wrap.appendChild(cards);
+      // One clean start button (no duplicate container text)
+      const startBtn = document.createElement("button");
+      startBtn.type = "button";
+      startBtn.className = "k-card-btn selected";
+      startBtn.innerHTML = `<div class="t">Los geht’s</div><div class="d">60 Sekunden – dann hast du Orientierung.</div>`;
+      startBtn.addEventListener("click", () => {
+        track("action", { action: "start", stepId: step.id, stepIndex, ampel: currentAmpel() });
+        thumbsUp();
+        next();
+      });
+      wrap.appendChild(startBtn);
     }
 
     if (step.type === "cards") {
       const cards = document.createElement("div");
       cards.className = "k-cards";
 
-      step.options.forEach((opt) => {
-        const el = mkCard(opt.t, opt.d, () => {
+      step.options.forEach(opt => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "k-card-btn";
+        b.innerHTML = `<div class="t">${opt.t}</div><div class="d">${opt.d}</div>`;
+
+        b.addEventListener("click", () => {
           answers[step.key] = opt.v;
-          [...cards.querySelectorAll(".k-card-btn")].forEach((b) => b.classList.remove("selected"));
-          el.classList.add("selected");
+
+          [...cards.querySelectorAll(".k-card-btn")].forEach(x => x.classList.remove("selected"));
+          b.classList.add("selected");
+
           btnNext.disabled = !canGoNext();
+
+          applyAmpelUI();
           thumbsUp();
+
+          track("select", {
+            action: `select_${step.key}:${opt.v}`,
+            stepId: step.id,
+            stepIndex,
+            ampel: currentAmpel(),
+            goal: answers.goal,
+            timeframe: answers.timeframe,
+            impact: answers.impact
+          });
         });
-        if (answers[step.key] === opt.v) el.classList.add("selected");
-        cards.appendChild(el);
+
+        if (answers[step.key] === opt.v) b.classList.add("selected");
+        cards.appendChild(b);
       });
 
       wrap.appendChild(cards);
     }
 
     if (step.type === "text") {
-      const input = document.createElement("textarea");
-      input.className = "k-input";
-      input.placeholder = step.placeholder || "";
-      input.value = answers[step.key] || "";
-      input.rows = 4;
+      const ta = document.createElement("textarea");
+      ta.className = "k-input";
+      ta.placeholder = step.placeholder || "";
+      ta.value = answers.notes || "";
+      ta.rows = 4;
 
-      input.addEventListener("input", () => {
-        answers[step.key] = input.value;
-        btnNext.disabled = !canGoNext();
+      ta.addEventListener("input", () => {
+        answers.notes = ta.value;
+
+        // D4: Ampel live updaten – aber NICHT loggen den Text
+        applyAmpelUI();
+
+        track("input", {
+          action: "notes_changed",
+          stepId: step.id,
+          stepIndex,
+          ampel: currentAmpel(),
+          goal: answers.goal,
+          timeframe: answers.timeframe,
+          impact: answers.impact
+        });
       });
 
-      wrap.appendChild(input);
-
-      const hint = document.createElement("div");
-      hint.className = "k-hint";
-      hint.textContent = "Tipp: Ein Satz reicht. Keine sensiblen Details, wenn du das nicht möchtest.";
-      wrap.appendChild(hint);
+      wrap.appendChild(ta);
     }
 
     if (step.type === "result") {
-      wrap.appendChild(buildResultOrSafety());
+      wrap.appendChild(buildResult());
     }
 
     stage.appendChild(wrap);
   }
 
-  function mkCard(title, desc, onClick) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "k-card-btn";
-    btn.innerHTML = `<div class="t">${escapeHtml(title)}</div><div class="d">${escapeHtml(desc)}</div>`;
-    btn.addEventListener("click", onClick);
-    return btn;
-  }
-
-  // ---------- Result + Safety ----------
-  function buildResultOrSafety() {
-    const notes = answers.notes || "";
-    const flags = detectFlags(notes);
-
-    // 1) Selbstgefährdung -> Safety Card
-    if (flags.selfHarm) {
-      storePayload({ theme: "safety", severity: "high" });
-      return buildSafetyCard(notes);
-    }
-
-    // 2) Illegale Beschaffung -> klare, ruhige Umleitung auf legal/ärztlich
-    if (flags.illegalDrug) {
-      storePayload({ theme: "illegal_intent", severity: "medium" });
-      return buildIllegalCard(notes);
-    }
-
-    // 3) Standard Ergebnis (aber individualisiert nach intent)
-    storePayload({ theme: "standard", severity: "low" });
-    return buildResultCard(notes, flags);
-  }
-
-  function buildSafetyCard(notes) {
-    const box = document.createElement("div");
-    box.className = "k-result";
-
-    box.innerHTML = `
-      <div class="k-result-head">
-        <div class="k-badge">Wichtiger Hinweis</div>
-        <div class="k-needle" aria-hidden="true">🛟</div>
-      </div>
-
-      <div class="k-result-title">Ich nehme dich ernst.</div>
-
-      <div class="k-result-text">
-        Wenn Gedanken auftauchen, dir selbst etwas anzutun, ist das ein Signal:
-        <strong>Du brauchst jetzt menschliche Unterstützung.</strong>
-        Wir stellen keine Diagnosen – aber wir helfen dir, den richtigen nächsten Schritt zu wählen.
-      </div>
-
-      ${notes ? `<div class="k-quote">Dein Satz: „${escapeHtml(notes)}“</div>` : ""}
-
-      <div class="k-result-mini">
-        <div><span>TelefonSeelsorge (24/7):</span> 0800 111 0 111 / 0800 111 0 222</div>
-        <div><span>Akut / Gefahr:</span> 112</div>
-      </div>
-
-      <div class="k-result-actions">
-        <a class="k-result-btn primary" href="tel:112">112 anrufen</a>
-        <a class="k-result-btn ghost" href="tel:08001110111">TelefonSeelsorge anrufen</a>
-        <a class="k-result-btn ghost" href="weiterleitung.html">Ärztliche Abklärung starten</a>
-      </div>
-
-      <div class="k-result-legal">
-        Hinweis: Bei akuter Gefahr bitte 112. Ärztliche Abklärung ersetzt keine Notfallhilfe.
-      </div>
-    `;
-    return box;
-  }
-
-  function buildIllegalCard(notes) {
-    const box = document.createElement("div");
-    box.className = "k-result";
-
-    box.innerHTML = `
-      <div class="k-result-head">
-        <div class="k-badge">Hinweis</div>
-        <div class="k-needle" aria-hidden="true">🧭</div>
-      </div>
-
-      <div class="k-result-title">Ich kann dir dabei nicht helfen.</div>
-
-      <div class="k-result-text">
-        Wenn es um den Kauf von Substanzen außerhalb legaler Wege geht, kann ich keine Anleitung geben.
-        <strong>Wenn du medizinische Hilfe suchst</strong>, ist der saubere Weg: ärztliche Abklärung über Telemedizin.
-      </div>
-
-      ${notes ? `<div class="k-quote">Dein Satz: „${escapeHtml(notes)}“</div>` : ""}
-
-      <div class="k-result-actions">
-        <a class="k-result-btn primary" href="weiterleitung.html">Ärztliche Abklärung starten</a>
-        <button class="k-result-btn ghost" id="saveCopy" type="button">Zusammenfassung kopieren</button>
-      </div>
-
-      <div class="k-result-legal">
-        Hinweis: Orientierung, keine Diagnose.
-      </div>
-    `;
-
-    box.querySelector("#saveCopy")?.addEventListener("click", async () => {
-      const text = buildSummaryText(answers.goal, answers.timeframe, answers.impact, notes);
-      try {
-        await navigator.clipboard.writeText(text);
-        setBubble("Kopiert. Sauber.");
-        thumbsUp();
-      } catch {
-        setBubble("Kopieren ging nicht – aber alles bleibt hier sichtbar.");
-      }
-    });
-
-    return box;
-  }
-
-  function buildResultCard(notes, flags) {
-    const goal = answers.goal || "other";
-    const timeframe = answers.timeframe || "weeks";
-    const impact = answers.impact || "mid";
-
-    // Grundlogik (Orientierung, nicht medizinisch)
-    let headline = "Orientierung: ein nächster Schritt kann sinnvoll sein.";
-    let note = "Wenn du möchtest, kannst du das Thema ärztlich abklären lassen – diskret und nachvollziehbar.";
-    let cta = "Abklärung starten";
-
-    if (impact === "low" && timeframe === "days") {
-      headline = `Orientierung: beobachte es kurz – und handle bewusst.`;
-      note = "Wenn es bleibt oder sich verschlechtert, ist ärztliche Abklärung sinnvoll.";
-      cta = "Optionen ansehen";
-    }
-    if (impact === "high" || timeframe === "months") {
-      headline = "Orientierung: ärztliche Abklärung ist empfehlenswert.";
-      note = "Bei starker oder langer Belastung ist professionelle Abklärung oft der sauberste Weg.";
-      cta = "Abklärung starten";
-    }
-
-    // Individualisierung nach Freitext-Intent (Telemedizin/Cannabis/Rezept)
-    if (flags?.telemed) {
-      headline = "Orientierung: du willst ärztlich (telemedizinisch) abklären – das ist der richtige Weg.";
-      note = "Wir stellen keine Diagnosen. Für medizinische Entscheidungen ist ein Arztgespräch der saubere nächste Schritt.";
-      cta = "Telemedizin starten";
-    } else if (flags?.cannabis || (flags?.prescription && /cannabis|thc/i.test(norm(notes)))) {
-      headline = "Orientierung: wenn es um medizinisches Cannabis geht, entscheidet das ärztliche Gespräch.";
-      note = "Wir stellen keine Diagnosen. Wenn du das Thema medizinisch prüfen lassen willst, ist Telemedizin der korrekte Weg.";
-      cta = "Ärztlich prüfen lassen";
-    } else if (flags?.prescription) {
-      headline = "Orientierung: bei Rezept-Fragen ist ärztliche Abklärung der saubere Weg.";
-      note = "Wir können dir Orientierung geben – die Entscheidung über Behandlung/Rezept liegt bei Ärztinnen und Ärzten.";
-      cta = "Ärztlich abklären";
-    }
-
-    const box = document.createElement("div");
-    box.className = "k-result";
-
-    box.innerHTML = `
-      <div class="k-result-head">
-        <div class="k-badge">Digitaler Kompass</div>
-        <div class="k-needle" aria-hidden="true">🧭</div>
-      </div>
-
-      <div class="k-result-title">${escapeHtml(headline)}</div>
-      <div class="k-result-text">${escapeHtml(note)}</div>
-
-      ${notes ? `<div class="k-quote">Dein Satz: „${escapeHtml(notes)}“</div>` : ""}
-
-      <div class="k-result-mini">
-        <div><span>Fokus:</span> ${escapeHtml(labelGoal(goal))}</div>
-        <div><span>Zeitraum:</span> ${escapeHtml(labelTime(timeframe))}</div>
-        <div><span>Alltag:</span> ${escapeHtml(labelImpact(impact))}</div>
-      </div>
-
-      <div class="k-result-actions">
-        <a class="k-result-btn primary" id="goPartner" href="weiterleitung.html">${escapeHtml(cta)}</a>
-        <button class="k-result-btn ghost" id="saveCopy" type="button">Zusammenfassung kopieren</button>
-      </div>
-
-      <div class="k-result-legal">
-        Hinweis: Dies ist eine Orientierung und ersetzt keine ärztliche Behandlung.
-      </div>
-    `;
-
-    box.querySelector("#saveCopy")?.addEventListener("click", async () => {
-      const text = buildSummaryText(goal, timeframe, impact, notes);
-      try {
-        await navigator.clipboard.writeText(text);
-        setBubble("Kopiert. Sauber.");
-        thumbsUp();
-      } catch {
-        setBubble("Kopieren ging nicht – aber alles bleibt hier sichtbar.");
-      }
-    });
-
-    return box;
-  }
-
-  function buildSummaryText(goal, timeframe, impact, notes) {
-    return [
-      "CanaDoc – Kompass-Zusammenfassung",
-      `Fokus: ${labelGoal(goal)}`,
-      `Zeitraum: ${labelTime(timeframe)}`,
-      `Alltag: ${labelImpact(impact)}`,
-      notes ? `Notiz: ${notes}` : "",
-      "",
-      "Hinweis: Orientierung, keine Diagnose."
-    ]
-      .filter(Boolean)
-      .join("\n");
-  }
-
-  function labelGoal(v) {
-    return ({
-      sleep: "Schlaf & Erholung",
-      stress: "Stress & Anspannung",
-      pain: "Körperliche Beschwerden",
-      other: "Allgemeine Orientierung",
-    }[v] || "Allgemeine Orientierung");
-  }
-  function labelTime(v) {
-    return ({
-      days: "seit Tagen",
-      weeks: "seit Wochen",
-      months: "seit Monaten+",
-    }[v] || "seit Wochen");
-  }
-  function labelImpact(v) {
-    return ({
-      low: "leicht",
-      mid: "mittel",
-      high: "stark",
-    }[v] || "mittel");
-  }
-
-  // ---------- Navigation ----------
+  /* ============================
+     Navigation
+  ============================ */
   function next() {
+    const step = steps[stepIndex];
+
     if (!canGoNext()) {
       setBubble("Ein kurzer Klick reicht – dann weiter.");
       return;
     }
 
-    if (stepIndex >= steps.length - 1) {
-      // Finish: sauber zurück zur Startseite
+    if (step.type === "result") {
+      // Finish -> back to start (oder später: Dankeseite)
+      track("action", { action: "finish", stepId: step.id, stepIndex, ampel: currentAmpel(), goal: answers.goal, timeframe: answers.timeframe, impact: answers.impact });
       window.location.href = "index.html";
       return;
     }
 
-    stepIndex++;
+    stepIndex = Math.min(stepIndex + 1, steps.length - 1);
     thumbsUp();
     renderStep();
   }
 
   function prev() {
-    if (stepIndex <= 0) return;
-    stepIndex--;
+    stepIndex = Math.max(stepIndex - 1, 0);
     renderStep();
   }
 
-  // ---------- Events ----------
-  btnNext?.addEventListener("click", next);
-  btnPrev?.addEventListener("click", prev);
-
-  stage?.addEventListener("click", () => {
-    btnNext.disabled = !canGoNext();
+  btnNext.addEventListener("click", () => {
+    track("action", { action: "next", stepId: steps[stepIndex].id, stepIndex, ampel: currentAmpel(), goal: answers.goal, timeframe: answers.timeframe, impact: answers.impact });
+    next();
   });
 
-  // ---------- Minimal Result Styling (falls nicht in CSS vorhanden) ----------
-  const style = document.createElement("style");
-  style.textContent = `
-    .k-result{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px;background:rgba(0,0,0,.35);box-shadow:0 0 22px rgba(0,255,154,.10)}
-    .k-result-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    .k-badge{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,255,154,.95)}
-    .k-result-title{font-size:18px;font-weight:800;margin:6px 0 10px;line-height:1.2}
-    .k-result-text{color:rgba(255,255,255,.78);font-size:14px;line-height:1.5}
-    .k-quote{margin-top:12px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);border-radius:999px;padding:10px 12px;color:rgba(255,255,255,.88);font-size:13px}
-    .k-result-mini{margin-top:12px;color:rgba(255,255,255,.70);font-size:13px;display:grid;gap:6px}
-    .k-result-mini span{color:rgba(255,255,255,.52)}
-    .k-result-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-    .k-result-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 14px;border-radius:999px;font-weight:800;text-decoration:none;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff}
-    .k-result-btn.primary{background:#00ff9a;color:#000;border:none;box-shadow:0 0 20px rgba(0,255,154,.25)}
-    .k-result-legal{margin-top:10px;font-size:12px;color:rgba(255,255,255,.55)}
-    .k-reaction.show{opacity:1;transform:translateY(0)}
-  `;
-  document.head.appendChild(style);
+  btnPrev.addEventListener("click", () => {
+    track("action", { action: "prev", stepId: steps[stepIndex].id, stepIndex, ampel: currentAmpel(), goal: answers.goal, timeframe: answers.timeframe, impact: answers.impact });
+    prev();
+  });
 
-  // ---------- Init ----------
+  /* ============================
+     Init
+  ============================ */
+  track("init", { stepId: steps[0].id, stepIndex: 0, ampel: currentAmpel() });
   renderStep();
 })();
